@@ -1,0 +1,40 @@
+  wanna-build statistics - Fri Oct  2 19:52:23 CEST 2009
+  -----------------------------------------------------
+
+Distribution unstable:
+---------------------
+Installed       :  5233 (buildd_hurd-i386-bach: 1041,
+                         buildd_hurd-i386-beethoven: 1066,
+                         buildd_hurd-i386-mozart: 1313,
+                         buildd_hurd-i386-raptor: 1,
+                         buildd_hurd-i386-rossini: 1369, sthibaul: 4,
+                         unknown: 439)
+Needs-Build     :   141
+Building        :    25 (buildd_hurd-i386-bach: 4,
+                         buildd_hurd-i386-rossini: 20, sthibaul: 1)
+Uploaded        :     2 (buildd_hurd-i386-bach: 2)
+Failed          :  1376 (buildd_hurd-i386-bach: 348,
+                         buildd_hurd-i386-beethoven: 252,
+                         buildd_hurd-i386-mozart: 380,
+                         buildd_hurd-i386-rossini: 396)
+Dep-Wait        :  1027 (buildd_hurd-i386-bach: 88,
+                         buildd_hurd-i386-beethoven: 450,
+                         buildd_hurd-i386-mozart: 103,
+                         buildd_hurd-i386-rossini: 78, sthibaul: 8,
+                         unknown: 300)
+Reupload-Wait   :     0
+Install-Wait    :     0
+Failed-Removed  :    82 (buildd_hurd-i386-bach: 14,
+                         buildd_hurd-i386-beethoven: 27,
+                         buildd_hurd-i386-mozart: 20,
+                         buildd_hurd-i386-rossini: 20, unknown: 1)
+Dep-Wait-Removed:     0
+Not-For-Us      :    65
+total           :  8250
+
+ 63.43% (5233) up-to-date,  63.45% (5235) including uploaded
+  1.71% (141) need building
+  0.30% ( 25) currently building
+ 29.13% (2403) failed/dep-wait
+  0.99% ( 82) old failed/dep-wait
+  0.79% ( 65) need porting or cause the buildd serious grief

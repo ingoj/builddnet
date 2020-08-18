@@ -1,0 +1,7 @@
+btrfs-tools_0.19-4
+iterm_0.5-7
+jeuclid_3.1.7-1
+md5deep_3.4-3
+pwdhash_1.7-5
+python-whoosh_0.3.~0b24-1
+squashfs_4.0-3

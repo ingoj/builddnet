@@ -1,0 +1,162 @@
+/*
+ $Id: pget,v 1.3 2001/02/17 22:26:25 rick Exp $
+ * Rick Younie <younie@debian.org>
+ *
+ * pget - pull in a web page, HTTP/1.0, with rxsock
+ *
+ * Typical Usage:
+ *
+ *   call value 'REGINA_MACROS', '/usr/lib/searchscripts','SYSTEM'
+ *   ret = pget(site, url, timeout)
+ *   parse var ret error ',' buffer
+ *
+ *   error:
+ *      -3  - couldn't load the socket functions
+ *      -2  - connect() or select() timeout
+ *      -1  - Control-C
+ *       0  - no error
+ *       else the symbolic error name - e.g. ECONNREFUSED
+ *           (see errno.h in kernel source)
+ *
+ * Description:
+ *
+ *   call value 'REGINA_MACROS', '/usr/lib/searchscripts','SYSTEM'
+ *     - this allows your script to see this function
+ *
+ *   ret = pget(site, url, timeout)
+ *     - site, e.g. 'debian.org'
+ *     - url, e.g. '/index.html'
+ *     - timeout in seconds, default 120
+ *
+ *     e.g. ret = pget('debian.org', '/index.html')
+ *          parse var ret error ',' body
+ *
+ *     e.g. crlf2 = '0d 0a 0d 0a'x
+ *          ret = pget('debian.org', '/index.html', 30, 1, 1)
+ *          parse var ret error ',' header (crlf2) body
+ *
+ *   http_proxy - uses this environment variable if it is set
+ *
+ */
+    TRACE OFF
+
+    NO_SOCKET_LIBRARY = -3
+    CONNECT_SELECT_TIMEOUT = -2
+    CTRLC = -1
+
+    /* allow ^C bailout */
+    SIGNAL ON HALT NAME CTRL_C
+
+    crlf = '0d 0a'x
+    crlf2 = crlf || crlf
+    wipe = '0d 1b'x || '[K' || '0d'x
+
+    parse arg site page timeout
+
+    if \datatype(timeout,'NUM') then timeout = 120
+    if \abbrev(page,'/') then page = '/'page
+
+    /* use proxy if it is set in environment */
+    http_proxy = value('http_proxy',,'SYSTEM')
+
+    /* inner loop error gets error from ERRNO; outer loop returns a    */
+    /* manually set error because ERRNO isn't meaningful at that point */
+    do outer = 1 to 1
+
+        if RxFuncQuery("SockLoadFuncs") <> 0 then do
+            call RxFuncAdd 'SockLoadFuncs','rxsock','SockLoadFuncs'
+            if RxFuncErrmsg() <> '' then do
+                err = NO_SOCKET_LIBRARY
+                leave outer
+            end
+            call SockLoadFuncs
+        end
+
+        do inner = 1 to 1
+
+            /* get IP of remote */
+            server.!family = "AF_INET"
+            if http_proxy = '' then do
+                server.!port = 80
+                if SockGetHostByName(site, 'server.!') <> 1 then leave inner
+            end
+            /* using proxy instead of direct connect */
+            else do
+                parse var http_proxy 'http://' proxy ':' server.!port
+                if SockGetHostByName(proxy, 'server.!') <> 1 then leave inner
+            end
+
+            /* make socket */
+            socket = SockSocket("AF_INET","SOCK_STREAM","IPPROTO_TCP")
+            if socket = -1 then leave inner
+
+            /* set non-blocking */
+            if SockIoctl(socket, 'FIONBIO', 1) <> 0 then leave inner
+
+            /* connect, with t/o check */
+            call time 'R'
+            do while SockConnect(socket,"server.!") <> 0
+                if ERRNO <> 'EINPROGRESS',
+                 & ERRNO <> 'EALREADY'
+                    then leave inner
+                if time('E') > timeout then do
+                    err = CONNECT_SELECT_TIMEOUT
+                    leave outer
+                end
+            end
+
+            /* set blocking */
+            if SockIoctl(socket, 'FIONBIO', 0) <> 0 then leave inner
+
+            /* send request */
+            if http_proxy = '' then sendstring = 'GET' page 'HTTP/1.0'crlf
+            else sendstring = 'GET http://'site || page 'HTTP/1.0'crlf
+            sendstring = sendstring || 'Host:' site || crlf ||,
+                        'Accept: *'||'/'||'*' || crlf || crlf
+            
+            call SockSend socket, sendstring
+
+            socket.0 = 1
+            socket.1 = socket
+
+            /* get the data */
+            do forever
+
+                call SockSelect 'socket.','','',timeout
+
+                /* -1 error; 0 timeout */
+                if socket.0 < 0 then leave inner
+                else if socket.0 = 0 then do
+                    err = CONNECT_SELECT_TIMEOUT
+                    leave outer
+                end
+
+                bytes = SockRecv(socket, 'chunk', 512)
+
+                /* -1 = error; 0 = done */
+                if bytes = -1 then leave inner
+                if bytes = 0 then do  /* only good exit */
+                    err = 0
+                    leave outer
+                end
+                else call charout ,chunk
+
+            end
+
+        end inner
+
+        err = ERRNO
+
+    end outer
+
+CLEANUPANDRETURN:
+
+    if symbol('socket') <> 'LIT'
+        then if socket >= 0 then call SockClose socket
+
+    return 0
+
+CTRL_C:
+    if symbol('socket') <> 'LIT'
+        then if socket >= 0 then call SockClose socket
+    return -1','

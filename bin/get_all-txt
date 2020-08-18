@@ -1,0 +1,186 @@
+#!/bin/sh -e
+
+# vim:ts=4:noet:nowrap:sts=4:sw=4:
+# $Id: $
+# Rick Younie <rick@def.debian.net>
+
+set -x
+
+FLAVOUR=$1
+cd /home/builddnet/$FLAVOUR/listdir
+
+#ARCHES=m68k
+#ALL="alpha arm hppa i386 ia64 m68k mips mipsel powerpc s390 sparc"
+#ALL="alpha hppa mips sparc"
+ALL=`cat /home/builddnet/bin/archs_${FLAVOUR}`
+
+echo $ALL
+
+while [ $2 ]; do
+	case "$2" in
+		-h|--help )
+			echo "Usage: $(basename $0) [,all,arch1 arch2 ...]"
+			echo "  - default arch: m68k"
+			echo "  - all=$ALL"
+			exit 0
+			;;
+		all )
+			ARCHES=$ALL
+			;;
+		* )
+			ARCHES=$ALL
+			;;
+	esac
+	shift
+done
+
+#echo "..pull incoming file list from auric"
+rm -f index.html.old
+wget -q http://incoming.debian.org
+sed <index.html -e :a -ne 's/<[^>]*>//g;/</N;//ba' \
+	-ne 's/^ *\(.*\)\.dsc.*/\1/p' >incoming.txt
+mv index.html index.html.old
+
+#echo "..pulling Update Excuses"
+wget -q -N http://ftp-master.debian.org/testing/update_excuses.html
+sed <update_excuses.html -e :a -e 's/<[^>]*>//g;/</N;//ba' >update_excuses.txt
+
+#echo "..pulling Release Critical Bugs"
+wget -q -N http://bugs.debian.org/release-critical/debian/all.html
+#http://master.debian.org/~wakkerma/bugs/other/all.html
+sed <all.html -e :a -e 's/<[^>]*>//g;/</N;//ba' >all.txt
+
+#echo "..pulling Packages-arch-specific"
+wget -q -N http://buildd.debian.org/quinn-diff/Packages-arch-specific
+
+
+case "$FLAVOUR" in
+	unstable) 
+		#for ARCH in `echo ${ARCHES} | sed -e 's/kfreebsd-amd64//g' -e 's/armeb//g' -e 's/m68k//g' -e 's/m32r//g' -e 's/kfreebsd-i386//g' -e 's/hurd-i386//g'`; do
+		for ARCH in `echo ${ARCHES} | sed -e 's/armeb//g' -e 's/m68k//g' -e 's/m32r//g' -e 's/hurd-i386//g'`; do
+ 	       		echo -n "wget ${ARCH}-all.txt..."
+        		wget -q -N -O ${ARCH}-all.txt http://buildd.debian.org/stats/${ARCH}-all.txt
+        		echo "done."
+		done
+		#echo "wget armeb-all.txt..." ; wget -q -N http://wanna-build.farm.ftbfs.de/stats/armeb-unstable-all.txt.bz2 && bzip2 -df armeb-unstable-all.txt.bz2 && mv armeb-unstable-all.txt armeb-all.txt
+		#echo "wget armel-all.txt..." ; wget -q -N http://buildd.debian-ports.org/stats/armel-all.txt  #.bz2 && bzip2 -df armel-all.txt.bz2
+		#wget -q -N http://wanna-build.farm.ftbfs.de/amd64-unstable-all.txt && mv amd64-unstable-all.txt amd64-all.txt
+		echo "wget hurd-i386-all.txt..." ; wget -q -N http://buildd.debian-ports.org/stats/hurd-i386-all.txt #.bz2 && bzip2 -df hurd-i386-all.txt.bz2
+		#echo "wget kfreebsd-amd64-all.txt..." ; wget -q -N https://buildd.debian.org/stats/kfreebsd-amd64-dump.txt.gz && gzip -d kfreebsd-amd64-dump.txt.gz && mv kfreebsd-amd64-dump.txt kfreebsd-all.txt
+		#echo "wget kfreebsd-i386-all.txt..." ; wget -q -N https://buildd.debian.org/stats/kfreebsd-i386-dump.txt.gz && gzip -d kfreebsd-i386-dump.txt.gz && mv kfreebsd-i386-dump.txt kfreebsd-all.txt
+		#echo "wget kfreebsd-i386-all.txt..." ; wget -q -N http://buildd.debian-ports.org/stats/kfreebsd-i386-all.txt #.bz2 && bzip2 -df kfreebsd-i386-all.txt.bz2 #&& mv kfreebsd-i386-all.txt kfreebsd-all.txt
+		echo "wget m32r-all.txt..." ; wget -q -N http://debian.linux-m32r.org/buildd/m32r-all.txt.bz2 && bzip2 -df m32r-all.txt.bz2
+		echo "wget m68k-all.txt..." ; wget -q -N http://buildd.debian-ports.org/stats/m68k-all.txt
+		;;
+	experimental)
+		for ARCH in `echo ${ARCHES} | sed -e 's/hurd-i386//g' -e 's/kfreebsd-amd64//g' -e 's/kfreebsd-i386//g'`; do
+			echo "${FLAVOUR} : wgetting ${ARCH}-all.txt"
+			wget -q -N -O ${ARCH}-all.txt http://wanna-build.farm.ftbfs.de/stats/$ARCH-$FLAVOUR-all.txt
+			#mv $ARCH-$FLAVOUR-all.txt $ARCH-all.txt
+		done
+		echo "wget hurd-i386-all.txt..." ; wget -q -O hurd-i386-all.txt -N http://buildd.debian-ports.org/stats/hurd-i386-experimental-all.txt #&& mv hurd-i386-experimental-all.txt hurd-i386-all.txt
+		echo "wget kfreebsd-amd64-all.txt..." ; wget -q -O kfreebsd-amd64-all.txt -N http://buildd.debian-ports.org/stats/kfreebsd-amd64-experimental-all.txt #&& mv kfreebsd-amd64-experimental-all.txt kfreebsd-amd64-all.txt
+		echo "wget kfreebsd-i386-all.txt..." ; wget -q -O kfreebsd-i386-all.txt -N http://buildd.debian-ports.org/stats/kfreebsd-i386-experimental-all.txt #&& mv kfreebsd-i386-experimental-all.txt kfreebsd-i386-all.txt
+		#wget -q -N http://amd64.debian.net/buildd/buildd-amd64-all-experimental.txt && mv buildd-amd64-all-experimental.txt amd64-all.txt 
+		ls -l 
+		;;
+	*)
+		for ARCH in `echo $ARCHES`; do
+			echo "${FLAVOUR} : wgetting ${ARCH}-all.txt"
+			wget -q -N http://wanna-build.farm.ftbfs.de/stats/$ARCH-$FLAVOUR-all.txt
+			mv $ARCH-$FLAVOUR-all.txt $ARCH-all.txt
+		done
+		;;
+esac
+pwd
+echo "=============================================="
+
+for ARCH in $ARCHES; do
+echo "!!!!! $ARCH"
+	case "$FLAVOUR" in
+		unstable) 
+			case "$ARCH" in
+				#armeb)
+				#	URL_BUILDLOGS="experimental.ftbfs.de"
+				#	;;	
+				#armel)
+				#	URL_BUILDLOGS="experimental.ftbfs.de"
+				#	;;	
+				#amd64)
+				#	URL_BUILDLOGS="amd64.ftbfs.de"
+				#	;;
+				#m32r)
+				#	URL_BUILDLOGS="debian.linux-m32r.org"
+				#	;;
+				#kfreebsd-amd64)
+				#	URL_BUILDLOGS="buildd.debian-ports.org"
+				#	;;
+				#kfreebsd-i386)
+				#	URL_BUILDLOGS="buildd.debian-ports.org"
+				#	;;
+				hurd-i386)
+					URL_BUILDLOGS="buildd.debian-ports.org"
+					;;
+				*)
+					URL_BUILDLOGS="buildd.debian.org"
+					;;
+			esac
+			;;
+		experimental)
+			case "$ARCH" in
+				#armeb)
+				#	URL_BUILDLOGS="experimental.ftbfs.de"
+				#	;;	
+				amd64)
+					URL_BUILDLOGS="amd64.ftbfs.de"
+					;;
+				#m32r)
+				#	URL_BUILDLOGS="debian.linux-m32r.org"
+				#	;;
+				hurd-i386)
+					URL_BUILDLOGS="buildd.debian-ports.org"
+					;;
+				kfreebsd-amd64)
+					URL_BUILDLOGS="experimental.ftbfs.de"
+					;;
+				kfreebsd-i386)
+					URL_BUILDLOGS="experimental.ftbfs.de"
+					;;
+				hurd-i386)
+					URL_BUILDLOGS="experimental.ftbfs.de"
+					;;
+				*)
+					URL_BUILDLOGS="buildd.debian.org"
+					;;
+			esac
+			;;
+		*)
+			case "$FLAVOUR" in
+				experimental)
+					URL_BUILDLOGS="experimental.debian.net"
+					;;
+				*)
+					URL_BUILDLOGS="experimental.debian.net"
+					;;
+			esac				
+			;;
+	esac
+	echo "{$FLAVOUR} : Processing $ARCH-all file"
+	#/home/builddnet/bin/do_all-list $FLAVOUR $ARCH $URL_BUILDLOGS
+	cd /home/builddnet/bin
+	cp -a /home/builddnet/$FLAVOUR/listdir/$ARCH-all.txt /home/builddnet/bin/input/ 
+	./debbuildtxttohtml_start.py $FLAVOUR $ARCH $URL_BUILDLOGS
+	mv output/$ARCH*.html /home/builddnet/$FLAVOUR/listdir/
+	cd /home/builddnet/$FLAVOUR/listdir
+	/home/builddnet/bin/dowanna-build-stats $FLAVOUR $ARCH
+	/home/builddnet/bin/nb-queue-eta.sh $FLAVOUR $ARCH > ${ARCH}_eta
+done
+
+
+/home/builddnet/bin/nb-stats.sh $FLAVOUR 
+#/home/builddnet/bin/generate-html.sh $FLAVOUR all
+
+#for arch in $arches; do
+# 	echo "${arch} buildd graph lines..."
+#	tail -n 1 /home/builddnet/listdir/${arch}-stats_full-history 
+#done

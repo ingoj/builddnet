@@ -1,0 +1,52 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then 
+	echo ""
+	echo "*** No flavour specified (woody-backports.org, experimental, non-free)."
+	echo ""
+	exit 1
+else
+	if [ $1 == "all" ]; then
+		all_flav="unstable unstable-non-free woody-backports.org experimental sarge-volatile etch-secure"
+		for i in $all_flav; do
+			echo "*** Generating HTML pages for $i:"
+			/home/builddnet/bin/generate-html.sh $i
+		done
+		exit 0
+	else
+		flavour=$1
+		pfad=/home/builddnet/$flavour
+	fi
+fi
+
+#ALL="alpha arm hppa i386 ia64 m68k mips mipsel powerpc s390 sparc"
+#ALL="alpha hppa mips sparc"
+ALL=`cat $pfad/bin/archs`
+echo $ALL
+
+for arch in $ALL; do
+	echo "Processing $arch"
+	mtime=`ls --full-time $pfad/listdir/${arch}-all.txt  | awk '{ print $6,$7 }' | cut -f1 -d"."`
+	#echo $mtime
+	cat /home/builddnet/template/top.html | sed -e s/%FLAVOUR%/$flavour/g -e s/%ARCH%/$arch/g > $pfad/template/index-${arch}.html 
+	for toparch in $ALL; do
+		if [ $flavour = "sarge-volatile" ]; then
+			dnsflavour="volatile"
+		elif [ $flavour = "unstable-non-free" ]; then
+			dnsflavour="non-free"
+		elif [ $flavour = "sarge-volatile" ]; then
+			dnsflavour="volatile"
+		else
+			dnsflavour=$flavour
+		fi
+		echo "[<a href="http://$dnsflavour.buildd.net/index-$toparch.html">$toparch</a>]" >> $pfad/template/index-${arch}.html
+	done
+	cat $pfad/template/header.html | sed -e s/%ARCH%/$arch/g -e s/%MTIME%/"$mtime"/g >> $pfad/template/index-${arch}.html
+	/home/builddnet/bin/update-buildds.py $flavour ${arch} >> $pfad/template/index-${arch}.html 
+	cat $pfad/template/${arch}.html >> $pfad/template/index-${arch}.html 
+	echo "<p><hr><p>Last modified: "`date`"</BODY></HTML>" >> $pfad/template/index-${arch}.html
+done
+
+mv $pfad/template/index-*.html $pfad/WWW/
+
+

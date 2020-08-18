@@ -1,0 +1,13 @@
+#!/bin/bash
+
+ALL="alpha arm hppa i386 ia64 m68k mips mipsel powerpc s390 sparc"
+for arch in $ALL; do
+	#echo $arch
+	grep Needs-Build ~/listdir/${arch}_stats | cut -f2 -d: | xargs echo >> ~/listdir/${arch}_stats-history `date`
+	tail -n 335 ~/listdir/${arch}_stats-history > ~/listdir/${arch}_stats-history.new
+	mv ~/listdir/${arch}_stats-history.new ~/listdir/${arch}_stats-history
+done
+
+~/bin/graph.sh 2>&1 1>/dev/null
+
+

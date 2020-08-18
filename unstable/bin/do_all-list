@@ -1,0 +1,900 @@
+#!/usr/bin/regina 
+/*
+ vim:ts=4:noet:nowrap:sts=4:sw=4:
+ $Id: do_all-list,v 1.42 2002/11/24 21:48:45 rick Exp rick $
+ * Rick Younie <rick@def.debian.net>
+-+-
+do_all_lists [arch]
+ - parse the all list for arch [default m68k] from buildd.d.o
+   into separate lists
+-*-
+ *
+ *
+ */
+	TRACE ON
+	SIGNAL ON HALT
+	SIGNAL OFF ERROR
+	SIGNAL ON FAILURE
+	SIGNAL ON NOVALUE
+	SIGNAL ON SYNTAX
+
+/* -------------------------------------------------------------------
+ *	  constants
+ */
+	lf		= '0a'x
+	tab		= '09'x
+	opt.	= 0
+
+	listdir	= '/home/younie/unstable/listdir'
+
+	/* unique pattern to grep for Sources files */
+	srcfilepattern = '_unstable_ _buildd_'
+
+	lockfile = 'lockfile'
+	globals = 'lf tab opt. wb. pas. arch sourcesfiles lockfile header'
+
+/* -------------------------------------------------------------------
+ *
+ */
+MAIN:
+	parse arg rgs
+	arch = 'm68k'
+	do while rgs <> ''
+		parse var rgs rg rgs
+		if abbrev(rg,'-') then do
+			if rg = '-h' | rg = '--help' then signal USAGE
+			else call EX 1,'..unknown switch "'rg'"'
+		end
+		else arch = rg
+	end
+
+	if chdir(listdir) <> 0 then call EX 1,'..can not cd to' listdir
+
+	'[ -e' lockfile ']'
+	if RC = 0 then do
+		call lineout 'stderr', '..lockfile exists; aborting'
+		exit 1
+	end
+	else 'touch' lockfile
+
+	sourcesfiles = ''
+	do i = 1 to words(srcfilepattern)
+		pat = word(srcfilepattern,i)
+		/* FIXME: buildd's home dir can vary */
+		/* sourcesfiles = sourcesfiles '/home/buildd/build/chroot-unstable/var/lib/apt/lists/'||'*'pat'*_Sources' */
+		sourcesfiles = sourcesfiles '/var/lib/apt/lists/'||'*'pat'*_Sources'
+	end
+
+	header = '<html><head><title></title></head>'lf'<body text="#000000"',
+		'bgcolor="#FFFFFF" link="#0000FF" vlink="#800080" alink="#FF0000"><pre>'
+
+	call READINCOMING
+
+	call READPAS
+
+	justnames = 'Installed Building Needs-Build Uploaded'
+	msgtoo = 'Failed Dep-Wait Dep-Wait-Removed Failed-Removed Not-For-Us'
+	call PARSEALLFILE
+
+	call READ_BUILDD_ATTEMPTS
+
+	call MAKE_UPDATE_EXCUSES
+
+	call BUILDING 'Building'
+
+	call DEPWAIT 'Dep-Wait'
+
+	/* get b-d, vers, arch fields for Failed,D-W-R,F-R, NFU */
+	/* WARNING: sources. is zeroed by MAKE_EXCUSES call */
+	call GETSOURCEFIELDSFRONT
+
+	call PRINTWITHBODY 'Failed'
+	call PRINTWITHBODY 'Dep-Wait-Removed'
+	call PRINTWITHBODY 'Failed-Removed'
+	call PRINTWITHBODY 'Not-For-Us'
+
+	/* 2nd arg == check incoming for newer source */
+	call SORTANDSPACE('Installed',0)
+	call SORTANDSPACE('Needs-Build',1)
+	call SORTANDSPACE('Uploaded',1)
+
+	call DOACCEPTED
+
+	/* make the stats from arch-all.html */
+	'/home/younie/unstable/bin/dowanna-build-stats unstable' arch
+
+	signal QUIT
+
+
+/* -------------------------------------------------------------------
+ * read in Packages-arch-specific
+ */
+READPAS: PROCEDURE EXPOSE (globals)
+
+	pasfile = 'Packages-arch-specific'
+
+	'egrep -vh "^$|^\s*#"' pasfile '|tr "\t" " " |tr -s " " >LIFO'
+
+	pas. = ''
+	do queued()
+		parse pull line
+		parse var line pkg ':' .
+		pkg = strip(pkg,'L','%')
+		pas.pkg = ' P-a-s:' line
+	end
+
+	return
+
+/* -------------------------------------------------------------------
+ * sort by buildd
+ */
+BUILDING: PROCEDURE EXPOSE (globals) inc.
+
+	parse arg type
+
+	F = type'.tmp'
+	OF = arch'_'type'.html'
+	OFtmp = OF'.tmp'
+
+	do while lines(F) > 0
+		parse value linein(F) with pkg '_' vers ': ' .
+		if pos('/',pkg) <> 0 then pkg = substr(pkg,lastpos('/',pkg)+1)
+		push wb.pkg.$builder pkg
+	end
+
+	'LIFO> sort >FIFO'
+
+	q = queued()
+	call PRINTDATETOTAL q,OFtmp
+	if q = 0 then call lineout OFtmp, lf'  ..none'
+	else do
+		lastbd = ''
+		do q
+			parse pull bd pkg
+			if lastbd <> bd then do
+				lastbd = bd
+				call lineout OFtmp, lf'  'bd
+				call lineout OFtmp, '  'copies('-',length(bd))
+			end
+
+			pkg_vers_out = URLIFY(pkg,wb.pkg.$vers)
+			if inc.pkg.$vers = '' then call lineout OFtmp, pkg_vers_out
+			else do
+				if pos(':',wb.pkg.$vers) = 0 then vers = wb.pkg.$vers
+				else parse var wb.pkg.$vers ':' vers
+				'dpkg --compare-versions' inc.pkg.$vers 'gt' vers
+				if RC = 0 then call lineout OFtmp, pkg_vers_out'  [Inc:' inc.pkg.$vers']'
+				else call lineout OFtmp, pkg_vers_out
+			end
+		end
+	end
+
+	call close OFtmp
+	'mv 2>/dev/null -f' OFtmp OF
+	'rm 2>/dev/null -f' F
+
+	return
+
+/* -------------------------------------------------------------------
+ * sort by the dependency
+ */
+DEPWAIT: PROCEDURE EXPOSE (globals) depinfo. inc.
+
+	parse arg type
+
+	F = type'.tmp'
+	OF = arch'_'type'.html'
+	OFtmp = OF'.tmp'
+
+	"egrep 2>/dev/null '^[^  ]|  Dependencies'" F "|grep -A1 '^[^  ].*: Dep-Wait by' >FIFO"
+
+	revdepline.0 = 0
+	total = queued() % 2
+	do total	/* if error and odd, pull won't hang */
+		parse pull pkg '_' .
+		if pos('/',pkg) <> 0 then pkg = substr(pkg,lastpos('/',pkg)+1)
+		parse pull 'Dependencies: ' revdeps
+		if revdeps = '' then revdeps = 'BAD_DATA'
+/* if pos('missing',revdeps) <> 0 then iterate /* FIXME: temp fu */
+ */
+		do forever
+			parse var revdeps revdep ',' revdeps
+			revdep = strip(revdep,'B')
+			revdepline.0 = revdepline.0 + 1
+			i = revdepline.0
+			revdepline.i = revdep pkg
+			if revdeps = '' then leave	/* forever */
+		end
+	end
+
+	/* get unique binary names of reverse deps; find their source names */
+	do i = 1 to revdepline.0
+		push word(revdepline.i,1)
+	end
+	'LIFO> sort -u |xargs >FIFO'
+	if queued() = 1 then do
+		parse pull revdeplist
+		call GETSOURCENAMES revdeplist
+	end
+
+	/* push lines of "revdep dep" */
+	do i = 1 to revdepline.0
+		push revdepline.i
+	end
+
+	'LIFO> sort >FIFO'
+
+	q = queued()
+	call PRINTDATETOTAL q,OFtmp
+	call lineout OFtmp,'       Key: [sourcepkg [status builder]]'
+	if q = 0 then call lineout OFtmp, lf'  ..none'
+	else do
+		lastrevdep = '-'
+		do i = 1 to q
+			parse pull line
+			numwords = words(line)
+			dep = subword(line,numwords)
+			revdep = delword(line,numwords)
+			if revdep <> lastrevdep then do
+				lastrevdep = revdep
+				call lineout OFtmp,lf
+
+				bin = word(revdep,1)
+
+				src = depinfo.bin.$sourcepkg
+
+				if inc.src = '' then newinc = ''
+				else newinc = '  [Inc:' inc.src']'
+				call lineout OFtmp,revdep' ['space(URLIFY(src,wb.src.$vers)' ['wb.src.$stat wb.src.$builder)']]' || newinc
+				if pas.src <> '' then call lineout OFtmp,pas.src
+			end
+			call lineout OFtmp, '  'URLIFY(dep,wb.dep.$vers)'  ['wb.dep.$builder']'
+			if pas.dep <> '' then call lineout OFtmp, '  'pas.dep
+		end i
+	end
+
+	call close OFtmp
+	'mv 2>/dev/null -f' OFtmp OF
+	'rm 2>/dev/null -f' F
+
+	return
+
+URLIFY: PROCEDURE EXPOSE (globals)
+
+	parse arg pkg,vers
+	return '<a href="http://buildd.debian.org/build.php?arch=&pkg='pkg ||,
+		'&vers='vers'">'pkg'_'vers'</a>'
+
+/* -------------------------------------------------------------------
+ * include the first stanza of wb's fail info in the output
+ * 
+ */
+PRINTWITHBODY: PROCEDURE EXPOSE (globals) mytries. sources. inc.
+
+	parse arg type
+
+	F = type'.tmp'
+	OF = arch'_'type'.html'
+	OFtmp = OF'.tmp'
+
+	bd. = ''
+	stan. = ''
+	newversions = ''
+	do while lines(F) > 0
+		line = linein(F)
+		parse var line pkg_vers ': ' . . bd .
+		if pos('/',pkg_vers) <> 0 then pkg_vers = substr(pkg_vers,lastpos('/',pkg_vers)+1)
+		parse var pkg_vers pkg '_' vers
+		bd.pkg = bd
+		failvers.pkg = vers
+		push pkg
+		/* there are lines of '    ' in D-W-R; only ^$ ends a stanza */
+		do while line \== '' & lines(F) > 0
+			line = linein(F)
+			/* lose the lines with only spaces (temp. glitch @ buildd.d.o?) */
+			if line <> '' then stan.pkg = stan.pkg || line || lf
+		end
+	end
+
+	'LIFO> sort >FIFO'
+
+	q = queued()
+	call PRINTDATETOTAL q,OFtmp
+	if q = 0 then call lineout OFtmp, lf'  ..none'
+	else do
+		newpkgs = ''
+		call lineout OFtmp,""
+
+		do q
+			parse pull pkg
+
+			post = ''
+			if sources.pkg.$vers = '' then post = ' ???'
+			if type <> 'Not-For-Us' then post = post'  ['bd.pkg']'
+			if inc.pkg.$vers <> '' then post = post '  [Inc:' inc.pkg.$vers']'
+			call lineout OFtmp, URLIFY(pkg,failvers.pkg) || post
+
+			if pas.pkg <> '' then call lineout OFtmp,pas.pkg
+
+			if sources.pkg.$builddep <> ''
+				then call lineout OFtmp, ' 'sources.pkg.$builddep
+			if sources.pkg.$arch <> ''
+				then call lineout OFtmp, ' 'sources.pkg.$arch
+
+			/* urlify bug number (exper.) */
+			if pos('#',stan.pkg) <> 0 then do
+				parse var stan.pkg pre '#' number post
+				if right(number,1) = ')' then do
+					number = left(number,length(number)-1)
+					brack = ')'
+				end
+				else brack = ''
+				if datatype(number,'NUM')
+					then stan.pkg = pre'<a href="http://bugs.debian.org/'number'">#'number'</a>'brack||lf||post
+			end
+
+			call lineout OFtmp, strip(stan.pkg,'T',lf)
+
+			call PRINT_MYTRY OFtmp,pkg
+		end
+		do i = 1 to words(newversions)
+			parse value word(newversions,i) with newpkg '_' newvers
+			call lineout OFtmp, URLIFY(newpkg,newvers)
+		end i
+	end
+
+	call close OFtmp
+	'mv 2>/dev/null -f' OFtmp OF
+	'rm 2>/dev/null -f' F
+
+	return
+
+/* if local failure file, print this pkgs blurb; add - if not current */
+PRINT_MYTRY: PROCEDURE EXPOSE (globals) mytries. newversions
+
+	parse arg OFtmp,pkg
+
+	if opt.$mytries_exists then do
+		tag = ''
+		if mytries.pkg.$vers <> 'x'
+		then if mytries.pkg.$vers <> wb.pkg.$vers then do
+			newversions = newversions pkg'_'wb.pkg.$vers
+			tag = ' -'
+		end
+		call charout OFtmp, mytries.pkg || tag
+	end
+	call lineout OFtmp, lf
+
+	return
+
+/* -------------------------------------------------------------------
+ * print pkgs, sorted alpha., w. space between different initial letters 
+ */
+SORTANDSPACE: PROCEDURE EXPOSE (globals) inc.
+
+	parse arg type,checkincoming
+	if type = 'Needs-Build' then do
+		rawneeds = arch'_needs-build.txt'
+		': >' rawneeds
+	end
+
+	F = type'.tmp'
+	OF = arch'_'type'.html'
+	OFtmp = OF'.tmp'
+
+	do while lines(F) > 0
+		line = linein(F)
+		parse var line pkg_vers ': ' .
+		if pos('/',pkg_vers) <> 0 then pkg_vers = substr(pkg_vers,lastpos('/',pkg_vers)+1)
+		push pkg_vers
+		if type = 'Needs-Build' then call lineout rawneeds, pkg_vers
+	end
+
+	'LIFO> sort >FIFO'
+
+	q = queued()
+	call PRINTDATETOTAL q,OFtmp
+	if q = 0 then call lineout OFtmp, lf'  ..none'
+	else do
+		firstchar = '-'
+		do q
+			parse pull pkg_vers
+			if \abbrev(pkg_vers,firstchar) then do
+				call lineout OFtmp,""
+				firstchar = substr(pkg_vers,1,1)
+			end
+
+			if \checkincoming then call lineout OFtmp, pkg_vers
+			else do		/* == Needs-Build */
+				parse var pkg_vers pkg '_' vers
+				pkg_vers_out = URLIFY(pkg,vers)
+
+				if inc.pkg.$vers = '' then call lineout OFtmp, pkg_vers_out
+				else do
+					if pos(':',wb.pkg.$vers) = 0 then vers = wb.pkg.$vers
+					else parse var wb.pkg.$vers ':' vers
+					'dpkg --compare-versions' inc.pkg.$vers 'gt' vers
+					if RC = 0 then call lineout OFtmp, pkg_vers_out'  [Inc:' inc.pkg.$vers']'
+					else call lineout OFtmp, pkg_vers_out
+				end
+			end
+		end
+	end
+
+	call close OFtmp
+	'mv 2>/dev/null -f' OFtmp OF
+	'rm 2>/dev/null -f' F
+
+	return
+
+/* -------------------------------------------------------------------
+ * removes old file, prints a Total & date header
+ */
+PRINTDATETOTAL: PROCEDURE EXPOSE (globals)
+
+	parse arg TOTAL,OUTFILE
+	parse var OUTFILE arch'_'type '.html.tmp'
+
+	'rm 2>/dev/null -f' OUTFILE
+
+	call lineout OUTFILE, header
+	date = type '--' TOTAL '--' opt.$date
+	call lineout OUTFILE,'  'date
+	call lineout OUTFILE,'  'copies('-',length(date))
+
+	return
+
+/* -------------------------------------------------------------------
+ * decouple from GETSOURCEFIELDS so excuses can use it too
+ */
+GETSOURCEFIELDSFRONT: PROCEDURE EXPOSE (globals) sources.
+
+	call popen "sed 2>/dev/null -n '/^[a-z0-9/]/ s|.*/\([^_]*\)_.*|\1|p' Failed.tmp Dep-Wait-Removed.tmp Failed-Removed.tmp Not-For-Us.tmp |xargs", 'h.'
+	if h.0 > 0 then pat = h.1
+	else pat = ''
+
+	if pat <> '' then call GETSOURCEFIELDS pat
+
+	return
+
+/* -------------------------------------------------------------------
+ * get installed status and version of packages from *Sources files
+ */
+GETSOURCEFIELDS: PROCEDURE EXPOSE (globals) sources.
+
+	parse arg pat
+
+	pat = changestr('+',space(pat),'\+')
+	pat = changestr(' ',pat,'|')
+
+    /* combine possibly several lines of Build-Deps into one before the grep */
+	"sed 2>/dev/null -e :a -e 's/"tab"/ /; /,$/N; s/,\n/,/; ta'" sourcesfiles,
+		"|egrep -h '^Package: ("pat")$|^Ve|^Se|^Build-Depends:|^Ar|^$' |grep -A4 ^Pa >FIFO"
+
+	sources. = ''
+	do queued()
+		parse pull line
+		select
+			when abbrev(line,'P') then parse var line . pkg
+			when abbrev(line,'V') then parse var line . sources.pkg.$vers
+			when abbrev(line,'S') then sources.pkg.$section = line
+			when abbrev(line,'B') then sources.pkg.$builddep = line
+			when abbrev(line,'A') then sources.pkg.$arch = line
+			otherwise nop
+		end
+	end
+
+	return
+
+/* -------------------------------------------------------------------
+ * get source package names given a string of binary package names
+ */
+GETSOURCENAMES: PROCEDURE EXPOSE (globals) depinfo.
+
+	parse arg pat
+
+	pat = changestr('+',pat,'\+')
+	pat = changestr(' ',pat,'|')
+
+	depinfo. = ''
+
+	"egrep 2>/dev/null -h '^Pa|^Bi.*("pat")(, |$)|^Ve|^$'" sourcesfiles "|grep -1 ^Bi >FIFO"
+
+	do queued()
+		parse pull line
+		select
+			when abbrev(line,'P') then parse var line . pkg
+			when abbrev(line,'B') then parse var line . bins
+			/* is no divider in last bunch so wrap here rather than
+				in the otherwise */
+			when abbrev(line,'V') then do
+				parse var line . vers
+				bins = changestr(',',bins,' ')
+				if words(bins) > 0 then do
+					depinfo.pkg.$vers = vers
+					do i = 1 to words(bins)
+						bin = word(bins,i)
+						depinfo.bin.$sourcepkg = pkg
+					end
+				end
+			end
+			otherwise nop
+		end
+	end
+
+	return
+
+/* -------------------------------------------------------------------
+ * filter update_excuses for an arch; mainly catches overdue
+ * non-free pkgs that have a chance of building
+ */
+MAKE_UPDATE_EXCUSES: PROCEDURE EXPOSE (globals) sources. mytries.
+
+	F = 'update_excuses.txt'
+	OF = arch'-update_excuses.html'
+	OFtmp = OF'.tmp'
+
+	line = linein(F)
+	dateline = linein(F)
+	call lineout OFtmp, header
+	call lineout OFtmp, '  'arch'-excuses -' dateline ||lf
+	line = linein(F)
+
+	exc. = ''
+	do while lines(F) > 0
+		line = linein(F)	/* first pkg line */
+		parse var line pkg . ' to ' vers ')'
+		if abbrev(pkg,'-') then pkg = substr(pkg,2)
+		exc.pkg.$vers = vers
+		line = linein(F)
+		stanza = ''
+		do while lines(F) > 0
+			line = linein(F)
+			if line = '' then do
+				if SHOULDPUSH(pkg,stanza) then do
+					push pkg
+					exc.pkg.$stanza = stanza
+				end
+				leave
+			end
+			stanza = stanza'  'line || lf
+		end
+	end
+
+	'LIFO> sort -u |xargs >FIFO'
+
+	list = ''
+	if queued() > 0 then do
+		parse pull list
+		call GETSOURCEFIELDS list
+	end
+
+	newversions = ''
+	do i = 1 to words(list)
+		pkg = word(list,i)
+		if sources.pkg.$arch = 'Architecture: all' then iterate
+		exc.pkg.$equalvers = (exc.pkg.$vers = wb.pkg.$vers)
+		if exc.pkg.$equalvers then do
+			if wb.pkg.$stat = 'Installed' then iterate
+			if wb.pkg.$stat = 'Uploaded' then iterate
+		end
+		call lineout OFtmp, URLIFY(pkg,exc.pkg.$vers) '('space( wb.pkg.$vers wb.pkg.$stat wb.pkg.$builder )')'
+		if pas.pkg <> '' then call lineout OFtmp,pas.pkg
+		if sources.pkg.$builddep <> '' then call lineout OFtmp, ' 'sources.pkg.$builddep
+		if sources.pkg.$section <> '' then call lineout OFtmp, ' 'sources.pkg.$section
+		if sources.pkg.$arch <> '' then call lineout OFtmp, ' 'sources.pkg.$arch
+		call charout OFtmp, exc.pkg.$stanza
+		call PRINT_MYTRY OFtmp,pkg
+	end
+	do i = 1 to words(newversions)
+		parse value word(newversions,i) with newpkg '_' newvers
+		call charout OFtmp, URLIFY(newpkg,exc.newpkg.$vers)'  '
+		if exc.newpkg.$equalvers = 1
+			then call lineout OFtmp, '('space( wb.newpkg.$stat )')'
+		else call lineout OFtmp, '('space( wb.newpkg.$vers wb.newpkg.$stat )')'
+	end i
+
+	call close OFtmp
+
+	/* poorly formatted update_excuses.html (no lf after <li>) */
+	"sed 's!days)out!days)" || '5c0a'x || "  out!;",
+          "s!days oldout of!days old" || '5c0a'x || "  out of!' <"OFtmp ">"OF
+	'rm -f' OFtmp
+
+/*	'mv 2>/dev/null -f' OFtmp OF
+ */
+
+	drop exc.
+
+	return
+
+SHOULDPUSH: PROCEDURE EXPOSE (globals) exc.
+
+	parse arg pkg,stanza
+
+	ret = 0
+	do dummy = 1 to 1
+		if pos(arch,stanza) = 0 then leave dummy
+		if pos('Too young',stanza) <> 0 then leave dummy
+		if pos(arch 'unsatisfiable Depends:',stanza) <> 0 then leave dummy
+		if pos('is buggy! (',stanza) <> 0 then leave dummy
+		ret = 1
+	end
+
+	return ret
+
+/* -------------------------------------------------------------------
+ * parse the wb list to temporary files (Building, Installed, ...)
+ * named {type}.tmp
+ * 
+ *   version, status and buildd for pkg:
+ * wb.pkg.$vers = version
+ * wb.pkg.$stat = wanna-build status (Installed, ...)
+ * wb.pkg.$builder = build daemon user
+ * 
+ */
+PARSEALLFILE: PROCEDURE EXPOSE (globals) justnames msgtoo
+
+	F = arch'-all.txt'
+
+	/* get the all file timestamp for each file heading */
+	call popen 'ls 2>/dev/null -l' F,'d.'
+	if d.0 = 1 then opt.$date = subword(d.1,6,3)
+	else opt.$date = ''
+
+	wb. = ''
+	pkg = ''
+	validlists = justnames msgtoo
+
+	/* if interrupted, old *.tmp will be appended to, so delete first */
+	do i = 1 to words(validlists)
+		'rm -f' word(validlists,i)'.tmp'
+	end
+
+	line = linein(F)		/* lose wanna-build version line */
+	line = linein(F)
+	do outer = 1 until lines(F) = 0
+		do inner = 1
+			if abbrev(line,' ') then leave inner
+			if abbrev(line,'Total') then leave outer
+			parse var line pkg_vers ': ' type . bd .
+			if pos('/',pkg_vers) <> 0 then pkg_vers = substr(pkg_vers,lastpos('/',pkg_vers)+1)
+
+			parse var pkg_vers pkg '_' vers
+			wb.pkg.$vers = vers
+			wb.pkg.$stat = type
+			wb.pkg.$builder = bd
+
+			select
+				when wordpos(type,justnames) <> 0 then do
+					call lineout type'.tmp', line
+				end
+				when wordpos(type,msgtoo) <> 0 then do
+					call lineout type'.tmp', line
+					skip = 0
+					do while lines(F) > 0
+						line = linein(F)
+						/* skip Reasons & Category lines */
+						if abbrev(line,'  Reasons for failing:') then do
+							line = linein(F)
+							line = linein(F)
+						end
+						if \abbrev(line,' ') then do
+							call lineout type'.tmp',""
+							iterate outer
+						end
+						if \skip then do
+							call lineout type'.tmp', line
+							/* only keep the last fail message */
+							if type = 'Failed' then do
+								if abbrev(line,'  Previous state was')
+									then skip = 1
+							end
+						end
+					end
+				end
+				otherwise do
+					call lineout 'stderr', 'UNKNOWN TYPE:' type pkg_vers
+				end
+			end
+			leave inner
+
+		end inner
+		line = linein(F)
+	end outer
+
+	do i = 1 to words(validlists)
+		call close word(validlists,i)'.tmp'
+	end
+
+	return
+
+/* -------------------------------------------------------------------
+ * read in my failure & build attempts, etc;
+ *  will append this to the failure/nfu info
+ *
+ * mytries.pkg - my failed paragraph for pkg
+ * mytries.pkg.$vers - pkg's version
+ * opt.$mytries_exists - if a local failure file exists
+ *
+ * local failure file has the format:
+-------------------------------
+pkg_vers
+ - an addition to the wb failed explanation,
+ etc, indented at least one space.  patches after
+ tag (see below)
+
+-------------------------------
+ *
+ *
+ */
+READ_BUILDD_ATTEMPTS: PROCEDURE EXPOSE (globals) mytries.
+
+	F = '/home/rick/.todofiles/buildattempts.txt'
+
+	mytries. = ''
+	'[ -f' F ']'
+	if RC <> 0 then opt.$mytries_exists = 0
+	else do
+		opt.$mytries_exists = 1
+		do outer = 1 while lines(F) >0
+			line = linein(F)
+			if abbrev(line,copies('-',30)) then do
+				line = linein(F)
+				/* ignore the patches at the end of the file */
+				if abbrev(line,'_PATCHES') then leave outer
+				parse var line pkg '_' vers .
+				mytries.pkg = ' 'line||lf' 'copies('-',length(line))
+				mytries.pkg.$vers = vers
+			end
+			else do
+				mytries.pkg = mytries.pkg || lf || line
+			end
+		end
+	end
+
+	return
+
+/* -------------------------------------------------------------------
+ * get new list of new source from incoming.d.o
+ */
+READINCOMING: PROCEDURE EXPOSE (globals) listdir inc.
+
+	INC = listdir'/incoming.txt'
+
+	inc. = ''
+	do while lines(INC) > 0
+		parse value linein(INC) with pkg '_' vers
+		/* if pos(':',vers) then parse var vers ':' vers */
+		if inc.pkg.$vers = '' then inc.pkg.$vers = vers
+		else do
+			'dpkg --compare-versions' inc.pkg.$vers 'gt' vers
+			if RC = 0 then inc.pkg.$vers = vers
+		end
+	end
+
+	return
+
+/* -------------------------------------------------------------------
+ * write list of source packages in auric:accepted filtered for this
+ * arch if Sources file exists for it locally
+ */
+DOACCEPTED: PROCEDURE EXPOSE (globals)
+
+	tobuild = 'tobuild.html'
+	'rm -f' tobuild
+
+	call lineout tobuild,'<html><head><title>tobuild</title></head>'
+	call lineout tobuild,'<body text="#000000" bgcolor="#FFFFFF" link="#0000FF" vlink="#800080" alink="#FF0000"><pre>'
+
+	acc. = ''
+	allacceptedpkgs = ''
+	/* pkg_base = '/home/buildd/build/chroot-unstable/var/lib/apt/lists/' */
+	pkg_base = '/var/lib/apt/lists/'
+	accepted_srcfile = pkg_base'incoming*_buildd_*Sources'
+
+	'[ -e' accepted_srcfile ']'
+	if RC <> 0 then return
+
+	"egrep 2>/dev/null -h '^Pa|^Ar|Ve|^$'" accepted_srcfile,
+		"|grep -A2 ^Pa >FIFO"
+
+	pkg = '-'	/* not required if data is good */
+	do queued()
+		parse pull line
+
+		select
+			when abbrev(line,'P') then parse var line . pkg
+			when abbrev(line,'A') then parse var line . acc.pkg.$arch
+			when abbrev(line,'V') then do
+				parse var line . vers
+				if acc.pkg.$vers = '' then do
+					acc.pkg.$vers = vers
+					allacceptedpkgs = allacceptedpkgs pkg
+				end
+				else do
+					'dpkg --compare-versions' acc.pkg.$vers 'lt' vers
+					if RC = 0 then acc.pkg.$vers = vers
+				end
+			end
+			otherwise nop
+		end
+	end
+
+	do i = 1 to words(allacceptedpkgs)
+		pkg = word(allacceptedpkgs,i)
+		do dummy = 1 to 1
+			if acc.pkg.$arch = 'all' then leave dummy
+
+			if acc.pkg.$arch = 'any' then nop
+			else if wordpos(arch, acc.pkg.$arch) = 0 then leave dummy
+
+			if wb.pkg.$vers = acc.pkg.$vers then do
+				if wb.pkg.$stat \= 'Needs-Build' then leave dummy
+			end
+
+			call WRITEONE pkg
+			iterate i
+		end	/* dummy */
+		push pkg
+	end
+
+	call lineout tobuild, lf'<hr>'lf
+
+	'LIFO> sort >FIFO'
+
+	do queued()
+		parse pull pkg
+		call WRITEONE pkg
+	end
+
+	return
+
+WRITEONE: PROCEDURE EXPOSE (globals) acc. wb. tobuild
+
+	parse arg pkg
+
+	pkg_vers = pkg'_'acc.pkg.$vers
+
+	call lineout tobuild, URLIFY(pkg,acc.pkg.$vers)
+	if pas.pkg <> '' then call lineout tobuild,pas.pkg
+
+	return
+
+/* -------------------------------------------------------------------
+ * if the usage line starts with '!' it is interpreted
+ *	to allow variable substitution
+ */
+USAGE:
+	do i = 3 to 10
+		line = sourceline(i)
+		if left(line,3) <> '-+-' then iterate i
+		do j = i + 1 for 50
+			line = sourceline(j)
+			if left(line,3) = '-*-' then leave i
+			if left(line,1) <> '!' then say line
+			else interpret substr(line,2)
+		end j
+	end i
+QUIT:
+	ret = 0
+	call CLEANUP
+
+EX:
+	parse arg ret,err
+	call lineout 'stderr', err
+	ret = 1
+	call CLEANUP
+
+/* trap errors; lose the backtrace */
+NOVALUE:
+FAILURE:
+SYNTAX:
+ERROR:
+HALT:
+	call lineout 'stderr',,
+		condition('C') 'error, line' SIGL': "'condition('D')'"'
+	ret = 1
+CLEANUP:
+	'rm -f' lockfile
+	exit ret

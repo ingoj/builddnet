@@ -1,0 +1,24 @@
+  wanna-build statistics - Fri Oct  2 19:52:27 CEST 2009
+  -----------------------------------------------------
+
+Distribution unstable:
+---------------------
+Installed       :  6650 (buildd_kfreebsd-i386-himalia1: 6489, unknown: 161)
+Needs-Build     :    87
+Building        :   415 (buildd_kfreebsd-i386-himalia1: 415)
+Uploaded        :     0
+Failed          :   502 (buildd_kfreebsd-i386-himalia1: 500, kibi: 2)
+Dep-Wait        :     3 (buildd_kfreebsd-i386-himalia1: 1, he: 1, luk: 1)
+Reupload-Wait   :     0
+Install-Wait    :     0
+Failed-Removed  :     0
+Dep-Wait-Removed:     0
+Not-For-Us      :     5
+total           :  8245
+
+ 80.65% (6650) up-to-date,  80.65% (6650) including uploaded
+  1.06% ( 87) need building
+  5.03% (415) currently building
+  6.12% (505) failed/dep-wait
+  0.00% (  0) old failed/dep-wait
+  0.06% (  5) need porting or cause the buildd serious grief

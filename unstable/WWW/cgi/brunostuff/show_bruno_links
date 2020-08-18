@@ -1,0 +1,126 @@
+#!/usr/bin/regina
+/*
+ vim:ts=4:noet:wrap:sts=4:sw=4:
+ $Id: show_bruno_links,v 1.1 2001/08/25 05:18:13 root Exp $
+ * Rick Younie <younie@home.com>
+-+-
+show current and archived urls for a package that bruno has handled
+
+-*-
+ *
+ *
+ */
+	TRACE OFF
+	SIGNAL ON HALT
+	SIGNAL OFF ERROR
+	SIGNAL ON FAILURE
+	SIGNAL ON NOVALUE
+	SIGNAL ON SYNTAX
+
+/* -------------------------------------------------------------------
+ *	  constants
+ */
+	lf		= '0a'x
+	globals = 'lf opt.'
+	timeout	= 30
+	logdir	= '/home/buildd/old-logs'
+
+/* -------------------------------------------------------------------
+ * 
+ */
+MAIN:
+
+	parse value getenv('QUERY_STRING') with 'pkg=' pkg_vers '&' +0 rest
+
+	parse var pkg_vers pkg '_' vers
+	marker = pkg'_'
+
+	say 'Content-type: text/html';say
+	say '<html><head><title>'pkg'</title></head>'
+	say '<BODY text="#000000" bgcolor="#FFFFFF" link="#0000FF" vlink="#800080" alink="#FF0000">'
+
+	if pkg_vers = '' then do
+		say '..need a package name'
+		exit 1
+	end
+
+	say '<h3>'pkg'</h3>'
+
+	say '<ul>'
+
+	/* uses cgi/show_all_current_links to find if the package is currently
+		(last 14 days) building on bruno.  Relies on the 'brunotag'
+		format of the hit from cgi/show_all_current_links
+	 */
+	gothit = 0
+	/* get current logs using getlog cgi script */
+	call popen 'QUERY_STRING="pkg='pkg'&searchtype=[m68k]" /var/www/cgi/show_all_current_links','cur.'
+	brunotag = 'm68k [bruno]'
+	do i = 1 to cur.0
+		if pos(brunotag,cur.i) <> 0 then do
+			gothit = 1
+			cur.i = changestr('">',cur.i,'">'pkg'_')
+			say changestr(brunotag,cur.i,'recent')
+		end
+	end
+
+	if chdir(logdir) <> 0 then exit 1
+
+	/* get archived log links from /old-logs */
+	call popen 'grep ^'marker' plog*index','hit.'
+	if hit.0 > 0 then gothit = 1
+	do i = 1 to hit.0
+		parse var hit.i index ':' log
+		tarball = changestr('.index',index,'.tar.gz')
+		a.log = tarball
+		push log
+	end
+
+	'LIFO> sort >LIFO'
+
+	do i = 1 to queued()
+		parse pull log
+		say '<li><a href="http://bruno.ecn.purdue.edu/cgi/print_archived_log?tarball='a.log'&log='log'">'log'</a> (archived)'
+	end
+
+	if \gothit then say '..no logs for' pkg
+
+	call CLEANUP
+
+
+/* -------------------------------------------------------------------
+ * if the usage line starts with '!' it is interpreted
+ *	to allow variable substitution
+ */
+USAGE:
+	do i = 3 to 10
+		line = sourceline(i)
+		if left(line,3) <> '-+-' then iterate i
+		do j = i + 1 for 50
+			line = sourceline(j)
+			if left(line,3) = '-*-' then leave i
+			if left(line,1) <> '!' then say line
+			else interpret substr(line,2)
+		end j
+	end i
+QUIT:
+	exit 0
+
+NOVALUE:
+FAILURE:
+SYNTAX:
+ERROR:
+HALT:
+	call lineout 'stderr',,
+		 condition('C') 'error, line' SIGL': "'condition('D')'"'
+	exit 1
+EX:
+	parse arg ret,err
+	call lineout 'stderr', err
+	exit ret
+OKX:
+	parse arg err
+	say err
+CLEANUP:
+	say '</ul></body>'
+	exit 0

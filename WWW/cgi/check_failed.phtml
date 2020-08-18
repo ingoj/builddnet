@@ -1,0 +1,305 @@
+#!/usr/bin/python
+# -*- coding: latin-1 -*-
+#
+# Copyright (c) 2006, Ingo Juergensmann <ij@buildd.net>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# check_depwait.phtml comes with ABSOLUTELY NO WARRANTY
+#
+
+import os, sys, cgi
+from string import *
+import psycopg
+
+homedir="/home/builddnet/"
+#os.environ['HOME']
+f = open(homedir+"/conf.d/database.conf")
+while 1:
+	line = f.readline()
+	if len(line)==0: break
+	if line.count("host"):
+		host = split(line,"=")[1]
+	elif line.count("port"):
+		port = split(line,"=")[1]
+	elif line.count("username"):
+		username = split(line,"=")[1]
+	elif line.count("password"):
+		password = split(line,"=")[1]
+	elif line.count("database"):
+		database = split(line,"=")[1]
+
+
+#dsn = "dbname=buildd user=builddnet"
+dsn = "dbname=%s host=%s user=%s password=%s" % ( database, host, username, password )
+db = psycopg.connect(dsn)
+csr = db.cursor()
+
+form = cgi.FieldStorage()
+
+if form.has_key('flavour'):
+	flavour = form['flavour'].value
+if form.has_key('arch'):
+	arch = form['arch'].value
+#if form.has_key('flavour'):
+#	flavour = form['flavour'].value
+
+i = 1
+res=""
+#flavour="unstable"			
+#arch="m68k"
+
+
+print "Content-type: text/html"
+print """
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+
+<HTML>
+<HEAD>
+  <TITLE>buildd.net - packages Dep-Wait check</TITLE>
+<!--META HTTP-EQUIV="Refresh" COhttp://de.biz.yahoo.com/30012006/336/erste-deutsche-offshore-anlage-entsteht-rostock.htmlNTENT="1800"-->
+</HEAD>
+<BODY text="#000000" bgcolor="#FFFFFF" link="#0000FF" vlink="#800080" alink="#FF0000">
+"""
+print '[<a href="http://%s.buildd.net/index-%s.html">back</a>]' % (flavour, arch)
+modes=['buildd', 'package', 'wait']
+del modes[index(modes, form['mode'].value)]
+for mo in modes:
+	print ' [<a href="http://www.buildd.net/cgi/check_failed.phtml?flavour=%s&arch=%s&mode=%s">%s</a>]' % ( flavour, arch, mo, mo)
+print """<center><table bgcolor="#f0f0f0" width=100%>
+        <th>"""
+print "                <font size=+3>%s/%s check Failed</font>" % (arch, flavour)
+
+print """        </th>
+</table>
+</center>
+<p><br>
+<b>Legend:</b><br>
+<li>Buildd, Package, Version: should be obvious</li>
+<li>Waiting on : the package is waiting on that/those packages to become available.</li>
+<li>For: time a package is waiting for that (yet unfulfilled) dependency.<br>
+n/a = sadly, the *-all.txt wasn't exported with --verbose option of wanna-build, so there is no information when the state changed from Needs-Build or Building to Dep-Wait.</li>
+<p>
+Note: This is an experimental page - it's neither free of bugs nor complete!
+<p>
+"""
+
+def tableheader(mode):
+	print """
+	<table border=0 cellspacing=2 cellpadding=2>
+
+	<tr bgcolor="#c0c0c0">"""
+		#<!--td><b>Target</b></td>
+		#<td><b>Arch:</b></td-->
+	if mode=="buildd":
+		print '    <td><b>Buildd:</b></td>'
+		print '    <td><b>Package:</b></td>'
+		print '    <td><b>Version:</b></td>'
+		print '    <td><b>Failing reason:</b></td>'
+		print '    <td><b>For:</b></td>'
+	elif mode=="package":
+		print '    <td><b>Package:</b></td>'
+		print '    <td><b>Version:</b></td>'
+		print '    <td><b>Buildd:</b></td>'
+		print '    <td><b>Failing reason:</b></td>'
+		print '    <td><b>For:</b></td>'
+	elif mode=="wait":
+		print '    <td><b>Failing reason:</b></td>'
+		print '    <td><b>For:</b></td>'
+		print '    <td><b>Buildd:</b></td>'
+		print '    <td><b>Package:</b></td>'
+		print '    <td><b>Version:</b></td>'
+
+		#<!--td><b>p/d:</b></td>
+		#<td><b>Admin:</b></td>
+		#<td><b>Building | <font color="#FF0000">Reason:</font></b></td>
+		#<td><b>hh:mm:ss:</b></td-->
+	print "</tr>"
+
+def tablefooter(count):
+	print """
+	    </tr>
+	  </table>
+	"""
+	print "<p>Total: %s packages in Dep-Wait</p>" % count
+
+
+def archoutput(flavour, arch):
+	global i, form, res
+	if form.has_key('mode'):
+		mode = form['mode'].value
+	builddarray=[]
+	packagearray=[]
+	datearray=[]
+	bgcolor="#f8f8ff"
+	path = "/home/builddnet/%s/listdir/%s-all.txt" % (flavour,arch)
+	f = open(path, 'r')
+	fline=[]
+	while 1:
+		line = f.readline() 
+		#print line
+		if not line: break
+		if line.count("Failed by"):
+			#print line
+			packageversion= os.path.basename(split(line, " ")[0])
+			package, version = split(packageversion, "_")
+			string = "buildd_%s-" % arch
+			buildd = replace(split(replace(split(line, " ", 1)[1], "Failed by ", ""))[0], string, "")
+			version=str(version[0:len(version)-1])
+			nextline = f.readline()
+			#print nextline, "<br>"
+			while 1:
+				if not nextline.count("  ", 0, 2):
+					break
+				nextline = f.readline()
+				fline.append(nextline)
+				#print nextline, "<br>"
+				if nextline.count('Previous state was Building'):
+					date = strip(replace(replace(nextline, "Previous state was Building until ", ""), "\n", ""))
+					break
+			try:
+				sqlcmd = "select ((now()-'%s'))" % date
+				csr.execute(sqlcmd)
+				sqlresult = csr.fetchone()
+				res=str(sqlresult[0])
+			except:
+				res="n/a"
+				date="n/a"
+			depline="depline" #fline
+			foo='%s %s %s %s %s' % (buildd,package,version,depline,res)
+			bar=split(foo)
+			#print foo, "<br>"
+			builddarray.append(bar)
+			foo='%s %s %s %s %s' % (package,version,buildd,depline,res)
+			bar=split(foo)
+			packagearray.append(bar)
+			#packagearray.append(split(package+" "+version+" "+buildd+" "+depline+" "+res))
+			foo='%s %s %s %s %s' % (res,depline,buildd,package,version)
+			bar=split(foo)
+			datearray.append(bar)
+			#datearray.append(split(res+" "+depline+" "+buildd+" "+package+" "+version))
+			#print fline,"<br>"
+							
+	#print "unsorted:<br>", builddarray,"<p>"
+	builddarray.sort()
+	packagearray.sort()
+	datearray.sort()
+	#print "sorted: <br>", builddarray, "<p>"
+	#print packagearray,"<p>"
+	#print datearray,"<p>"
+	#mode="package"
+	if mode=="buildd":
+		tableoutput(mode, builddarray)
+	elif mode=="package":
+		tableoutput(mode, packagearray)
+	elif mode=="wait":
+		tableoutput(mode, datearray)
+	return
+	
+def tableoutput(mode, array):
+	global i, form, flavour, arch
+	#print mode
+	#print array, "<br>"
+	if form.has_key('buildd'):
+		formbuildd = form['buildd'].value
+	if not len(array): 
+		print '<font size=+1 color="#ff0000">No Dep-Wait packages found!</font>'
+		print '</body></html>'
+		sys.exit()
+	tableheader(mode)
+	for line in array:
+		#print line, "<br>" 
+		if form.has_key('buildd') and not line.count(formbuildd):
+			pass
+		else:
+			#i = i +1
+			k = i % 2 
+			if k == 1:
+				bgcolor="#f8f8ff"
+			else:
+				bgcolor="#e0e0f0" 
+			if mode=="buildd":
+				buildd  = line[0]
+				package = line[1]
+				version = line[2]
+				deps	= line[3]
+				res 	= line[4]
+				if res.count(":")==3:
+					res=replace(res, ":", "d ", 1)
+				if res.count("-"):
+					fcolor="#000000"
+				else:
+					fcolor="#ff0000"
+					print '  <tr bgcolor="%s">' % bgcolor
+					#print '    <td>%s</td>' % arch
+					print '    <td><a href="http://www.buildd.net/cgi/check_depwait.phtml?flavour=%s&arch=%s&mode=%s&buildd=%s">%s</a></td>' % (flavour, arch, mode, buildd, buildd)
+					print '    <td><a href="http://www.buildd.net/cgi/ptracker.cgi?%s_pkg=%s&searchtype=%s">%s</a></td>' % (flavour, package, arch, package)
+					print '    <td>%s</td>' % version
+					print '    <td><a href="http://www.buildd.net/cgi/package_status?%s_pkg=%s&searchtype=%s&arch=%s">more</a></td>' % (flavour, package, arch, arch)
+					print '    <td><font color="%s">%s</td>' % (fcolor, res)
+					print '  </tr>'			
+					i = i +1
+			elif mode=="package":
+				buildd  = line[2]
+				package = line[0]
+				version = line[1]
+				deps	= line[3]
+				res 	= line[4]
+				if res.count(":")==3:
+					res=replace(res, ":", "d ", 1)
+				if res.count("-"):
+					fcolor="#000000"
+				else:
+					fcolor="#ff0000"
+					print '  <tr bgcolor="%s">' % bgcolor
+					#print '    <td>%s</td>' % arch
+					print '    <td><a href="http://buildd.net/cgi/ptracker.cgi?%s_pkg=%s&searchtype=%s">%s</a></td>' % (flavour, package, arch, package)
+					print '    <td>%s</td>' % version
+					print '    <td><a href="http://www.buildd.net/cgi/check_depwait.phtml?flavour=%s&arch=%s&mode=%s&buildd=%s">%s</a></td>' % (flavour, arch, mode, buildd, buildd)
+					print '    <td><a href="http://www.buildd.net/cgi/package_status?%s_pkg=%s&searchtype=%s&arch=%s">more</a></td>' % (flavour, package, arch, arch)
+					print '    <td><font color="%s">%s</td>' % (fcolor, res)
+					print '  </tr>'			
+					i = i +1
+			elif mode=="wait":
+				buildd  = line[2]
+				package = line[3]
+				version = line[4]
+				deps	= line[1]
+				res 	= line[0]
+				if res.count(":")==3:
+					res=replace(res, ":", "d ", 1)
+				if res.count("-"):
+					fcolor="#000000"
+				else:
+					fcolor="#ff0000"
+					print '  <tr bgcolor="%s">' % bgcolor
+					#print '    <td>%s</td>' % arch
+					print '    <td><a href="http://buildd.net/cgi/ptracker.cgi?%s_pkg=%s&searchtype=%s">%s</a></td>' % (flavour, deps, arch, deps)
+					print '    <td><font color="%s">%s</td>' % (fcolor, res)
+					print '    <td><a href="http://www.buildd.net/cgi/check_depwait.phtml?flavour=%s&arch=%s&mode=%s&buildd=%s">%s</a></td>' % (flavour, arch, mode, buildd, buildd)
+					print '    <td><a href="http://buildd.net/cgi/ptracker.cgi?%s_pkg=%s&searchtype=%s">%s</a></td>' % (flavour, package, arch, package)
+					print '    <td>%s</td>' % version
+					print '  </tr>'			
+					i = i +1
+
+
+	tablefooter(i-1)
+
+			
+archoutput(flavour, arch)
+
+print "</BODY></HTML>"
+
+

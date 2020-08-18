@@ -1,0 +1,560 @@
+#!/usr/bin/python2.3
+
+import psycopg
+from os import linesep
+from string import *
+from time import sleep
+import cgi, sys
+import popen2
+
+dsn = "dbname=buildd"
+db = psycopg.connect(dsn)
+csr = db.cursor()
+
+error=0
+db_name=""	
+
+def init():
+	"""init() is main method.
+	it is called as first function and prompts for user/pass
+	or manages already given user/pass and calls other methods
+	f.e. for changing passwords for buildds or technical specs
+	or set downtime reasons or such. 
+	"""
+	if form.has_key('usrname'):
+		usrlogin()		
+	elif form.has_key('pwcheck'):
+		pwcheck()
+	else:
+		print '<p><center>Please login:</center><p>'
+		print '<center>'
+		print '<form action="badmin.phtml" method=post>'
+		print '    <table border="0" colspan="5">'   # bgcolor="#fbd05b">'
+		print '     <tr>'
+		print '      <td align="right">Buildd login:<br></td>'
+		print '      <td align="left"><input type=text name="usrname" value="" size=20><br></td>'
+		print '     </tr>'
+		print '     <tr>'
+		print '      <td align="right">Password:<br></td>'
+		print '      <td align="left"><input type=password name="usrpwd" value="" size=20><br></td>'
+		print '     </tr>'
+		print '    </table><p><p>'
+		print '    <input type=submit name=login value="Login">'
+		print '</form>'
+		print '</center>'
+		if error == 1:
+			print '<p><p><p><b><center>Login failed!</center></b>'
+		if error == 2: 
+			print "<b>Your passwords are not identical!</b>"	
+
+	return
+
+def usrlogin():
+	"""called after init() and given usrname/pwd
+	and to verify if the session is still valid on
+	each click"""
+
+	global error
+	error = 0
+	#print "usrlogin()<br>"
+	try:
+		login = replace(form['usrname'].value, "'", "")
+		passwd = replace(form['usrpwd'].value, "'", "")
+		sqlcmd = "select name, mode, clear, archs from buser where name='%s'" % login
+		csr.execute(sqlcmd)
+		sqlresult = csr.fetchone()
+		#print sqlresult
+		db_usr		= sqlresult[0]
+		db_mode 	= sqlresult[1]
+		db_pwd		= sqlresult[2]
+		db_archs	= sqlresult[3]
+	except:
+		print '<center>Login failed. Please retry.<p><p>'
+		print '<form action="badmin.phtml" method=post>'
+		print '  <input type=submit name="done" value="Back">'
+		print '</form></center>'
+		return
+	
+	
+	usrpwd_1 = ""
+	usrpwd_2 = "foo"
+	
+	if passwd==db_pwd:
+		sqlcmd = "select * from status where name='%s'" % db_usr
+		csr.execute(sqlcmd)
+		sqlresult = csr.fetchone()
+		if form.has_key('modifybuildd'):
+			modifybuildd(db_usr, db_pwd, db_name)
+		elif form.has_key('changebuildd'):
+			changebuildd(db_usr, db_pwd, db_name)
+		else:
+			displayTable(db_usr, db_pwd, db_mode, db_archs,"edit")
+	else:
+		error=1
+		init()
+	return
+
+def modifybuildd(db_usr, db_pwd, name):
+	"""modifybuildd(name) - call this to edit the information
+	about a specific buildd, for example to manually change 
+	downtime reason. 
+	"""
+	#print "modifybuildd()<br>"
+	if form.has_key('buildd'):
+		name = form['buildd'].value
+		#db_usr = name
+	sqlcmd = "select mode, archs from buser where name='%s'" % name
+	#print sqlcmd
+	csr.execute(sqlcmd)
+	sqlresult = csr.fetchone()
+	db_mode		= sqlresult[0]
+	db_archs	= sqlresult[1]
+	#if mode == 1:
+		
+	sqlcmd = "select * from status where name='%s'" % name
+	#print sqlcmd
+	csr.execute(sqlcmd)
+	sqlresult = csr.fetchone()
+	#print sqlresult
+	db_id		= sqlresult[0]
+	db_arch		= sqlresult[1]
+	db_name 	= sqlresult[2]
+	db_fqdn 	= sqlresult[3]
+	db_model	= sqlresult[4]
+	db_cpu		= sqlresult[5]
+	db_ram		= sqlresult[6]
+	db_disk 	= sqlresult[7]
+	db_admin	= sqlresult[8]
+	db_mail 	= sqlresult[9]
+	db_status	= sqlresult[10]
+	db_lastseen	= sqlresult[11]
+	db_interval	= sqlresult[12]
+	db_reason	= sqlresult[13]
+	db_building	= sqlresult[14]
+	print '<form action="badmin.phtml" method="post">'
+	print '<table border=1>'
+	print '  <tr>'
+	print '    <td>Arch:</td>'
+	print '    <td><input type="text" name="arch" value="%s"></td>' % db_arch
+	print '  </tr>'
+	print '  <tr>'
+	print '    <td>Name:</td>'
+	print '    <td><input type="text" name="name" value="%s"></td>' % db_name
+	print '  </tr>'
+	print '  <tr>'
+	print '    <td>Hostname (FQDN):</td>'
+	print '    <td><input type="text" name="fqdn" value="%s"></td>' % db_fqdn
+	print '  </tr>'
+	print '  <tr>'
+	print '    <td>Model:</td>'
+	print '    <td><input type="text" name="model" value="%s"></td>' % db_model
+	print '  </tr>'
+	print '  <tr>'
+	print '    <td>CPU (type & speed):</td>'
+	print '    <td><input type="text" name="cpu" value="%s"></td>' % db_cpu
+	print '  </tr>'
+	print '  <tr>'
+	print '    <td>RAM in MB (integer):</td>'
+	print '    <td><input type="text" name="ram" value="%s"></td>' % db_ram
+	print '  </tr>'
+	print '  <tr>'
+	print '    <td>Disk in GB (integer):</td>'
+	print '    <td><input type="text" name="disk" value="%s"></td>' % db_disk
+	print '  </tr>'
+	print '  <tr>'
+	print '    <td>Admin (first & surname):</td>'
+	print '    <td><input type="text" name="admin" value="%s"></td>' % db_admin
+	print '  </tr>'
+	print '  <tr>'
+	print '    <td>Email:</td>'
+	print '    <td><input type="text" name="email" value="%s"></td>' % db_mail
+	print '  </tr>'
+	print '  <tr>'
+	print '    <td>building:</td>'
+	print '    <td><input type="text" name="building" value="%s"></td>' % replace(str(db_building), "None", "")
+	print '  </tr>'
+	print '  <tr>'
+	print '    <td>Reason for downtime:</td>'
+	print '    <td><input type="text" name="reason" value="%s"></td>' % replace(str(db_reason), "None", "")
+	print '  </tr>'
+	print '</table>'
+	print '<input type=hidden name=usrname value="%s">' % db_usr
+	print '<input type=hidden name=usrpwd value="%s">' % db_pwd
+	print '<input type=submit name="changebuildd" value="Change it!">'
+	print '</form>'
+	
+	return
+	
+def changebuildd(db_usr, db_pwd, name):
+	"""changebuildd(db_usr, db_pwd, name) - fetch form changed
+	form contents and write it to the db, then call init() again
+	with db_usr + db_pass again. 
+	"""
+	#print "changebuildd()<br>"
+	sqlcmd = "begin"
+	csr.execute(sqlcmd)
+	#print "<br>"
+	#print form
+	name = form['name'].value
+	if form.has_key("arch"):
+		sqlcmd = "update status set arch='%s' where name='%s'" % (form['arch'].value, name)
+		csr.execute(sqlcmd)
+	if form.has_key("name"):
+		sqlcmd = "update status set name='%s' where name='%s'" % (form['name'].value, name)
+		csr.execute(sqlcmd)
+	if form.has_key("fqdn"):
+		sqlcmd = "update status set host='%s' where name='%s'" % (form['fqdn'].value, name)
+		csr.execute(sqlcmd)
+	if form.has_key("model"):
+		sqlcmd = "update status set model='%s' where name='%s'" % (form['model'].value, name)
+		csr.execute(sqlcmd)
+	if form.has_key("cpu"):
+		sqlcmd = "update status set cpu='%s' where name='%s'" % (form['cpu'].value, name)
+		csr.execute(sqlcmd)
+	if form.has_key("ram"):
+		sqlcmd = "update status set ram='%s' where name='%s'" % (form['ram'].value, name)
+		csr.execute(sqlcmd)
+	if form.has_key("disk"):
+		sqlcmd = "update status set disk='%s' where name='%s'" % (form['disk'].value, name)
+		csr.execute(sqlcmd)
+	if form.has_key("admin"):
+		sqlcmd = "update status set admin='%s' where name='%s'" % (form['admin'].value, name)
+		csr.execute(sqlcmd)
+	if form.has_key("email"):
+		sqlcmd = "update status set email='%s' where name='%s'" % (form['email'].value, name)
+		csr.execute(sqlcmd)
+	if form.has_key("reason"):
+		if str(form['reason'].value) == "None":
+			sqlcmd = "update status set reason=Null where name='%s'" % name
+		else:
+			sqlcmd = "update status set reason='%s' where name='%s'" % (form['reason'].value, name)
+		csr.execute(sqlcmd)
+	if form.has_key("building"):
+		if str(form['building'].value) == "None":
+			sqlcmd = "update status set building=Null where name='%s'" % name
+		else:
+			sqlcmd = "update status set building='%s' where name='%s'" % (form['building'].value, name)
+		csr.execute(sqlcmd)
+	db.commit()
+	sqlcmd = "select * from status where name='%s'" % name
+	#print sqlcmd
+	csr.execute(sqlcmd)
+	sqlresult = csr.fetchone()
+	#print sqlresult
+	db_id		= sqlresult[0]
+	db_arch		= sqlresult[1]
+	db_name 	= sqlresult[2]
+	db_fqdn 	= sqlresult[3]
+	db_model	= sqlresult[4]
+	db_cpu		= sqlresult[5]
+	db_ram		= sqlresult[6]
+	db_disk 	= sqlresult[7]
+	db_admin	= sqlresult[8]
+	db_mail 	= sqlresult[9]
+	db_status	= sqlresult[10]
+	db_lastseen	= sqlresult[11]
+	db_interval	= sqlresult[12]
+	db_reason	= sqlresult[13]
+	db_building	= sqlresult[14]
+	print '<table border=1>'
+	print '  <tr>'
+	#print '    <td>%s</td>'
+	print '    <td>arch</td>'
+	print '    <td>name</td>'
+	print '    <td>host</td>'
+	print '    <td>model</td>'
+	print '    <td>CPU</td>'
+	print '    <td>RAM</td>'
+	print '    <td>disk</td>'
+	print '    <td>Admin</td>'
+	print '    <td>Email</td>'
+	#print '    <td>Status</td>'
+	#print '    <td>lastseen</td>'
+	#print '    <td>interval</td>'
+	print '    <td>building</td>' 
+	print '    <td>reason</td>'
+	#print '    <td></td>' 
+	print '  </tr>'
+	print '  <tr>'
+	#print '    <td>%s</td>' % db_id
+	print '    <td>%s</td>' % db_arch
+	print '    <td>%s</td>' % db_name
+	print '    <td>%s</td>' % db_fqdn
+	print '    <td>%s</td>' % db_model
+	print '    <td>%s</td>' % db_cpu
+	print '    <td>%s</td>' % db_ram
+	print '    <td>%s</td>' % db_disk
+	print '    <td>%s</td>' % db_admin
+	print '    <td>%s</td>' % db_mail
+	#print '    <td>%s</td>' % db_status
+	#print '    <td>%s</td>' % db_lastseen
+	#print '    <td>%s</td>' % db_interval
+	print '    <td>%s</td>' % db_building
+	print '    <td>%s</td>' % db_reason
+	#print '    <td>'
+	#print '    </td>' 
+	print '  </tr>'
+	print '</table>'
+	print '      <form action="badmin.phtml" method="post">'
+	print '      <input type=hidden name=usrname value="%s">' % db_usr
+	print '      <input type=hidden name=usrpwd value="%s">' % db_pwd
+	print '      <input type=submit name="ok" value="Ok & Back">'
+	print '      </form>'	
+
+	return
+
+
+def displayTable(db_usr, db_pwd, db_mode, db_archs, mode):
+	#print mode+"<br>"
+
+	# initialize empty arrays
+	db_id		= []
+	db_arch		= []
+	db_name 	= []
+	db_fqdn 	= []
+	db_model	= []
+	db_cpu		= []
+	db_ram		= []
+	db_disk 	= []
+	db_admin	= []
+	db_mail 	= []
+	db_status	= []
+	db_lastseen	= []
+	db_interval	= []
+	db_reason	= []
+	db_building	= []
+
+	# let's take a look whether this is a single builld user
+	# or if this login is authorized for whole arch or multiple
+	# buildds to edit
+	sqlcmd = "select mode, archs from buser where name='%s'" % db_usr
+	#print sqlcmd
+	csr.execute(sqlcmd)
+	sqlresult = csr.fetchone()
+	db_mode		= sqlresult[0]
+	db_archs	= sqlresult[1]
+	print '<table border=1>'
+	print '  <tr>'
+	#print '    <td>%s</td>'
+	print '    <td>arch</td>'
+	print '    <td>name</td>'
+	print '    <td>host</td>'
+	print '    <td>model</td>'
+	print '    <td>CPU</td>'
+	print '    <td>RAM</td>'
+	print '    <td>disk</td>'
+	print '    <td>Admin</td>'
+	print '    <td>Email</td>'
+	#print '    <td>Status</td>'
+	#print '    <td>lastseen</td>'
+	#print '    <td>interval</td>'
+	print '    <td>building</td>' 
+	print '    <td>reason</td>'
+	print '    <td></td>' 
+	print '  </tr>'
+	if db_mode == 0:
+		sqlcmd = "select * from status where name='%s'" % db_usr
+		csr.execute(sqlcmd)
+		sqlresult = csr.fetchall()
+	elif db_mode == 1:
+		sqlcmd = "select * from status where arch='%s'" % db_archs
+		csr.execute(sqlcmd)
+		sqlresult = csr.fetchall()
+	elif db_mode == 2:
+		sqlcmd = "select archs from buser where name='%s'" % db_usr
+		csr.execute(sqlcmd)
+		sqlresult = str(csr.fetchone()[0])
+		numreplace=count(sqlresult, " ")-1
+		archs_list = replace(sqlresult, " ", "','")
+		sqlcmd = "select * from status where name in ('%s')" % archs_list
+		csr.execute(sqlcmd)
+		sqlresult = csr.fetchall()
+		
+	for i in range(0,len(sqlresult)):
+		#print sqlresult
+		db_id		= sqlresult[i][0]
+		db_arch		= sqlresult[i][1]
+		db_name		= sqlresult[i][2]
+		db_fqdn		= sqlresult[i][3]
+		db_model	= sqlresult[i][4]
+		db_cpu		= sqlresult[i][5]
+		db_ram		= sqlresult[i][6]
+		db_disk		= sqlresult[i][7]
+		db_admin	= sqlresult[i][8]
+		db_mail		= sqlresult[i][9]
+		db_status	= sqlresult[i][10]
+		db_lastseen = sqlresult[i][11]
+		db_interval	= sqlresult[i][12]
+		db_reason	= sqlresult[i][13]
+		db_building	= sqlresult[i][14]
+		if len(mode):
+			print '  <tr>'
+			#print '    <td>%s</td>' % db_id
+			print '    <td>%s</td>' % db_arch
+			print '    <td>%s</td>' % db_name
+			print '    <td>%s</td>' % db_fqdn
+			print '    <td>%s</td>' % db_model
+			print '    <td>%s</td>' % db_cpu
+			print '    <td>%s</td>' % db_ram
+			print '    <td>%s</td>' % db_disk
+			print '    <td>%s</td>' % db_admin
+			print '    <td>%s</td>' % db_mail
+			#print '    <td>%s</td>' % db_status
+			#print '    <td>%s</td>' % db_lastseen
+			#print '    <td>%s</td>' % db_interval
+			print '    <td>%s</td>' % db_building
+			print '    <td>%s</td>' % db_reason
+			print '    <td>'
+			print '      <form action="badmin.phtml" method="post">'
+			print '      <input type=hidden name=buildd value="%s">' % db_name
+			print '      <input type=hidden name=usrname value="%s">' % db_usr
+			print '      <input type=hidden name=usrpwd value="%s">' % db_pwd
+			if mode == "edit":
+				print '      <input type=submit name="modifybuildd" value="Edit!">'
+			elif mode == "changeit":
+				print '<input type=submit name="changebuildd" value="Change it!">'
+			elif mode == "back":
+				print '      <input type=submit name="ok" value="Ok & Back">'	
+			print '      </form>'	
+			print '    </td>' 
+			print '  </tr>'
+	print '</table>'
+	return()
+
+def changepwd():
+	"""prompt for a new password, then call pwcheck()"""
+	print '<p><center>Welcome %s:</center><p>' % db_usr
+	print '<center>'
+	print '<b>Please enter your new password twice!</b><p><p>'
+	print '<form action="badmin.phtml" method=post>'
+	print '    <table border="0" colspan="5">'   # bgcolor="#fbd05b">'
+	print '     <tr>'
+	print '      <td align="right">enter old password:<br></td>'
+	print  '      <td align="left"><input type=password name="usrpwd" value="" size=20><br></td>'
+	print '     </tr>'
+	print '     <tr>'
+	print '      <td align="right">enter new password:<br></td>'
+	print '      <td align="left"><input type=password name="usrpwd_1" value="" size=20><br></td>'
+	print '     </tr>'
+	print '     <tr>'
+	print '      <td align="right">repeat new password:<br></td>'
+	print '      <td align="left"><input type=password name="usrpwd_2" value="" size=20><br></td>'
+	print '     </tr>'
+	print '    </table><p><p>'
+	print '    <input type=hidden name=usrname value="%s">' % login
+	print '    <input type=submit name="pwcheck" value="Change password">'
+	print '</form>'
+	print '</center>'
+
+
+def pwcheck():
+	"""check whether the entered passwords are identical"""
+	global error
+	error = 0
+	#print "pwcheck<br>"
+	try:
+		usrpwd_1 = replace(form['usrpwd_1'].value, "'", "")
+		usrpwd_2 = replace(form['usrpwd_2'].value, "'", "")
+		usrpwd   = replace(form['usrpwd'].value, "'", "")
+		usrname  = replace(form['usrname'].value, "'", "")
+		
+		sleep(0.5)
+		sqlcmd = "select usr, name, clear from passwd where usr='%s'" % usrname
+		csr.execute(sqlcmd)
+		sqlresult = csr.fetchone()
+	
+		db_usr = sqlresult[0]
+		db_name = sqlresult[1]
+		db_pwd = sqlresult[2]
+		
+		if usrpwd<>db_pwd:
+			print '<center>Wrong password. Please retry.<p><p>'
+			print '<form action="badmin.phtml" method=post>'
+			print '  <input type=submit name="done" value="Back">'
+			print '</form></center>'
+			return
+	except:
+		print '<center>Wrong password. Please retry.<p><p>'
+		print '<form action="badmin.phtml" method=post>'
+		print '  <input type=submit name="done" value="Back">'
+		print '</form></center>'
+		return
+
+	
+	if usrpwd_1 <> usrpwd_2:
+		print '<center>Password wrong. Please retry.<p><p>'
+		print '<form action="badmin.phtml" method=post>'
+		print '  <input type=submit name="done" value="Back">'
+		print '</form></center>'
+		error=2
+	elif usrpwd_1 == usrpwd_2:
+		try: 
+			cmd = 'echo -n %s | userdbpw -md5 | xargs echo -n' % usrpwd_1
+			r, w = popen2.popen2(cmd) 
+			while 1:
+				line = r.readline()
+				if not line:
+					break
+				if line.count('$1$'):
+					sqlcmd = "update passwd set crypt='%s', clear='%s' where usr='%s'" % ( line, usrpwd_1, usrname )
+					csr.execute(sqlcmd)
+					db.commit()
+					print '<center>Password changed.<p><p>'
+					print '<form action="badmin.phtml" method=post>'
+					print '  <input type=submit name="done" value="Logout">'
+					print '</form></center>'
+				else:
+					print '<center>Something wicked happened. Nothing changed.<p><p>'
+					print '<form action="badmin.phtml" method=post>'
+					print '  <input type=submit name="done" value="Back">'
+					print '</form></center>'
+		except:
+			print '<center>Something wicked happened. Nothing changed.<p><p>'
+			print '<form action="badmin.phtml" method=post>'
+			print '  <input type=submit name="done" value="Back">'
+			print '</form></center>'
+	else:
+		print '<center>Something wicked happened. Nothing changed.<p><p>'
+		print '<form action="badmin.phtml" method=post>'
+		print '  <input type=submit name="done" value="Back">'
+		print '</form></center>'
+	return
+		
+
+
+
+#
+# Main()
+#
+
+print "Content-type: text/html"
+print """
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" 
+content="text/html; charset=iso-8859-1">
+<title>www.buildd.net status update</title>
+</head>
+<body bgcolor="white" text="black">
+<p><font color="#000000" face="Verdana"><p>
+
+"""
+
+form = cgi.FieldStorage()
+#if form.has_key('reason'):
+#	f_reason()
+#if form.has_key('update'):
+#	update()
+#elif form.has_key('name'):
+#	f_reason()
+#else: 
+init()
+
+print "</font></body></html>"
+
+db.close()
+sys.exit(0)
+
+	

@@ -1,0 +1,8 @@
+fl-cow_0.5-1
+xmail_1.22-1
+lynx-cur_2.8.6-16
+sgt-puzzles_6378-1
+qalculate-kde_0.8.2-1
+rootskel-gtk_0.01
+ruby-v4l_0.1.2-1
+score-reading-trainer_0.1.3-1

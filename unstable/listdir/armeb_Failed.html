@@ -1,0 +1,620 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>input/armeb-all.txt Failed -- 2007-04-15 06:35:52</title>
+  <link rel="stylesheet" href="http://buildd.net/builddnet.css" type="text/css" />
+ </head>
+ <body>
+  <h1>Failed -- 68 -- 2007-04-15 06:35:52 input/armeb-all.txt</h1>
+   <hr />
+   <ul>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=alogg&amp;ver=1.3.3-4">alogg_1.3.3-4</a>  [bob]<span>
+    &gt; gcc  -o alogg_play alogg_play.o libalogg.a -lvorbisfile -lvorbisenc -lvorbis -logg -lm -lpthread -lX11 -lXext `allegro-config --libs`
+    &gt; /usr/bin/ld: cannot find -lXxf86dga
+    &gt; collect2: ld returned 1 exit status
+    &gt; make[1]: *** [alogg_play] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=aptitude&amp;ver=0.4.4-1">aptitude_0.4.4-1</a>  [wendy]<span>
+    test suite fails
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=arla&amp;ver=0.36.2-11.1">arla_0.36.2-11.1</a>  [wendy]<span>
+    &gt; gcc -c  -DHAVE_CONFIG_H -DRXDEBUG -DSOFT_ACK -I. -I../include -I./../include -I/usr/include -I./../lib/cmd -g -DKASERVER_SUPPORT=1  -Wall -Wmissing-prototypes -Wpointer-arith -Wmissing-declarations -Wnested-externs  rx_user.c
+    &gt; rx_user.c:46: error: static declaration of 'rx_listenerPid' follows non-static declaration
+    &gt; rx_user.h:49: error: previous declaration of 'rx_listenerPid' was here
+    &gt; rx_user.c: In function 'rxi_GetUDPSocket':
+    &gt; rx_user.c:189: warning: pointer targets in passing argument 3 of 'getsockname' differ in signedness
+    &gt; make[2]: *** [rx_user.o] Error 1
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=dbmail&amp;ver=1.2.11-1">dbmail_1.2.11-1</a>  [bob]<span>
+    &gt; armeb-linux-gnu-gcc -DHAVE_CONFIG_H -I. -I. -I.    -fomit-frame-pointer -Wall -O3 -c bounce.c
+    &gt; bounce.c: In function 'bounce':
+    &gt; bounce.c:95: error: invalid lvalue in assignment
+    &gt; bounce.c:170: error: invalid lvalue in assignment
+    &gt; make[3]: *** [bounce.o] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=dbtcp&amp;ver=0.1.17-4.3">dbtcp_0.1.17-4.3</a>  [wendy]<span>
+    &gt; dh_gencontrol
+    &gt; dpkg-gencontrol: warning: unknown substitution variable ${misc:Depends}
+    &gt; dpkg-gencontrol: warning: unknown substitution variable ${misc:Depends}
+    &gt; dpkg-gencontrol: warning: unknown substitution variable ${misc:Depends}
+    &gt; dpkg-gencontrol: warning: can't parse dependency phpapi-Usage: /usr/bin/php-config4 [--prefix|--includes|--ldflags|--libs|--extension-dir|--version]
+    &gt; dpkg-gencontrol: error: error occurred while parsing Depends
+    &gt; dh_gencontrol: command returned error code 2304
+    &gt; make: *** [binary-arch] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=dvipdfm-cjk&amp;ver=1%3A20021231-1">dvipdfm-cjk_1:20021231-1</a>  [wendy]<span>
+    &gt; dh_testroot
+    &gt; rm -f build-stamp
+    &gt; # Add here commands to clean up after the build process.
+    &gt; #-/usr/bin/make distclean
+    &gt; #-test -r /usr/share/misc/config.sub &amp;&amp; \
+    &gt; 	  cp -f /usr/share/misc/config.sub config.sub
+    &gt; cp: cannot stat `/usr/share/misc/config.sub': No such file or directory
+    &gt; make: *** [clean] Error 1
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=elfsh&amp;ver=0.65rc1-1">elfsh_0.65rc1-1</a>  [bob]<span>
+    &gt; gcc -Iinclude -Wall -fPIC -g3 -O2 -DELFSH_INTERN -I../libhash/include/ -I../libasm/include/ -DELFSH32 -DELFSHNET -DM32   -c -o bt.o bt.c
+    &gt; /tmp/ccikNCj0.s: Assembler messages:
+    &gt; /tmp/ccikNCj0.s:10258: Error: ARM register expected -- `mov %ebp,[sp,#0]'
+    &gt; make[2]: *** [bt.o] Error 1
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=fastdep&amp;ver=0.16-8">fastdep_0.16-8</a>  [bob]<span>
+    [Category: none]
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=fet&amp;ver=3.18.2-1">fet_3.18.2-1</a>  [bob]<span>
+    &gt; g++ -c -pipe -Wall -W -O2 -D_REENTRANT  -DQT_NO_DEBUG -DQT_THREAD_SUPPORT -DQT_SHARED -I/usr/share/qt3/mkspecs/default -I. -I../engine -I/usr/include/qt3 -I../../tmp/ -I. -I../../tmp/ -o ../../tmp/fet.o fet.cpp
+    &gt; /usr/include/qt3/qstring.h: In member function 'ushort&amp; QChar::unicode()':
+    &gt; /usr/include/qt3/qstring.h:199: error: cannot bind packed field '((QChar*)this)-&gt;QChar::ucs' to 'ushort&amp;'
+    &gt; make[3]: *** [../../tmp/fet.o] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=ffmpeg2theora&amp;ver=0.16-2">ffmpeg2theora_0.16-2</a>  [wendy]<span>
+    &gt; checking for FFMPEG... configure: error:
+    &gt;
+    &gt; could not find ffmpeg. please update PKG_CONFIG_PATH to point to ffmpegs source
+    &gt; folder or run ./get_ffmpeg_cvs.sh (for more information see INSTALL)
+    &gt;
+    &gt; make: *** [config.status] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=fontconfig&amp;ver=2.4.1-2">fontconfig_2.4.1-2</a>  [bob]<span>
+    &gt; dh_builddeb -plibfontconfig1
+    &gt; dpkg-deb: parse error, in file `debian/libfontconfig1/DEBIAN/control' near line 6 package `libfontconfig1':
+    &gt;  `Depends' field, reference to `fontconfig-config': error in version: version string is empty
+    &gt; dh_builddeb: command returned error code 512
+    &gt; make: *** [binary-makedeb-IMPL/libfontconfig1] Error 1
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=gfs&amp;ver=0.trunk20050206-1">gfs_0.trunk20050206-1</a>  [velnas]<span>
+    &gt; gcc -MMD -c  -I/build/buildd/gfs-0.trunk20050206/debian/include -Wall -I../include -I../config -D_FILE_OFFSET_BITS=64 -DHELPER_PROGRAM -DGFS_RELEASE_NAME=\"DEVEL.1141342798\" -Wall -g bio.c -o bio.o
+    &gt; bio.c: In function 'relse_buf':
+    &gt; bio.c:81: error: invalid lvalue in assignment
+    &gt; make[2]: *** [bio.o] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=gtkglextmm&amp;ver=1.0.1-3">gtkglextmm_1.0.1-3</a>  [wendy]<span>
+    [Category: none]
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=gwydion-dylan&amp;ver=1%3A2.4.0RC3-1">gwydion-dylan_1:2.4.0RC3-1</a>  [velnas]<span>
+    &gt; The following packages have unmet dependencies:
+    &gt;   libreadline4-dev: Depends: libreadline4 (= 4.3-17) but it is not going to be installed
+    &gt; E: Broken packages
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=imlib2&amp;ver=1.3.0.0debian1-4">imlib2_1.3.0.0debian1-4</a>  [wendy]<span>
+    &gt; checking X11/X.h usability... no
+    &gt; checking X11/X.h presence... no
+    &gt; checking for X11/X.h... no
+    &gt; configure: error: no X support found.  Use --x-includes and --x-libraries to specify the X
+    &gt; path on your system, or --without-x to disable X support.
+    &gt; make: *** [config.status] Error 1
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=jasper&amp;ver=1.701.0-2">jasper_1.701.0-2</a>  [bob]<span>
+    [Category: none]
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=kernel-kbuild-2.6-3&amp;ver=2.6.8-2">kernel-kbuild-2.6-3_2.6.8-2</a>  [bob]<span>
+    [Category: none]
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=kernel-patch-2.4.27-mips&amp;ver=2.4.27-11.040815-3">kernel-patch-2.4.27-mips_2.4.27-11.040815-3</a>  [wendy]<span>
+    &gt; make[2]: Entering directory `/build/buildd/kernel-patch-2.4.27-mips-2.4.27-11.040815/build-tmp/kernel-source-2.4.27'
+    &gt; Makefile:267: arch/armeb/Makefile: No such file or directory
+    &gt; make[2]: *** No rule to make target `arch/armeb/Makefile'.  Stop.
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=kmd&amp;ver=0.9.19-1.1">kmd_0.9.19-1.1</a>  [bob]<span>
+    [Category: none]
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=krb4&amp;ver=1.2.2-11.3">krb4_1.2.2-11.3</a>  [wendy]<span>
+    &gt; gcc -DHAVE_CONFIG_H -I. -I. -I../../../include -I../../../include -I../../../lib/roken -I../../../lib/roken -I./../common  -DFTP_SERVER  -I/usr/include/et  -Wall -Wmissing-prototypes -Wpointer-arith -Wbad-function-cast -Wmissing-declarations -Wnested-externs -g -O2 -c `test -f 'ftpcmd.c' || echo './'`ftpcmd.c
+    &gt; In file included from /usr/include/openssl/crypto.h:131,
+    &gt;                  from /usr/include/openssl/ui.h:63,
+    &gt;                  from /usr/include/openssl/ui_compat.h:63,
+    &gt;                  from ../../../include/krb.h:52,
+    &gt;                  from ftpd_locl.h:154,
+    &gt;                  from ftpcmd.y:45:
+    &gt; /usr/include/openssl/ossl_typ.h:144: error: syntax error before numeric constant
+    &gt; make[4]: *** [ftpcmd.o] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=kxl&amp;ver=1.1.7-12">kxl_1.1.7-12</a>  [wendy]<span>
+    &gt;  gcc -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"KXL\" -DVERSION=\"1.1.7\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DSTDC_HEADERS=1 -DHAVE_FCNTL_H=1 -DHAVE_MALLOC_H=1 -DHAVE_SYS_IOCTL_H=1 -DHAVE_SYS_TIME_H=1 -DHAVE_LINUX_JOYSTICK_H=1 -DHAVE_LINUX_SOUNDCARD_H=1 -DTIME_WITH_SYS_TIME=1 -DRETSIGTYPE=void -DHAVE_SELECT=1 -I. -I. -g -O2 -MT KXLmisc.lo -MD -MP -MF .deps/KXLmisc.Tpo -c KXLmisc.c  -fPIC -DPIC -o .libs/KXLmisc.o
+    &gt; In file included from KXLmisc.c:6:
+    &gt; KXL.h:6:22: error: X11/Xlib.h: No such file or directory
+    &gt; KXL.h:7:23: error: X11/Xutil.h: No such file or directory
+    &gt; KXL.h:8:24: error: X11/XKBlib.h: No such file or directory
+    &gt; In file included from KXLmisc.c:6:
+    &gt; KXL.h:163: error: syntax error before 'Pixmap'
+    &gt; KXL.h:163: warning: no semicolon at end of struct or union
+    &gt; KXL.h:164: warning: data definition has no type or storage class
+    [...]
+    &gt; KXLmisc.c:88: error: 'False' undeclared (first use in this function)
+    &gt; make[2]: *** [KXLmisc.lo] Error 1
+    &gt; make[2]: Leaving directory `/build/buildd/kxl-1.1.7/src'
+    &gt; make[1]: *** [all-recursive] Error 1
+    &gt; make[1]: Leaving directory `/build/buildd/kxl-1.1.7'
+    &gt; make: *** [build-stamp] Error 2
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=libggz&amp;ver=0.0.13-2">libggz_0.0.13-2</a>  [bob]<span>
+    &gt; dpkg-gencontrol: warning: unknown substitution variable ${source:Version}
+    &gt; dh_md5sums -plibggz-dev
+    &gt; dh_builddeb -plibggz-dev
+    &gt; dpkg-deb: parse error, in file `debian/libggz-dev/DEBIAN/control' near line 6 package `libggz-dev':
+    &gt;  `Depends' field, reference to `libggz2': error in version: version string is empty
+    &gt; dh_builddeb: command returned error code 512
+    &gt; make: *** [binary-makedeb-IMPL/libggz-dev] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=libgnome2-canvas-perl&amp;ver=1.002-1">libgnome2-canvas-perl_1.002-1</a>  [wendy]<span>
+    &gt; DIED. FAILED tests 1-14
+    &gt; 	Failed 14/14 tests, 0.00% okay
+    &gt; Failed Test            Stat Wstat Total Fail  Failed  List of Failed
+    &gt; -------------------------------------------------------------------------------
+    &gt; t/01.t                    1   256     1    1 100.00%  1
+    &gt; t/GnomeCanvas.t         255 65280    ??   ??       %  ??
+    &gt; t/GnomeCanvasItem.t     255 65280    ??   ??       %  ??
+    &gt; t/GnomeCanvasPathDef.t  255 65280    14   28 200.00%  1-14
+    &gt; Failed 4/4 test scripts, 0.00% okay. 15/15 subtests failed, 0.00% okay.
+    &gt; make[1]: *** [test_dynamic] Error 255
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=libgtk-canvas&amp;ver=0.1.1-8">libgtk-canvas_0.1.1-8</a>  [bob]<span>
+    [Category: none]
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=libmatheval&amp;ver=1.1.3-1.1">libmatheval_1.1.3-1.1</a>  [wendy]<span>
+    &gt; if armeb-linux-gnu-gcc -DHAVE_CONFIG_H -I. -I. -I.. -I.. -I../lib -I.. -I../lib    -Wall -g -O2 -MT matheval-matheval.o -MD -MP -MF ".deps/matheval-matheval.Tpo" -c -o matheval-matheval.o `test -f 'matheval.c' || echo './'`matheval.c; \
+    &gt; 	then mv -f ".deps/matheval-matheval.Tpo" ".deps/matheval-matheval.Po"; else rm -f ".deps/matheval-matheval.Tpo"; exit 1; fi
+    &gt; matheval.c:37:2: error: #error Neither scm_num2dbl() nor SCM_NUM2DBL available
+    &gt; matheval.c:45:2: error: #error Neither scm_c_define_gsubr() nor scm_make_gsubr() available
+    &gt; make[3]: *** [matheval-matheval.o] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=libopenspc&amp;ver=0.3.99a-2">libopenspc_0.3.99a-2</a>  [wendy]<span>
+    [Category: none]
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=libpcap&amp;ver=0.7.2-7">libpcap_0.7.2-7</a>  [bob]<span>
+    [Category: none]
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=librep&amp;ver=0.17-13">librep_0.17-13</a>  [wendy]<span>
+    &gt; /bin/sh ../libtool --mode=compile armeb-linux-gnu-gcc -c -DHAVE_CONFIG_H -I. -I../src -I..  -Wall -g -O2 ffi.c
+    &gt;  armeb-linux-gnu-gcc -c -DHAVE_CONFIG_H -I. -I../src -I.. -Wall -g -O2 ffi.c  -fPIC -DPIC -o .libs/ffi.o
+    &gt; ffi.c: In function 'rep_ffi_marshal':
+    &gt; ffi.c:310: error: duplicate case value
+    &gt; ffi.c:306: error: previously used here
+    &gt; ffi.c: In function 'rep_ffi_demarshal':
+    &gt; ffi.c:438: error: duplicate case value
+    &gt; ffi.c:434: error: previously used here
+    &gt; ffi.c: In function 'Fffi_struct':
+    &gt; ffi.c:578: warning: implicit declaration of function 'ALIGN'
+    &gt; ffi.c: In function 'Fffi_lookup_symbol':
+    &gt; ffi.c:930: warning: pointer targets in passing argument 2 of 'rep_lookup_dl_symbol' differ in signedness
+    &gt; make[2]: *** [ffi.lo] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=libs11n&amp;ver=0.8.7-2">libs11n_0.8.7-2</a>  [bob]<span>
+    [Category: none]
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=linux-kernel-headers&amp;ver=2.6.18-6">linux-kernel-headers_2.6.18-6</a>  [wendy]<span>
+    &gt; 	  gcc-2.95 -Wall -Werror -W -I /build/buildd/linux-kernel-headers-2.6.18/testsuite/../debian/linux-kernel-headers/usr/include -I /build/buildd/linux-kernel-headers-2.6.18/testsuite/../include   -o 295-videodev-time.o -c videodev-time.c; \
+    &gt; 	fi
+    &gt; cc1: warnings being treated as errors
+    &gt; In file included from /build/buildd/linux-kernel-headers-2.6.18/testsuite/../include/linux/videodev.h:15,
+    &gt;                  from videodev-time.c:1:
+    &gt; /build/buildd/linux-kernel-headers-2.6.18/testsuite/../include/linux/videodev2.h:716: warning: unnamed struct/union that defines no instances
+    &gt; make[1]: *** [295-videodev-time.o] Error 1
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=m2c&amp;ver=0.6-10.2">m2c_0.6-10.2</a>  [velnas]<span>
+    &gt; ./configure +cc=gcc `dpkg-architecture -qDEB_BUILD_GNU_CPU`
+    &gt; ./configure: file `config/armeb-gcc.h' does not exist.
+    &gt; Good bye.
+    &gt; make: *** [build-stamp] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=magma&amp;ver=0.trunk20050206-1">magma_0.trunk20050206-1</a>  [velnas]<span>
+    &gt; gcc -c -o localinfo.o localinfo.c -I. -I/build/buildd/magma-0.trunk20050206/debian/include -Wall -I. -g -Werror -Wstrict-prototypes -Wshadow -fPIC -DPLUGINDIR=\"/usr/lib/magma\" -D_GNU_SOURCE -D_CLUSTER_
+    &gt; cc1: warnings being treated as errors
+    &gt; localinfo.c: In function '_get_local_info':
+    &gt; localinfo.c:43: warning: pointer targets in passing argument 1 of 'ip_lookup' differ in signedness
+    &gt; localinfo.c:48: warning: pointer targets in passing argument 2 of 'strncpy' differ in signedness
+    &gt; make[1]: *** [localinfo.o] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=mercury&amp;ver=0.11.0.rotd.20040511-5">mercury_0.11.0.rotd.20040511-5</a>  [bob]<span>
+    [Category: none]
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=mingw32&amp;ver=3.4.5.20060117.1-1">mingw32_3.4.5.20060117.1-1</a>  [velnas]<span>
+    &gt; i586-mingw32msvc-strip --strip-debug 	debian/mingw32/usr/i586-mingw32msvc/lib/*.a
+    &gt; BFD: debian/mingw32/usr/i586-mingw32msvc/lib/libiberty.a(regex.o): warning: illegal symbol index 393216 in relocs
+    &gt; BFD: debian/mingw32/usr/i586-mingw32msvc/lib/libiberty.a(regex.o): illegal relocation type 739 at address 0x250000
+    &gt; i586-mingw32msvc-strip: regex.o: Bad value
+    &gt; make: *** [binary-arch] Error 1
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=newlib&amp;ver=1.14.0-2">newlib_1.14.0-2</a>  [velnas]<span>
+    &gt; dh_gencontrol -a
+    &gt; dpkg-gencontrol: error: current build architecture armeb does not appear in package's list (i386)
+    &gt; dh_gencontrol: command returned error code 65280
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=nhc98&amp;ver=1.18-3">nhc98_1.18-3</a>  [velnas]<span>
+    &gt; dh_gencontrol
+    &gt; dpkg-gencontrol: error: current build architecture armeb does not appear in package's list (i386 hppa mips mipsel s390 powerpc arm)
+    &gt; dh_gencontrol: command returned error code 65280
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=oftc-hybrid&amp;ver=1.1.1-4">oftc-hybrid_1.1.1-4</a>  [bob]<span>
+    &gt; gcc -I../include -I../adns    -g -ggdb -DNDEBUG -DIRCD_PREFIX=\"/usr\" -I. -c y.tab.c
+    &gt; ircd_parser.y:61: error: static declaration of 'yy_aconf' follows non-static declaration
+    &gt; ../include/s_conf.h:56: error: previous declaration of 'yy_aconf' was here
+    &gt; make[2]: *** [y.tab.o] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=ogre&amp;ver=1.0.6-1.4">ogre_1.0.6-1.4</a>  [bob]<span>
+    &gt; creating libOgreMain.la
+    &gt; /bin/sed: can't read /usr/lib/libmng.la: No such file or directory
+    &gt; libtool: link: `/usr/lib/libmng.la' is not a valid libtool archive
+    &gt; make[3]: *** [libOgreMain.la] Error 1
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=pdftoipe&amp;ver=20040630-3">pdftoipe_20040630-3</a>  [velnas]<span>
+    &gt; g++ -c -pipe -w -O2  -DQT_NO_DEBUG -DQT_SHARED -DQT_THREAD_SUPPORT -I/usr/share/qt3/mkspecs/default -I. -I/usr/include/qt3 -o ocfile.o ocfile.cpp
+    &gt; /usr/include/qt3/qstring.h: In member function 'ushort&amp; QChar::unicode()':
+    &gt; /usr/include/qt3/qstring.h:199: error: cannot bind packed field '((QChar*)this)-&gt;QChar::ucs' to 'ushort&amp;'
+    &gt; make[1]: *** [ocfile.o] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=php4-auth-pam&amp;ver=0.4-8">php4-auth-pam_0.4-8</a>  [wendy]<span>
+    &gt; dh_shlibdeps
+    &gt; echo "php:Depends=phpapi-Usage: /usr/bin/php-config4 [--prefix|--includes|--ldflags|--libs|--extension-dir|--version]" &gt;&gt; debian/php4-auth-pam.substvars
+    &gt; dh_gencontrol
+    &gt; dpkg-gencontrol: warning: can't parse dependency phpapi-Usage: /usr/bin/php-config4 [--prefix|--includes|--ldflags|--libs|--extension-dir|--version]
+    &gt; dpkg-gencontrol: error: error occurred while parsing Depends
+    &gt; dh_gencontrol: command returned error code 2304
+    &gt; make: *** [binary-arch] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=php4-mcrypt&amp;ver=3%3A4.3.10-2">php4-mcrypt_3:4.3.10-2</a>  [bob]<span>
+    &gt; dh_gencontrol
+    &gt; dh_gencontrol: Compatibility levels before 4 are deprecated.
+    &gt; 	dpkg-gencontrol -ldebian/changelog -isp -Tdebian/php4-mcrypt.substvars -Pdebian/php4-mcrypt
+    &gt; dpkg-gencontrol: warning: can't parse dependency phpapi-Usage: /usr/bin/php-config4 [--prefix|--includes|--ldflags|--libs|--extension-dir|--version]
+    &gt; dpkg-gencontrol: error: error occurred while parsing Depends
+    &gt; dh_gencontrol: command returned error code 2304
+    &gt; make: *** [binary-arch] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=pistachio&amp;ver=0.4%2B20050706-2">pistachio_0.4+20050706-2</a>  [wendy]<span>
+    [Category: none]
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=pnet&amp;ver=0.7.4-1">pnet_0.7.4-1</a>  [bob]<span>
+    &gt; cc -DPACKAGE_NAME=\"gc\" -DPACKAGE_TARNAME=\"gc\" -DPACKAGE_VERSION=\"6.6\" "-DPACKAGE_STRING=\"gc 6.6\"" -DPACKAGE_BUGREPORT=\"Hans.Boehm@hp.com\" -DGC_VERSION_MAJOR=6 -DGC_VERSION_MINOR=6 -DPACKAGE=\"gc\" -DVERSION=\"6.6\" -DGC_LINUX_THREADS=1 -D_REENTRANT=1 -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DSILENT=1 -DNO_SIGNALS=1 -DNO_EXECUTE_PERMISSION=1 -DALL_INTERIOR_POINTERS=1 -DJAVA_FINALIZATION=1 -DGC_GCJ_SUPPORT=1 -DATOMIC_UNCOLLECTABLE=1 -I.././libgc/include -fexceptions -g -Wall -O2 -Wall -fexceptions -MT finalize.lo -MD -MP -MF .deps/finalize.Tpo -c finalize.c  -fPIC -DPIC -o finalize.o
+    &gt; finalize.c: In function 'GC_general_register_disappearing_link':
+    &gt; finalize.c:179: warning: dereferencing type-punned pointer will break strict-aliasing rules
+    &gt; finalize.c: In function 'GC_register_finalizer_inner':
+    &gt; finalize.c:352: warning: dereferencing type-punned pointer will break strict-aliasing rules
+    &gt; finalize.c: In function 'GC_invoke_finalizers':
+    &gt; finalize.c:766: warning: 'mem_freed_before' may be used uninitialized in this function
+    &gt; /tmp/cc7Ljvxp.s: Assembler messages:
+    &gt; /tmp/cc7Ljvxp.s:1703: Error: Rn must not overlap other operands -- `swp r3,r5,[r3]'
+    [...]
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=progsreiserfs&amp;ver=0.3.0.5-1">progsreiserfs_0.3.0.5-1</a>  [bob]<span>
+    &gt; /usr/bin/make -C build
+    &gt; make[1]: Entering directory `/build/buildd/progsreiserfs-0.3.0.5/build'
+    &gt; cd .. &amp;&amp; /bin/sh /build/buildd/progsreiserfs-0.3.0.5/missing --run aclocal-1.7
+    &gt; aclocal: configure.in: 98: macro `AM_ENABLE_SHARED' not found in library
+    &gt; aclocal: configure.in: 107: macro `AM_DISABLE_SHARED' not found in library
+    &gt; aclocal: configure.in: 109: macro `AM_PROG_LIBTOOL' not found in library
+    &gt; make[1]: *** [../aclocal.m4] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=proxy-suite&amp;ver=1.9.2.4-2">proxy-suite_1.9.2.4-2</a>  [wendy]<span>
+    &gt; Output written on ftp-proxy.pdf (11 pages, 133264 bytes).
+    &gt; Transcript written on ftp-proxy.log.
+    &gt; dvips: ! DVI file can't be opened.
+    &gt; error post-processing latex2e.
+    &gt; make[2]: *** [ftp-proxy.ps] Error 39
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=python-parted&amp;ver=0.11.2">python-parted_0.11.2</a>  [velnas]<span>
+    &gt; gcc -pthread -fno-strict-aliasing -DNDEBUG -g -O3 -Wall -Wstrict-prototypes -fPIC -I/usr/include/python2.3 -c pyparted.c -o build/temp.linux-armv5teb-2.3/pyparted.o
+    &gt; In file included from /usr/include/python2.3/Python.h:8,
+    &gt;                  from pyparted.c:27:
+    &gt; /usr/include/python2.3/pyconfig.h:834:1: warning: "_GNU_SOURCE" redefined
+    &gt; pyparted.c:23:1: warning: this is the location of the previous definition
+    &gt; /usr/include/python2.3/pyconfig.h:853:1: warning: "_POSIX_C_SOURCE" redefined
+    &gt; In file included from /usr/include/stdio.h:28,
+    &gt;                  from pyparted.c:25:
+    &gt; /usr/include/features.h:150:1: warning: this is the location of the previous definition
+    &gt; pyparted.c: In function 'device_get_heads':
+    &gt; pyparted.c:182: error: 'struct _PedDevice' has no member named 'heads'
+    &gt; pyparted.c: In function 'device_get_sectors':
+    &gt; pyparted.c:193: error: 'struct _PedDevice' has no member named 'sectors'
+    &gt; pyparted.c: In function 'device_get_cylinders':
+    &gt; pyparted.c:204: error: 'struct _PedDevice' has no member named 'cylinders'
+    &gt; pyparted.c: In function 'device_get_geom_known':
+    &gt; pyparted.c:215: error: 'struct _PedDevice' has no member named 'geom_known'
+    &gt; pyparted.c: In function 'disk_get_type':
+    &gt; pyparted.c:425: warning: passing argument 2 of 'PyPartedObject_new' discards qualifiers from pointer target type
+    &gt; error: command 'gcc' failed with exit status 1
+    &gt; make: *** [build-stamp] Error 1
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=qca-tls&amp;ver=1.0-3">qca-tls_1.0-3</a>  [wendy]<span>
+    &gt; # Add here commands to configure the package.
+    &gt; CFLAGS="-Wall -g -O2" ./configure
+    &gt; Configuring qca-tls ...
+    &gt; Verifying Qt 3.x Multithreaded (MT) build environment ... fail
+    &gt;
+    &gt; There was an error compiling 'conf'.  Be sure you have a proper
+    &gt; Qt 3.x Multithreaded (MT) build environment set up.
+    &gt;
+    &gt; make: *** [configure-stamp] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=qliss3d&amp;ver=1.3.2-2">qliss3d_1.3.2-2</a>  [bob]<span>
+    &gt; checking for Qt... yes:
+    &gt;     QT_CXXFLAGS=-I/usr/share/qt3/include
+    &gt;     QT_DIR=/usr/share/qt3
+    &gt;     QT_LIBS=-L/usr/share/qt3/lib -lqt-mt  -lSM -lICE  -L/usr/X11R6/lib -lX11 -lXext -lXmu -lXt -lXi
+    &gt;     QT_UIC=/usr/share/qt3/bin/uic
+    &gt;     QT_MOC=/usr/share/qt3/bin/moc
+    &gt; checking your Qt installation... cat: bnv_qt_test.c: No such file or directory
+    &gt; failure
+    &gt; configure: error: Failed to find matching components of a complete
+    &gt;                   Qt installation. Try using specific options,
+    &gt;                   see ./configure --help.
+    &gt; make: *** [config.status] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=qssl&amp;ver=2.0-1">qssl_2.0-1</a>  [wendy]<span>
+    [Category: none]
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=quantlib-python&amp;ver=0.3.10-2">quantlib-python_0.3.10-2</a>  [bob]<span>
+    &gt; g++ -fno-strict-aliasing -DNDEBUG -g -O3 -Wall -Wstrict-prototypes -O2 -Wall -fPIC -I/usr/include -I/usr/include/python2.4 -c QuantLib/quantlib_wrap.cpp -o build/temp.linux-armv5teb-2.4/QuantLib/quantlib_wrap.o -Wno-unused -O2 -Wall
+    &gt; cc1plus: warning: command line option "-Wstrict-prototypes" is valid for C/ObjC but not for C++
+    &gt; QuantLib/quantlib_wrap.cpp:4470: error: 'QuantLib::ZARLibor' has not been declared
+    &gt; QuantLib/quantlib_wrap.cpp: In function 'ZARLiborPtr* new_ZARLiborPtr__SWIG_0(QuantLib::Integer, QuantLib::TimeUnit, const QuantLib::Handle&lt;QuantLib::YieldTermStructure&gt;&amp;, const QuantLib::DayCounter&amp;)':
+    &gt; QuantLib/quantlib_wrap.cpp:4474: error: expected type-specifier before 'ZARLibor'
+    &gt; QuantLib/quantlib_wrap.cpp:4474: error: expected `)' before 'ZARLibor'
+    &gt; QuantLib/quantlib_wrap.cpp: At global scope:
+    [...]
+    &gt; QuantLib/quantlib_wrap.cpp:4474:   instantiated from here
+    &gt; /usr/include/boost/shared_ptr.hpp:124: error: cannot convert 'int*' to 'QuantLib::Index*' in initialization
+    &gt; error: command 'g++' failed with exit status 1
+    &gt; make: *** [build-stamp] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=quantlib-ruby&amp;ver=0.3.10-2">quantlib-ruby_0.3.10-2</a>  [wendy]<span>
+    &gt; make[1]: Leaving directory `/build/buildd/quantlib-ruby-0.3.10'
+    &gt; ./QuantLibc.so -&gt; debian/quantlib-ruby/usr/lib/ruby/1.8/armeb-linux/QuantLibc.so
+    &gt; /usr/lib/ruby/1.8/ftools.rb:62:in `stat': No such file or directory - ./QuantLibc.so (Errno::ENOENT)
+    &gt; 	from /usr/lib/ruby/1.8/ftools.rb:62:in `syscopy'
+    &gt; 	from /usr/lib/ruby/1.8/ftools.rb:92:in `cp'
+    &gt; 	from /usr/lib/ruby/1.8/ftools.rb:248:in `install'
+    &gt; 	from setup.rb:271
+    &gt; 	from setup.rb:251:in `call'
+    &gt; 	from setup.rb:147:in `execute'
+    &gt; 	from setup.rb:291
+    &gt; Installing QuantLib-Ruby...
+    &gt; make: *** [install-stamp] Error 1
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=redboot&amp;ver=2.0-1">redboot_2.0-1</a>  [bob]<span>
+    &gt; dh_testdir
+    &gt; # Add here commands to configure the package.
+    &gt; install -d build
+    &gt; cd build; ecosconfig new armeb redboot
+    &gt; Unknown target armeb
+    &gt; make: *** [configure-stamp] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=rlog&amp;ver=1.3.7-1">rlog_1.3.7-1</a>  [wendy]<span>
+    &gt; Setting up doxygen (1.4.2-4) ...
+    &gt;   /usr/bin/sudo dpkg --root=/home/buildd/build/chroot-unstable --purge g++-4.0 g++-3.4
+    &gt; dpkg: dependency problems prevent removal of g++-4.0:
+    &gt;  libstdc++6-4.0-dev depends on g++-4.0 (= 4.0.2-2).
+    &gt;  g++ depends on g++-4.0 (&gt;= 4.0.2-2).
+    &gt;  gcj-4.0 depends on g++-4.0 (= 4.0.2-2).
+    &gt; dpkg: error processing g++-4.0 (--purge):
+    &gt;  dependency problems - not removing
+    &gt; dpkg: dependency problems prevent removal of g++-3.4:
+    &gt;  libstdc++6-dev depends on g++-3.4 (= 3.4.4-8).
+    &gt; dpkg: error processing g++-3.4 (--purge):
+    &gt;  dependency problems - not removing
+    &gt; Errors were encountered while processing:
+    &gt;  g++-4.0
+    &gt;  g++-3.4
+    &gt; dpkg run to remove packages (g++-4.0 g++-3.4) failed!
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=ruby1.6&amp;ver=1.6.8-13">ruby1.6_1.6.8-13</a>  [wendy]<span>
+    &gt; /usr/bin/make -C build-tree/ruby-1.6.8 install DESTDIR=/build/buildd/ruby1.6-1.6.8/debian/tmp
+    &gt; make[1]: Entering directory `/build/buildd/ruby1.6-1.6.8/build-tree/ruby-1.6.8'
+    &gt; ./miniruby ./instruby.rb --mantype=man /build/buildd/ruby1.6-1.6.8/debian/tmp
+    &gt; ./instruby.rb:9:in `require': No such file to load -- ftools (LoadError)
+    &gt; 	from ./instruby.rb:9
+    &gt; make[1]: *** [install] Error 1
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=scheme48&amp;ver=1.3-6">scheme48_1.3-6</a>  [wendy]<span>
+    &gt; dh_gencontrol
+    &gt; dpkg-gencontrol: error: current build architecture armeb does not appear in package's list (hurd-i386 i386 m68k sparc powerpc arm mips mipsel hppa s390 sh netbsd-i386 freebsd-i386)
+    &gt; dh_gencontrol: command returned error code 65280
+    &gt; make[1]: *** [binary-common] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=sdl-mixer1.2&amp;ver=1.2.6-1.1">sdl-mixer1.2_1.2.6-1.1</a>  [bob]<span>
+    &gt; /bin/sh ./libtool --mode=link cc  -g -Wall -O2 -I/usr/include/SDL -D_REENTRANT -DUSE_RWOPS -DCMD_MUSIC -DWAV_MUSIC -DMOD_MUSIC -I./mikmod -DMID_MUSIC -DUSE_TIMIDITY_MIDI -I./timidity -DUSE_NATIVE_MIDI -I./native_midi -DOGG_MUSIC -DMP3_MUSIC -I/usr/include/smpeg -I/usr/include/SDL -D_REENTRANT   -o libSDL_mixer.la -rpath /usr/lib -no-undefined -release 1.2 -version-info 2:4:2 -export-symbols-regex Mix_.* load_aiff.lo load_voc.lo load_ogg.lo mixer.lo music.lo music_cmd.lo music_ogg.lo wavestream.lo effect_position.lo effect_stereoreverse.lo effects_internal.lo mikmod/libmikmod.la timidity/libtimidity.la native_midi_gpl/libnativemidi_gpl.la  -lvorbisfile -lvorbis -logg -L/usr/lib -lsmpeg -L/usr/lib -lSDL -lpthread -L/usr/lib -lSDL -lpthread
+    &gt; grep: /usr/lib/libdirectfb.la: No such file or directory
+    &gt; /bin/sed: can't read /usr/lib/libdirectfb.la: No such file or directory
+    &gt; libtool: link: `/usr/lib/libdirectfb.la' is not a valid libtool archive
+    &gt; make[2]: *** [libSDL_mixer.la] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=smpeg-xmms&amp;ver=0.3.5-5">smpeg-xmms_0.3.5-5</a>  [bob]<span>
+    &gt;  gcc -DHAVE_CONFIG_H -I. -I. -I.. -I/usr/include/xmms -I/usr/include/gtk-1.2 -I/usr/include/glib-1.2 -I/usr/lib/glib/include -I/usr/X11R6/include -I/usr/include/SDL -D_REENTRANT -I/usr/include/smpeg -I/usr/include/SDL -D_REENTRANT -g -O2 -Wp,-MD,.deps/configure.pp -c configure.c  -fPIC -DPIC -o .libs/configure.o
+    &gt; /bin/sh ../libtool --mode=link gcc  -g -O2  -o libsmpeg_xmms.la -rpath /usr/lib/xmms/Input -module -avoid-version smpeg-xmms.lo configure.lo -L/usr/lib -lsmpeg -L/usr/lib -lSDL -lpthread
+    &gt; grep: /usr/lib/libdirectfb.la: No such file or directory
+    &gt; /bin/sed: can't read /usr/lib/libdirectfb.la: No such file or directory
+    &gt; libtool: link: `/usr/lib/libdirectfb.la' is not a valid libtool archive
+    &gt; make[3]: *** [libsmpeg_xmms.la] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=softmac-snapshot&amp;ver=20060125-2">softmac-snapshot_20060125-2</a>  [bob]<span>
+    &gt; dh_builddeb: I have no package to build
+    &gt;  dpkg-genchanges -B -mBob build daemon &lt;buildd@bob.debonaras.org&gt;
+    &gt; dpkg-genchanges: arch-specific upload - not including arch-independent packages
+    &gt; dpkg-genchanges: failure: cannot read files list file: No such file or directory
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=soqt&amp;ver=1.3.0-3">soqt_1.3.0-3</a>  [velnas]<span>
+    &gt; checking for Qt library devkit...  -L/usr/share/qt3/lib UNRESOLVED
+    &gt;
+    &gt; Could not find any way to build against the Qt library. If you
+    &gt; are sure Qt is properly installed on your system, see the file
+    &gt; config.log to find out what went wrong.
+    [...]
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=spamoracle&amp;ver=1.4-8">spamoracle_1.4-8</a>  [bob]<span>
+    &gt; dh_builddeb -s
+    &gt; dh_builddeb: I have no package to build
+    &gt;  dpkg-genchanges -B -mBob build daemon &lt;buildd@bob.debonaras.org&gt;
+    &gt; dpkg-genchanges: arch-specific upload - not including arch-independent packages
+    &gt; dpkg-genchanges: failure: cannot read files list file: No such file or directory
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=spplus&amp;ver=1.0-10">spplus_1.0-10</a>  [bob]<span>
+    &gt; dh_gencontrol
+    &gt; 	dpkg-gencontrol -ldebian/changelog -isp -Tdebian/php4-spplus.substvars -Pdebian/php4-spplus
+    &gt; dpkg-gencontrol: warning: unknown substitution variable ${misc:Depends}
+    &gt; dpkg-gencontrol: warning: can't parse dependency phpapi-Usage: /usr/bin/php-config4 [--prefix|--includes|--ldflags|--libs|--extension-dir|--version]
+    &gt; dpkg-gencontrol: error: error occurred while parsing Depends
+    &gt; dh_gencontrol: command returned error code 2304
+    &gt; make: *** [binary-arch] Error 1
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=tcm&amp;ver=2.20%2BTSQD-3">tcm_2.20+TSQD-3</a>  [bob]<span>
+    &gt; The following packages have unmet dependencies:
+    &gt;   lesstif2-dev: Depends: libxft-dev but it is not going to be installed
+    &gt; E: Broken packages
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=thy&amp;ver=0.9.4-1">thy_0.9.4-1</a>  [bob]<span>
+    &gt; cc -c  -I. -I../../../src -I.. -DPATCHLEVEL=\"4\" -DEXTRAVERSION=\"" Debian (armeb)"\" -D_GNU_SOURCE=1 -DSYSCONFDIR=\"/etc\" -DLIBDIR=\"/usr/lib\"  -Winline -Wshadow -Wpointer-arith -Wmissing-declarations -Wstrict-prototypes -Wmissing-prototypes -Wcast-qual -Wbad-function-cast  -Wchar-subscripts -Wcomment -Wformat -Wformat-nonliteral -Wformat-security -Wimplicit -Wmissing-braces -Wparentheses -Wswitch -Wunused  -g -O2 -D_FILE_OFFSET_BITS=64  -I../../../lib ../../../src/gzip.c -o gzip.o
+    &gt; ../../../src/gzip.c:57: error: 'gz_header' redeclared as different kind of symbol
+    &gt; /usr/include/zlib.h:124: error: previous declaration of 'gz_header' was here
+    &gt; ../../../src/gzip.c: In function 'thy_zlib_send':
+    &gt; ../../../src/gzip.c:115: warning: pointer targets in passing argument 1 of 'compress2' differ in signedness
+    &gt; make[2]: *** [gzip.o] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=thy-auth&amp;ver=0.3.0-1">thy-auth_0.3.0-1</a>  [bob]<span>
+    &gt; cc -c  -I. -I../../../../lib/compat -I../.. -DPATCHLEVEL=\"0\" -DEXTRAVERSION=\"\" -D_GNU_SOURCE=1 -DSYSCONFDIR=\"/etc\" -DLIBDIR=\"/usr/lib\"  -Winline -Wshadow -Wpointer-arith -Wmissing-declarations -Wstrict-prototypes -Wmissing-prototypes -Wcast-qual -Wbad-function-cast  -Wchar-subscripts -Wcomment -Wformat -Wformat-nonliteral -Wformat-security -Wimplicit -Wmissing-braces -Wparentheses -Wswitch -Wunused  -g -O2 -I../../../lib ../../../../lib/compat/compat.c -o compat.o
+    &gt; In file included from ../../../../lib/compat/compat.h:35,
+    &gt;                  from ../../../../lib/compat/compat.c:32:
+    &gt; /usr/include/errno.h:69: error: two or more data types in declaration specifiers
+    &gt; make[3]: *** [compat.o] Error 1
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=ultrapossum-slapd&amp;ver=0.0.4%2B2.2.20sb3-1">ultrapossum-slapd_0.0.4+2.2.20sb3-1</a>  [bob]<span>
+    &gt; ./scripts/test002-populate: line 45:  3521 Killed                  $SLAPD -f $CONF1 -h $URI1 -d $LVL $TIMING &gt;$LOG1 2&gt;&amp;1
+    &gt; ldapadd failed (255)!
+    &gt; ./scripts/test002-populate: line 49: kill: (3521) - No such process
+    &gt; &gt;&gt;&gt;&gt;&gt; ./scripts/test002-populate failed (exit 255)
+    &gt; make[6]: *** [bdb-yes] Error 255
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=webxml&amp;ver=1.12-1">webxml_1.12-1</a>  [velnas]<span>
+    &gt; g++ -c -g -Wall -O2 -pipe -DQT_NO_DEBUG -DQT_SHARED -I/usr/share/qt3/mkspecs/default -I. -I/usr/include/qt3 -I.ui/ -I. -I.moc/ -o .obj/main.o main.cpp
+    &gt; /usr/include/qt3/qstring.h: In member function 'ushort&amp; QChar::unicode()':
+    &gt; /usr/include/qt3/qstring.h:199: error: cannot bind packed field '((QChar*)this)-&gt;QChar::ucs' to 'ushort&amp;'
+    &gt; /usr/include/qt3/qnetworkprotocol.h: At global scope:
+    &gt; /usr/include/qt3/qnetworkprotocol.h:58: warning: 'class QNetworkProtocolFactoryBase' has virtual functions but non-virtual destructor
+    &gt; /usr/include/qt3/qfiledialog.h:78: warning: 'class QFilePreview' has virtual functions but non-virtual destructor
+    &gt; /usr/include/qt3/qtooltip.h:86: warning: 'class QToolTip' has virtual functions but non-virtual destructor
+    &gt; make[1]: *** [.obj/main.o] Error 1
+</span>
+</li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=wmcalc&amp;ver=0.3-2.2">wmcalc_0.3-2.2</a>  [bob]<span>
+    &gt; gcc -O2 -o wmcalc wmcalc.o readln.o wmcalcswitch.o wmcalcfunc.o -L/usr/lib/X11 -lX11 -lXpm -lXext -lm
+    &gt; /usr/bin/ld: cannot find -lX11
+    &gt; collect2: ld returned 1 exit status
+    &gt; make[1]: *** [wmcalc] Error 1
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://experimental.ftbfs.de/build.php?arch=armeb&amp;pkg=xcolors&amp;ver=1.5a-4">xcolors_1.5a-4</a>  [bob]<span>
+    &gt; install.man in . done
+    &gt; make[1]: Leaving directory `/build/buildd/xcolors-1.5a'
+    &gt; mv debian/xcolors/usr/share/man/man1/xcolors.1x debian/xcolors/usr/share/man/man1/xcolors.1
+    &gt; mv: cannot stat `debian/xcolors/usr/share/man/man1/xcolors.1x': No such file or directory
+    &gt; make: *** [binary-arch] Error 1
+</span>
+</li>
+
+   </ul>
+ </body>
+</html>

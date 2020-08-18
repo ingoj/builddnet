@@ -1,0 +1,94 @@
+#!/usr/bin/python2.3 
+
+import psycopg
+from os import linesep
+from string import *
+from time import *
+import cgi, sys, os
+import popen2
+
+homedir="/home/builddnet"
+f = open(homedir+"/conf.d/database.conf")
+while 1:
+	line = f.readline()
+	if len(line)==0: break
+	if line.count("host"):
+		host = split(line,"=")[1]
+	elif line.count("port"):
+		port = split(line,"=")[1]
+	elif line.count("username"):
+		username = split(line,"=")[1]
+	elif line.count("password"):
+		password = split(line,"=")[1]
+	elif line.count("database"):
+		database = split(line,"=")[1]
+
+
+#dsn = "dbname=buildd"
+dsn = "dbname=%s host=%s user=%s password=%s" % ( database, host, username, password )
+db = psycopg.connect(dsn)
+csr = db.cursor()
+
+
+
+def output_header():
+	dorc("Content-type: text/html")
+	dorc('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">')
+	dorc('')
+	dorc('<html>')
+	dorc('<head>')
+	dorc('<meta http-equiv="Content-Type" ')
+	dorc('content="text/html; charset=iso-8859-1">')
+	foo='<title>www.buildd.net status update - version %s</title>' % version
+	dorc(foo) 
+	dorc('</head>')
+	dorc('<body bgcolor="white" text="black">')
+	dorc('<p><font color="#000000" face="Verdana"><p>')
+	
+def output_tail():
+	dorc("</font></body></html>")
+
+
+def init(mode):
+	"""foo"""
+	
+	if form.has_key('email'):
+		search = "'%%%s%%'" % form['email'].value
+	elif form.has_key('name'):
+		search = "'%%%s%%'" % form['name'].value
+	
+	sqlcmd = "select package	
+
+
+#
+# Main
+# 
+
+form = cgi.FieldStorage()
+
+print form
+
+if form.has_key('mode'):
+	mode=form['mode'].value
+else:
+	sys.exit()
+
+output_header()
+init(mode)
+output_tail()
+
+#try:
+#	if form.has_key('update'): 
+#		name = form['update'].value
+#	elif form.has_key('stats'): 
+#		name = form['stats'].value
+#	else: 
+#		name = form['name'].value
+#except:
+#	pass
+
+
+db.close()
+sys.exit(0)
+
+	

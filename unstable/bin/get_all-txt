@@ -1,0 +1,83 @@
+#!/bin/sh -e
+
+# vim:ts=4:noet:nowrap:sts=4:sw=4:
+# $Id: $
+# Rick Younie <rick@def.debian.net>
+
+flavour=$1
+cd /home/younie/$flavour/listdir
+
+ARCHES=m68k
+#ALL="alpha arm hppa i386 ia64 m68k mips mipsel powerpc s390 sparc"
+#ALL="alpha hppa mips sparc"
+ALL=`cat /home/younie/$flavour/bin/archs`
+while [ $2 ]; do
+	case "$2" in
+		-h|--help )
+			echo "Usage: $(basename $0) [,all,arch1 arch2 ...]"
+			echo "  - default arch: m68k"
+			echo "  - all=$ALL"
+			exit 0
+			;;
+		all )
+			ARCHES=$ALL
+			;;
+		* )
+			ARCHES=$2
+			;;
+	esac
+	shift
+done
+
+#echo "..pull incoming file list from auric"
+rm -f index.html.old
+wget -q http://incoming.debian.org
+sed <index.html -e :a -ne 's/<[^>]*>//g;/</N;//ba' \
+	-ne 's/^ *\(.*\)\.dsc.*/\1/p' >incoming.txt
+mv index.html index.html.old
+
+#echo "..pulling Update Excuses"
+wget -q -N http://ftp-master.debian.org/testing/update_excuses.html
+sed <update_excuses.html -e :a -e 's/<[^>]*>//g;/</N;//ba' >update_excuses.txt
+
+#echo "..pulling Release Critical Bugs"
+wget -q -N http://bugs.debian.org/release-critical/debian/all.html
+#http://master.debian.org/~wakkerma/bugs/other/all.html
+sed <all.html -e :a -e 's/<[^>]*>//g;/</N;//ba' >all.txt
+
+#echo "..pulling Packages-arch-specific"
+#wget  -q -N http://buildd.debian.org/quinn-diff/Packages-arch-specific
+
+
+cd temp
+rm -f *
+#wget -N http://debian-amd64.alioth.debian.org/pure64/amd64-all.txt.bz2
+#wget -N http://bach.hpc2n.umu.se/pure64/amd64-all.txt.bz2
+#bzip2 -d amd64-all.txt.bz2
+wget -N  http://bluespice.dyndns.org/~ij/all.tar.bz2
+tar jxvf all.tar.bz2
+mv *-all.txt ../
+rm -f *
+cd ..
+
+#for ARCH in `echo $ARCHES| sed -e 's/amd64 //g'`; do
+#	echo "..wgeting ${ARCH}-all.txt"
+#	wget -q -N http://people.debian.org/~aba/arch-all/$ARCH-$flavour-all.txt
+#	mv $ARCH-$flavour-all.txt $ARCH-all.txt
+#done
+
+
+for ARCH in $ARCHES; do
+	echo "Processing $ARCH-all file"
+	/home/younie/$flavour/bin/do_all-list $ARCH
+done
+
+/home/younie/bin/nb-stats.sh $flavour 
+
+/home/younie/bin/generate-html.sh unstable
+
+
+#for arch in $arches; do
+# 	echo "${arch} buildd graph lines..."
+#	tail -n 1 /home/younie/listdir/${arch}-stats_full-history 
+#done

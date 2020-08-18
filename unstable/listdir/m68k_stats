@@ -1,0 +1,65 @@
+  wanna-build statistics - Fri Oct  2 19:52:35 CEST 2009
+  -----------------------------------------------------
+
+Distribution unstable:
+---------------------
+Installed       :  4878 (buildd_m68k-aahz: 28, buildd_m68k-akire: 103,
+                         buildd_m68k-arrakis: 153, buildd_m68k-crest: 137,
+                         buildd_m68k-cronos: 7, buildd_m68k-cybele: 14,
+                         buildd_m68k-elgar: 142, buildd_m68k-hobbes: 76,
+                         buildd_m68k-kiivi: 87, buildd_m68k-kullervo: 70,
+                         buildd_m68k-minthe: 94, buildd_m68k-phoebe: 49,
+                         buildd_m68k-poseidon: 469, buildd_m68k-q650: 22,
+                         buildd_m68k-spice: 248, buildd_m68k-tanda: 32,
+                         buildd_m68k-theia: 130, buildd_m68k-thing1: 16,
+                         buildd_m68k-thing2: 222, buildd_m68k-thing3: 9,
+                         buildd_m68k-vault13: 194, buildd_m68k-vivaldi: 127,
+                         buildd_m68k-washi: 6, buildd_m68k-zeus: 678,
+                         buildd_m68k-zlin1: 236, buildd_m68k-zlin2: 204,
+                         buildd_m68k-zlin3: 250, unknown: 1075)
+Needs-Build     :     0
+Building        :   398 (buildd_m68k-arrakis: 3, buildd_m68k-crest: 18,
+                         buildd_m68k-elgar: 12, buildd_m68k-kiivi: 3,
+                         buildd_m68k-kullervo: 36, buildd_m68k-poseidon: 32,
+                         buildd_m68k-vault13: 98, buildd_m68k-vivaldi: 5,
+                         buildd_m68k-zeus: 101, buildd_m68k-zlin1: 51,
+                         buildd_m68k-zlin2: 4, buildd_m68k-zlin3: 35)
+Uploaded        :     5 (buildd_m68k-arrakis: 4, buildd_m68k-hobbes: 1)
+Failed          :    56 (buildd_m68k: 9, buildd_m68k-arrakis: 3,
+                         buildd_m68k-crest: 3, buildd_m68k-elgar: 3,
+                         buildd_m68k-hobbes: 1, buildd_m68k-kiivi: 1,
+                         buildd_m68k-kullervo: 2, buildd_m68k-minthe: 2,
+                         buildd_m68k-poseidon: 4, buildd_m68k-spice: 1,
+                         buildd_m68k-theia: 2, buildd_m68k-thing1: 2,
+                         buildd_m68k-thing2: 1, buildd_m68k-vault13: 1,
+                         buildd_m68k-vivaldi: 3, buildd_m68k-zeus: 4,
+                         buildd_m68k-zlin1: 1, buildd_m68k-zlin2: 7,
+                         buildd_m68k-zlin3: 6)
+Dep-Wait        :  1182 (adeodato: 4, buildd_m68k: 34, buildd_m68k-akire: 4,
+                         buildd_m68k-alexandria: 4, buildd_m68k-arrakis: 4,
+                         buildd_m68k-crest: 4, buildd_m68k-cronos: 1,
+                         buildd_m68k-cybele: 2, buildd_m68k-elgar: 37,
+                         buildd_m68k-hobbes: 1, buildd_m68k-kiivi: 4,
+                         buildd_m68k-kullervo: 3, buildd_m68k-minthe: 8,
+                         buildd_m68k-phoebe: 1, buildd_m68k-poseidon: 69,
+                         buildd_m68k-spice: 24, buildd_m68k-tanda: 1,
+                         buildd_m68k-theia: 12, buildd_m68k-thing1: 6,
+                         buildd_m68k-thing2: 10, buildd_m68k-vault13: 16,
+                         buildd_m68k-vivaldi: 27, buildd_m68k-washi: 1,
+                         buildd_m68k-zeus: 86, buildd_m68k-zlin1: 31,
+                         buildd_m68k-zlin2: 80, buildd_m68k-zlin3: 104,
+                         pkern: 1, smarenka: 4, unknown: 598, vorlon: 1)
+Reupload-Wait   :     0
+Install-Wait    :     0
+Failed-Removed  :     3 (buildd_m68k-kiivi: 1, buildd_m68k-zlin3: 1,
+                         unknown: 1)
+Dep-Wait-Removed:     0
+Not-For-Us      :   172
+total           :  8227
+
+ 59.29% (4878) up-to-date,  59.35% (4883) including uploaded
+  0.00% (  0) need building
+  4.84% (398) currently building
+ 15.05% (1238) failed/dep-wait
+  0.04% (  3) old failed/dep-wait
+  2.09% (172) need porting or cause the buildd serious grief

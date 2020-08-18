@@ -1,0 +1,293 @@
+#!/usr/bin/python
+# -*- coding: latin-1 -*-
+#
+# Copyright (c) 2006, Ingo Juergensmann <ij@buildd.net>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# check_overdue.phtml comes with ABSOLUTELY NO WARRANTY
+#
+import os, sys, cgi
+from string import *
+import psycopg
+
+homedir="/home/builddnet"
+#os.environ['HOME']
+f = open(homedir+"/conf.d/database.conf")
+while 1:
+	line = f.readline()
+	if len(line)==0: break
+	if line.count("host"):
+		host = split(line,"=")[1]
+	elif line.count("port"):
+		port = split(line,"=")[1]
+	elif line.count("username"):
+		username = split(line,"=")[1]
+	elif line.count("password"):
+		password = split(line,"=")[1]
+	elif line.count("database"):
+		database = split(line,"=")[1]
+
+
+#dsn = "dbname=buildd user=builddnet"
+dsn = "dbname=%s host=%s user=%s password=%s" % ( database, host, username, password )
+db = psycopg.connect(dsn)
+csr = db.cursor()
+
+form = cgi.FieldStorage()
+
+if form.has_key('flavour'):
+	flavour = form['flavour'].value
+if form.has_key('arch'):
+	arch = form['arch'].value
+#if form.has_key('flavour'):
+#	flavour = form['flavour'].value
+
+i = 1
+res=""
+#flavour="unstable"			
+#arch="m68k"
+
+print "Content-type: text/html"
+print """
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+
+<HTML>
+<HEAD>
+  <TITLE>buildd.net - packages overdue check</TITLE>
+<!--META HTTP-EQUIV="Refresh" CONTENT="1800"-->
+</HEAD>
+<BODY text="#000000" bgcolor="#FFFFFF" link="#0000FF" vlink="#800080" alink="#FF0000">
+"""
+print '[<a href="http://%s.buildd.net/index-%s.html">back</a>]' % (flavour, arch)
+modes=['buildd', 'package', 'date']
+del modes[index(modes, form['mode'].value)]
+for mo in modes:
+	print ' [<a href="http://www.buildd.net/cgi/check_overdue.phtml?flavour=%s&arch=%s&mode=%s">%s</a>]' % ( flavour, arch, mo, mo)
+print """<center><table bgcolor="#f0f0f0" width=100%>
+        <th>"""
+print "                <font size=+3>%s/%s overdue</font>" % (arch, flavour)
+
+print """        </th>
+</table>
+</center>
+<p><br>
+<b>Legend:</b><br>
+<li>Arch, Buildd, Package, Version: should be obvious</li>
+<li>Building: timestamp when package state went from Needs-build to Building</li>
+<li>Overdue: time a package is overdue (building date + (2x avg buildtime>5d||5days))<br>
+red = package is overdue (time is positive, showing how much it's overdue)<br>
+black = package is within limit (time is negative, showing when it will become overdue)</li> 
+<p>
+Note: This is an experimental page - it's neither free of bugs nor complete!
+<p>
+"""
+
+def tableheader(mode):
+	print """
+	<table border=0 cellspacing=2 cellpadding=2>
+
+	<tr bgcolor="#c0c0c0">"""
+		#<!--td><b>Target</b></td>
+		#<td><b>Arch:</b></td-->
+	if mode=="buildd":
+		print '    <td><b>Buildd:</b></td>'
+		print '    <td><b>Package:</b></td>'
+		print '    <td><b>Version:</b></td>'
+		print '    <td><b>Building:</b></td>'
+		print '    <td><b>Overdue:</b></td>'
+	elif mode=="package":
+		print '    <td><b>Package:</b></td>'
+		print '    <td><b>Version:</b></td>'
+		print '    <td><b>Buildd:</b></td>'
+		print '    <td><b>Building:</b></td>'
+		print '    <td><b>Overdue:</b></td>'
+	elif mode=="date":
+		print '    <td><b>Building:</b></td>'
+		print '    <td><b>Overdue:</b></td>'
+		print '    <td><b>Buildd:</b></td>'
+		print '    <td><b>Package:</b></td>'
+		print '    <td><b>Version:</b></td>'
+
+		#<!--td><b>p/d:</b></td>
+		#<td><b>Admin:</b></td>
+		#<td><b>Building | <font color="#FF0000">Reason:</font></b></td>
+		#<td><b>hh:mm:ss:</b></td-->
+	print "</tr>"
+
+def tablefooter(count):
+	print """
+	    </tr>
+	  </table>"""
+	print "<p>Total: %s packages are overdue</p>" % count
+
+
+def archoutput(flavour, arch):
+	global i, form, res
+	if form.has_key('mode'):
+		mode = form['mode'].value
+	builddarray=[]
+	packagearray=[]
+	datearray=[]
+	bgcolor="#f8f8ff"
+	path = "/home/builddnet/%s/listdir/%s-all.txt" % (flavour,arch)
+	f = open(path, 'r')
+	while 1:
+		line = f.readline() 
+		#print line
+		if not line: break
+		if line.count("Building by"):
+			#print line
+			packageversion= os.path.basename(split(line, " ")[0])
+			package, version = split(packageversion, "_")
+			string = "buildd_%s-" % arch
+			buildd = replace(split(replace(split(line, " ", 1)[1], "Building by ", ""))[0], string, "")
+			version=str(version[0:len(version)-1])
+			nextline = f.readline()
+			if nextline.count("Previous state was Needs-Build"):
+				date = strip(replace(replace(nextline, "Previous state was Needs-Build until ", ""), "\n", ""))
+				sqlstart="select now() - ((timestamp '%s') + (case when (2*avg(endtime-begin))>interval '5days' then (2*avg(endtime-begin)) else interval '5days' end))" % (date)
+				sqlcmd = sqlstart+" from ptracker where packagename='%s' and version='%s' and buildd='%s'" % ( package, version, buildd )
+				csr.execute(sqlcmd)
+				sqlresult = csr.fetchone()
+				res=str(sqlresult[0])
+				if res=='None': 
+					sqlcmd = sqlstart+" from ptracker as p where p.packagename='%s' and p.version='%s' and p.arch='%s'" % ( package, version, arch )
+					csr.execute(sqlcmd)
+					sqlresult = csr.fetchone()
+					res=str(sqlresult[0])
+					if res=='None': 
+						sqlcmd = sqlstart+" from ptracker as p where p.arch='%s'" % (  arch )
+						csr.execute(sqlcmd)
+						sqlresult = csr.fetchone()
+				res=str(sqlresult[0])
+				#builddarray.append((buildd+","+package+","+version+","+date+","+res))
+				foo='%s %s %s %s %s' % (buildd,package,version,date,res)
+				bar=split(foo)
+				builddarray.append(bar)
+				packagearray.append(split(package+" "+version+" "+buildd+" "+date+" "+res))
+				datearray.append(split(date+" "+res+" "+buildd+" "+package+" "+version))
+							
+	#print "unsorted:<br>", builddarray,"<p>"
+	builddarray.sort()
+	packagearray.sort()
+	datearray.sort()
+	#print "sorted: <br>", builddarray, "<p>"
+	#print packagearray,"<p>"
+	#print datearray,"<p>"
+	#mode="package"
+	if mode=="buildd":
+		tableoutput(mode, builddarray)
+	elif mode=="package":
+		tableoutput(mode, packagearray)
+	elif mode=="date":
+		tableoutput(mode, datearray)
+	return
+	
+def tableoutput(mode, array):
+	global i, form, flavour, arch
+	#print mode
+	#print array, "<br>"
+	if form.has_key('buildd'):
+		formbuildd = form['buildd'].value
+	if not len(array): 
+		print '<font size=+1 color="#ff0000">No overdue packages found!</font>'
+		print '</body></html>'
+		sys.exit()
+	tableheader(mode)
+	for line in array:
+		#print line, "<br>" 
+		if form.has_key('buildd') and not line.count(formbuildd):
+			pass
+		else:
+			#i = i +1
+			k = i % 2 
+			if k == 1:
+				bgcolor="#f8f8ff"
+			else:
+				bgcolor="#e0e0f0" 
+			if mode=="buildd":
+				buildd  = line[0]
+				package = line[1]
+				version = line[2]
+				date	= join(line[3:7])
+				res 	= line[7]
+				if res.count(":")==3:
+					res=replace(res, ":", "d ", 1)
+				if res.count("-"):
+					fcolor="#000000"
+				else:
+					fcolor="#ff0000"
+				print '  <tr bgcolor="%s">' % bgcolor
+				#print '    <td>%s</td>' % arch
+				print '    <td><a href="http://www.buildd.net/cgi/check_overdue.phtml?flavour=%s&arch=%s&mode=%s&buildd=%s">%s</a></td>' % (flavour, arch, mode, buildd, buildd)
+				print '    <td><a href="http://buildd.net/cgi/ptracker.cgi?%s_pkg=%s&searchtype=%s">%s</a></td>' % (flavour, package, arch, package)
+				print '    <td>%s</td>' % version
+				print '    <td>%s</td>' % date
+				print '    <td><font color="%s">%s</td>' % (fcolor, res)
+				print '  </tr>'			
+				i = i +1
+			elif mode=="package":
+				buildd  = line[2]
+				package = line[0]
+				version = line[1]
+				date	= join(line[3:7])
+				res 	= line[7]
+				if res.count(":")==3:
+					res=replace(res, ":", "d ", 1)
+				if res.count("-"):
+					fcolor="#000000"
+				else:
+					fcolor="#ff0000"
+				print '  <tr bgcolor="%s">' % bgcolor
+				#print '    <td>%s</td>' % arch
+				print '    <td><a href="http://buildd.net/cgi/ptracker.cgi?%s_pkg=%s&searchtype=%s">%s</a></td>' % (flavour, package, arch, package)
+				print '    <td>%s</td>' % version
+				print '    <td><a href="http://www.buildd.net/cgi/check_overdue.phtml?flavour=%s&arch=%s&mode=%s&buildd=%s">%s</a></td>' % (flavour, arch, mode, buildd, buildd)
+				print '    <td>%s</td>' % date
+				print '    <td><font color="%s">%s</td>' % (fcolor, res)
+				print '  </tr>'			
+				i = i +1
+			elif mode=="date":
+				buildd  = line[5]
+				package = line[6]
+				version = line[7]
+				date	= join(line[0:4])
+				res 	= line[4]
+				if res.count(":")==3:
+					res=replace(res, ":", "d ", 1)
+				if res.count("-"):
+					fcolor="#000000"
+				else:
+					fcolor="#ff0000"
+				print '  <tr bgcolor="%s">' % bgcolor
+				#print '    <td>%s</td>' % arch
+				print '    <td>%s</td>' % date
+				print '    <td><font color="%s">%s</td>' % (fcolor, res)
+				print '    <td><a href="http://www.buildd.net/cgi/check_overdue.phtml?flavour=%s&arch=%s&mode=%s&buildd=%s">%s</a></td>' % (flavour, arch, mode, buildd, buildd)
+				print '    <td><a href="http://buildd.net/cgi/ptracker.cgi?%s_pkg=%s&searchtype=%s">%s</a></td>' % (flavour, package, arch, package)
+				print '    <td>%s</td>' % version
+				print '  </tr>'			
+				i = i +1
+
+
+	tablefooter(i)
+
+			
+archoutput(flavour, arch)
+
+print "</BODY></HTML>"
+
+

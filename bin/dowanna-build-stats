@@ -1,0 +1,18 @@
+#!/bin/sh
+set -x
+flavour=$1
+ARCH="$2"
+if [ -z "$ARCH" ]; then
+	ARCH='m68k'
+fi
+
+OD=/home/builddnet/$flavour/listdir
+OF=${OD}/${ARCH}_stats
+echo $OF
+echo >$OF -n "  wanna-build statistics - "
+date >>$OF
+echo >>$OF "  -----------------------------------------------------"
+echo >>$OF
+
+/home/builddnet/$flavour/bin/wanna-build-stats \
+	--file=/home/builddnet/$flavour/listdir/${ARCH}-all.txt >>$OF

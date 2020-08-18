@@ -1,0 +1,36 @@
+  wanna-build statistics - Fri Oct  2 19:52:20 CEST 2009
+  -----------------------------------------------------
+
+Distribution unstable:
+---------------------
+Installed       :  8044 (buildd_arm-allegri: 223, buildd_armel-all6500: 948,
+                         buildd_armel-all6500-2: 1057,
+                         buildd_armel-ancina: 1938, buildd_armel-arcadelt: 746,
+                         buildd_armel-argento: 786, buildd_armel-muscat: 1059,
+                         unknown: 1287)
+Needs-Build     :     0
+Building        :    90 (buildd_armel-all6500: 18, buildd_armel-all6500-2: 11,
+                         buildd_armel-ancina: 38, buildd_armel-arcadelt: 7,
+                         buildd_armel-argento: 8, buildd_armel-muscat: 8)
+Uploaded        :     0
+Failed          :    28 (buildd_arm-allegri: 2, buildd_armel-all6500: 2,
+                         buildd_armel-all6500-2: 4, buildd_armel-ancina: 4,
+                         buildd_armel-arcadelt: 4, buildd_armel-argento: 3,
+                         buildd_armel-muscat: 9)
+Dep-Wait        :    58 (buildd_arm-allegri: 2, buildd_armel-all6500: 11,
+                         buildd_armel-all6500-2: 3, buildd_armel-ancina: 2,
+                         buildd_armel-arcadelt: 2, buildd_armel-argento: 6,
+                         buildd_armel-muscat: 10, he: 1, pkern: 2, unknown: 19)
+Reupload-Wait   :     0
+Install-Wait    :     0
+Failed-Removed  :     0
+Dep-Wait-Removed:     0
+Not-For-Us      :    32
+total           :  8279
+
+ 97.16% (8044) up-to-date,  97.16% (8044) including uploaded
+  0.00% (  0) need building
+  1.09% ( 90) currently building
+  1.04% ( 86) failed/dep-wait
+  0.00% (  0) old failed/dep-wait
+  0.39% ( 32) need porting or cause the buildd serious grief

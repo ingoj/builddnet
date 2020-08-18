@@ -1,0 +1,29 @@
+  wanna-build statistics - Fri Oct  2 19:52:19 CEST 2009
+  -----------------------------------------------------
+
+Distribution unstable:
+---------------------
+Installed       :  8399 (buildd_amd64-brahms: 613,
+                         buildd_amd64-excelsior: 2130,
+                         buildd_amd64-nautilus: 112,
+                         buildd_i386-nautilus: 2194, unknown: 3350)
+Needs-Build     :     0
+Building        :     9 (buildd_amd64-brahms: 4, buildd_amd64-nautilus: 4,
+                         buildd_i386-nautilus: 1)
+Uploaded        :     0
+Failed          :    38 (buildd_amd64-brahms: 11, buildd_amd64-excelsior: 14,
+                         buildd_i386-nautilus: 13)
+Dep-Wait        :     1 (he: 1)
+Reupload-Wait   :     0
+Install-Wait    :     0
+Failed-Removed  :     0
+Dep-Wait-Removed:     0
+Not-For-Us      :     0
+total           :  8453
+
+ 99.36% (8399) up-to-date,  99.36% (8399) including uploaded
+  0.00% (  0) need building
+  0.11% (  9) currently building
+  0.46% ( 39) failed/dep-wait
+  0.00% (  0) old failed/dep-wait
+  0.00% (  0) need porting or cause the buildd serious grief

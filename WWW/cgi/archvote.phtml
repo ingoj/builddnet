@@ -1,0 +1,286 @@
+#!/usr/bin/python
+#
+# Copyright (c) 2005-2006, Ingo Juergensmann <ij@buildd.net>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# archvote.phtml comes with ABSOLUTELY NO WARRANTY
+#
+
+import psycopg
+from string import *
+from time import *
+import cgi, sys, os
+import popen2
+import tempfile
+import smtplib
+
+# mailserver connection
+smtp = smtplib.SMTP('localhost')
+
+homedir="/home/builddnet"
+f = open(homedir+"/conf.d/database.conf")
+while 1:
+	line = f.readline()
+	if len(line)==0: break
+	#print line
+	if line.count("host"):
+		host = split(line,"=")[1]
+	elif line.count("port"):
+		port = split(line,"=")[1]
+	elif line.count("username"):
+		username = split(line,"=")[1]
+	elif line.count("password"):
+		password = split(line,"=")[1]
+	elif line.count("database"):
+		database = split(line,"=")[1]
+
+
+dsn = "dbname=%s host=%s user=%s password=%s" % ( database, host, username, password )
+db = psycopg.connect(dsn)
+csr = db.cursor()
+
+error=0
+selected = ""
+
+archs=["alpha","amd64","arm","armeb", "armel", "hppa", "hurd-i386", "i386","ia64","kfreebsd-amd64","kfreebsd-i386","m32r","m68k","mips","mipsel","netbsd-alpha", "netbsd-i386", "powerpc","s390","sh","sparc"]
+
+# default text..
+maildate = strftime("Date: %a, %d %b %Y %H:%M:%S +0000", gmtime())
+mailfrom = '"Buildd.net" <archusercount@buildd.net>'
+footer   = "\n\nRegards,\nIngo Juergensmann"
+subject   = "User Arch registration on Buildd.net" # to prevent things like "MYCR - Ordnungsdienst am 07.04.2005 am 13.04.2005"
+body0	  = """You have been registered at buildd.net to be counted as user for a Debian arch port.\n"""
+	
+def init():
+	sqlcmd = "select arch, count(arch) from archvote group by arch order by arch"
+	csr.execute(sqlcmd)
+	sqlresult = csr.fetchall()
+	db.commit()
+	#print len(sqlresult)
+	
+	print '<table border="0"><td valign="top">'
+	print '  <table border="0">'
+	print '     <th colspan="3">Already registered:</th>'
+	for i in range(0, len(sqlresult)):
+		arch = sqlresult[i][0]
+		anz  = sqlresult[i][1]		
+		print '    <tr>'
+		print '      <td>'
+		print '        %s' % arch
+		print '      </td>'
+		print '      <td> &nbsp;: </td>'
+		print '      <td>'
+		print '        %s' % anz
+		print '      </td>'
+	print '  </table>'
+	print '</td><td width="50" valign="top">'
+	print '</td><td valign="top">'
+	print '<form action="archvote.phtml" method="post">'
+	print '  <table>'
+	print '     <th>Ports you use:</th>'
+	for arch in archs:
+		#print arch
+		print '    <tr>'
+		print '      <td>'
+		print '        <input type="checkbox" name="%s" value="true"> %s' % (arch, arch)
+		print '      </td>'
+		print '    </tr>'
+	print '  </table>'
+	print '</td><td width="100" valign="top">'
+	print '</td><td valign="top">'
+	print '     <b>Your personal data:</b><p>'
+	print '  Name:<br><input name="name" type="text" size="50"><p>'
+	print '  Mail:<br><input name="email" type="text" size="50"><p>'
+	print '  Dists:<br><input name="dists" type="text" size="50"><p>'
+	print '  Usage:<br><textarea name="usage" cols="50" rows="10"></textarea><p>'
+	print '  <input name="addentry" type="submit" value="Add me">' 
+	#print '   </tr>'
+	#print '  </table>'
+	print '</form>'
+	print '</table>'
+	return
+	
+def addentry():
+	
+	#print "<br> ADD ENTRY"
+	addedarch = 0
+	try: 
+		if form.has_key('id'):
+			passwd = form['id'].value
+			sqlcmd = "delete from archvote where passwd='%s'" % passwd
+			csr.execute(sqlcmd)
+			db.commit()
+	except:
+		return
+		
+	r, w = popen2.popen2('pwgen -1 -s 12')
+	while 1:
+		line = r.readline()
+		if not line: break
+		passwd = replace(line, "\n", "")
+		#print line
+	
+	if (form.has_key('name') and form.has_key('email')):
+		name 		= replace(replace(form['name'].value, "'", ""), "\\", "")
+		email 		= replace(replace(form['email'].value, "'", ""), "\\", "")
+		archstring  = ""
+		archvalue 	= ""
+		
+		if form.has_key('dists'):
+			dists 	= "'"+replace(replace(form['dists'].value, "'", ""), "\\", "")+"'"
+		else:
+			dists	= "Null"
+		if form.has_key('usage'):
+			usage 	= "'"+replace(replace(form['usage'].value, "'", ""), "\\", "")+"'"
+		else:
+			usage	= "Null"			
+		
+		for arch in archs: 
+			if form.has_key(arch):
+				archstring  = archstring +", %s" % arch 
+				archvalue	= archvalue + ", '%s'" % arch
+				#print archstring +"<br>"
+				#print archvalue + "<br>"
+				sqlcmd = "insert into archvote (name, email, arch, registered, passwd, dists, usage) values ('%s', '%s', '%s', now(), '%s', %s, %s)" % (name, email, arch, passwd, dists, usage)
+				#print sqlcmd+"<br>"	
+				csr.execute(sqlcmd)
+				db.commit()
+				addedarch = 1
+		body = "%s\nFrom: %s\nTo: %s\nSubject: %s\n" % ( maildate, mailfrom, email, subject )
+		body = body + body0 + """\nYou can click on the link below to update your registered archs or change your email address.\n\nhttp://www.buildd.net/cgi/archvote.phtml?id=%s""" % passwd
+		body = body + footer
+		#print mailfrom
+		#print email
+		#print subject
+		#print body
+		if addedarch == 1:
+			smtp.sendmail(mailfrom, email, body)
+			#pass
+	return
+
+def change():
+	global selected, archs
+	
+	try:
+		if form.has_key('id'):
+			passwd = form['id'].value
+		else:
+			return
+		sqlcmd = "select id, name, email, arch, passwd, dists, usage from archvote where passwd='%s'"  % passwd
+		csr.execute(sqlcmd)
+		#print sqlcmd
+		sqlresult = csr.fetchall()
+		#print "<br>",sqlresult
+
+		print '<form action="archvote.phtml" method="post">'
+		print '<table>'
+		print ' <td>'
+		print '  <table>'
+		print '     <th>Ports you use:</th>'
+		for iarch in archs:
+			for i in range(0, len(sqlresult)):
+				db_id = sqlresult[i][0]
+				db_name = sqlresult[i][1]
+				db_email = sqlresult[i][2]
+				db_arch = sqlresult[i][3]
+				db_passwd = sqlresult[i][4]
+				db_dists = sqlresult[i][5]
+				db_usage = sqlresult[i][6]
+				if db_arch == iarch: 
+					selected = " checked"
+					break
+				else:
+					selected = ""
+			print '    <tr>'
+			print '      <td>'
+			print '        <input type="checkbox" name="%s" value="true" %s> %s' % (iarch, selected, iarch)
+			print '      </td>'
+			print '    </tr>'
+		print '  </table>'
+		print ' </td><td width=100></td><td valign="top">'
+		print '     <b>Your personal data:</b><p>'
+		print '  <input name="id" type="hidden" value="%s">' % passwd
+		print '  Name:<br> <input name="name" type="hidden" value="%s" size="50">%s<p>' % (db_name, db_name)
+		print '  Mail:<br> <input name="email" type="text" size="50" value="%s"><p>' % db_email
+		print '  Dists:<br><input name="dists" type="text" size="50" value="%s"><p>' % db_dists
+		print '  Usage:<br><textarea name="usage" cols="50" rows="10">%s</textarea><p>' % db_usage
+		print '  <input name="addentry" type="submit" value="Update">' 
+		print ' </td>'
+		print '</table>'
+		print '</form>'
+	except:
+		return
+	return
+
+
+
+#
+# Main()
+#
+
+print "Content-type: text/html"
+print """
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" 
+content="text/html; charset=iso-8859-1">
+<title>www.buildd.net - ports user count</title>
+</head>
+<body bgcolor="white" text="black">
+<p><font color="#000000" face="Verdana"><p>
+<center>
+<table bgcolor="#f0f0f0" width=100%>
+        <th>
+                <H1 ALIGN=CENTER>Buildd.net</H1>
+        </th>
+</table>
+</center>
+<p><br>
+Since the Release Team published its Vancouver Proposal for future release requirements for the Debian ports, a port has to show at least a userbase of 50 users. Whereas this is obviously no problem for such ports like i386, amd64 or powerpc, it may be a problem for other archs.<br>
+Therefore this page exists where you can submit your Name, Email Address and your ports (or archs) that you are using in Debian life currently. Of course your data will be kept confidential - except for that purpose you registered here: to show the Release Team that there are such many users on your platform!<p><br>
+"""
+
+form = cgi.FieldStorage()
+#print form
+if form.has_key('change'):
+	change()
+elif form.has_key('addentry'):
+	addentry()
+	init()
+elif form.has_key('id'):
+	change()
+else:
+	init()
+print """
+<br><p>
+<font color="#c08080">
+Note:<br></font>
+<font color="#808080">
+Please don't abuse this survey! You will only damaging the Debian Ports with faked data.<br>
+Select the archs, you are using, enter your full name and a valid email address. A short info mail will be sent to that email address in order to enable you later to change your settings.
+Sadly, the Vancouver proposal is not very clear about what a &quot;user&quot; is, how often a machine is being used or if that machine is only used to act for some services (e.g. nameserver, dhcp or mail). So you have the possibility to shortly describe your usage of your used machines. This can be an important information especially for such archs like arm, m68k or mips(el), whereas it is not that important for i386 or amd64, as I think. The usage information may be anonymized and made public.<br>
+Furthermore you can give information about your used dists like sid, testing, stable.<p>
+Thank you for participating!<br>Ingo Juergensmann, Thu Oct  6 12:42:10 CEST 2005
+</font>
+"""
+print "</font></body></html>"
+
+db.close()
+sys.exit(0)
+
+	

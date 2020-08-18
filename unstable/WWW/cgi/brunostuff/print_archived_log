@@ -1,0 +1,14 @@
+#!/bin/sh
+
+cat << .
+Content-type: text/html
+
+<html><head><title>pkg: $log   </title>
+</head>
+<body>
+<pre>
+.
+
+cd /home/buildd/old-logs
+
+tar -Oxzf $(echo $QUERY_STRING |sed -n 's/tarball=\(.*\)\&log=\(.*\)/\1 \2/p')

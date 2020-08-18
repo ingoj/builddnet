@@ -1,0 +1,29 @@
+  wanna-build statistics - Fri Oct  2 19:52:21 CEST 2009
+  -----------------------------------------------------
+
+Distribution unstable:
+---------------------
+Installed       :  7804 (bdale: 1, buildd-sarti: 27, buildd_hppa-bld3: 885,
+                         buildd_hppa-paer: 963, buildd_hppa-penalosa: 1936,
+                         buildd_hppa-peri: 3610, buildd_hppa-sarti: 200,
+                         unknown: 182)
+Needs-Build     :     2
+Building        :   285 (buildd_hppa-paer: 63, buildd_hppa-penalosa: 25,
+                         buildd_hppa-peri: 197)
+Uploaded        :     0
+Failed          :    23 (buildd_hppa-paer: 4, buildd_hppa-penalosa: 11,
+                         buildd_hppa-peri: 8)
+Dep-Wait        :     2 (buildd_hppa-penalosa: 1, he: 1)
+Reupload-Wait   :     0
+Install-Wait    :     0
+Failed-Removed  :     0
+Dep-Wait-Removed:     0
+Not-For-Us      :    11
+total           :  8267
+
+ 94.40% (7804) up-to-date,  94.40% (7804) including uploaded
+  0.02% (  2) need building
+  3.45% (285) currently building
+  0.30% ( 25) failed/dep-wait
+  0.00% (  0) old failed/dep-wait
+  0.13% ( 11) need porting or cause the buildd serious grief

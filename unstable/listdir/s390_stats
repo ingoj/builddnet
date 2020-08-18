@@ -1,0 +1,28 @@
+  wanna-build statistics - Fri Oct  2 19:52:40 CEST 2009
+  -----------------------------------------------------
+
+Distribution unstable:
+---------------------
+Installed       :  7991 (buildd_s390-debian-31: 2519, buildd_s390-debian01: 63,
+                         buildd_s390-l003092: 3, buildd_s390-lxdebian: 3391,
+                         gt: 10, unknown: 2005)
+Needs-Build     :     0
+Building        :    97 (buildd_s390-debian-31: 50, buildd_s390-lxdebian: 47)
+Uploaded        :     0
+Failed          :    49 (buildd_s390-debian-31: 19, buildd_s390-lxdebian: 29,
+                         unknown: 1)
+Dep-Wait        :    34 (buildd_s390-debian-31: 10, buildd_s390-lxdebian: 17,
+                         he: 1, kroeckx: 1, pkern: 1, unknown: 4)
+Reupload-Wait   :     0
+Install-Wait    :     0
+Failed-Removed  :     2 (buildd_s390-debian-31: 1, buildd_s390-lxdebian: 1)
+Dep-Wait-Removed:     0
+Not-For-Us      :    54
+total           :  8241
+
+ 96.97% (7991) up-to-date,  96.97% (7991) including uploaded
+  0.00% (  0) need building
+  1.18% ( 97) currently building
+  1.01% ( 83) failed/dep-wait
+  0.02% (  2) old failed/dep-wait
+  0.66% ( 54) need porting or cause the buildd serious grief

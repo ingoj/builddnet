@@ -1,0 +1,15 @@
+a:link { text-decoration:none; font-weight:normal; color:#404080; }
+a:visited { text-decoration:none; font-weight:normal; color:#606060; }
+a:hover { text-decoration:none; font-weight:normal; background-color:#FFFF00; }
+a:active { text-decoration:none; font-weight:normal; background-color:#CCFFFF; }
+LI[class="empty"] {
+   list-style-type:none;
+}
+
+LI[class="packageinfo"],span {
+   white-space:pre;
+}
+
+LI[class="packageinfo"],LI[class="buildhost"],span {
+   font-family:monospace;
+}

@@ -1,0 +1,26 @@
+  wanna-build statistics - Fri Oct  2 19:52:18 CEST 2009
+  -----------------------------------------------------
+
+Distribution unstable:
+---------------------
+Installed       :  8077 (buildd_alpha-escher: 16, buildd_alpha-goedel: 2450,
+                         buildd_alpha-goetz: 5112, rmurray-lully: 38,
+                         unknown: 461)
+Needs-Build     :     0
+Building        :    29 (buildd_alpha-goedel: 13, buildd_alpha-goetz: 16)
+Uploaded        :     0
+Failed          :    93 (buildd_alpha-goedel: 37, buildd_alpha-goetz: 56)
+Dep-Wait        :     1 (he: 1)
+Reupload-Wait   :     0
+Install-Wait    :     0
+Failed-Removed  :     1 (buildd_alpha-goetz: 1)
+Dep-Wait-Removed:     0
+Not-For-Us      :     8
+total           :  8289
+
+ 97.44% (8077) up-to-date,  97.44% (8077) including uploaded
+  0.00% (  0) need building
+  0.35% ( 29) currently building
+  1.13% ( 94) failed/dep-wait
+  0.01% (  1) old failed/dep-wait
+  0.10% (  8) need porting or cause the buildd serious grief

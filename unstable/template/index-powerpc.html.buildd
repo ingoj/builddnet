@@ -1,0 +1,49 @@
+<p><table border=0 cellspacing=2 cellpadding=2>
+
+	<tr bgcolor="#c0c0c0">
+		<td><b>H B</b></td>
+		<td><b>Name:</b></td>
+		<!--td><b>Host:</b></td-->
+		<td><b>Model:</b></td>
+		<td><b>CPU:</b></td>
+		<td><b>RAM:</b></td>
+		<td><b>Disk:</b></td>
+		<td><b>p/d:</b></td>
+		<td><b>Admin:</b></td>
+		<td><b>Building | <font color="#FF0000">Reason:</font></b></td>
+		<td><b>hh:mm:ss:</b></td>
+	</tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/grey.png" alt="not participating">
+         &nbsp;        </td>
+       <td>malo</td>
+       <td>Apple PowerMac</td>
+       <td>Dual G4 PowerPC 500MHz</td>
+       <td align="right">512M</td>
+       <td align="right">18G</td>
+       <td align="right">0.00</td>
+       <td><a href="mailto:pkern@debian.org">Philipp Kern</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#e0e0f0>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td>voltaire</td>
+       <td>Apple PowerMac</td>
+       <td>Dual G4 7400 500 MHz</td>
+       <td align="right">320M</td>
+       <td align="right">80G</td>
+       <td align="right">0.00</td>
+       <td><a href="mailto:wouter@debian.org">Wouter Verhelst</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+</table>
+<center>the colors of the LEDs are explained in the <a href="http://www.buildd.net/faq/">FAQ</a></center>

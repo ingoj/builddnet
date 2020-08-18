@@ -1,0 +1,238 @@
+#!/usr/bin/python2.3
+
+import psycopg
+from os import linesep
+from string import *
+from time import sleep
+import cgi, sys
+import popen2
+
+dsn = "dbname=buildd"
+db = psycopg.connect(dsn)
+csr = db.cursor()
+
+error=0
+	
+
+def init():
+	"""call this if no dbid is given..."""
+	global error
+	print form
+	try: 
+		name = form['update'].value
+	except: 
+		name = form['name'].value
+	passwd = form['p'].value
+
+	print name, passwd
+	sqlcmd = "select name from buser where name='%s' and clear='%s'" % (name, passwd)
+	csr.execute(sqlcmd)
+	sqlresult = csr.fetchone()
+	dbname = sqlresult[0]
+	print "* ", sqlresult
+	if dbname<>name: 
+		print "NAK"
+		return
+	if form.has_key("update"): 
+		print "running in if", dbname
+		update(name)
+		print "after update"
+	#sqlcmd = "select status, interval from status where name='%s'" % (name)
+	#csr.execute(sqlcmd)
+	#sqlresult = csr.fetchone()
+	#print sqlresult
+	#old_status = sqlresult[0]
+	#print old_status
+	#if (old_status>=10 and old_status<20):
+	#	offset=10
+	#elif (old_status>=20 and old_status<99990):
+	#	offset=20
+	#elif old_status==99999:
+	#	offset=0
+	#else:
+	#	offset=0
+	#interval=sqlresult[1]
+	#try:
+	#	if not len(interval):
+	#		interval="0:00:00"
+	#except:
+	#	interval="0:00:00"
+	#sqlcmd = "update status set status='%i', lastseen='now', interval=('%s'+('now'-(select lastseen from status where name='%s')))/2 where name='%s'" % ( offset+2, interval, name, name )
+	#csr.execute(sqlcmd)
+	
+	#if reason<>"none" and reason<>"":
+	#	sqlcmd = "update status set reason='%s' where name='%s'" % ( reason, name )
+	#	csr.execute(sqlcmd)
+	#elif reason=="none":
+	#	sqlcmd = "update status set reason=null where name='%s'" % ( name )
+	#	csr.execute(sqlcmd)
+	#print sqlcmd
+	db.commit()
+	print "before try reason"
+	try:
+		reason = form['reason'].value	
+	except:
+		reason="none"
+	if form.has_key('reason'):
+		f_reason(name, reason)
+	print "before try building"
+	#try:
+	if form.has_key('building'):
+		building = form['building'].value	
+		f_building(name, building)
+		print "running before building()"
+	#except:
+	#	building=""
+	print "OK init"
+	return
+
+def f_reason(name, reason):
+	"""call this if no dbid is given..."""
+	global error
+	#print form
+	#try: 
+	#	name = form['update'].value
+	#except: 
+	#	name = form['name'].value
+	#passwd = form['p'].value
+	#try:
+	#	reason = form['reason'].value
+	#except:
+	#	reason="none"
+	#sqlcmd = "select name from buser where name='%s' and clear='%s'" % (name, passwd)
+	#csr.execute(sqlcmd)
+	#sqlresult = csr.fetchone()
+	#dbname = sqlresult[0]
+	#if dbname<>name: 
+	#	print "NAK"
+	#	return
+	if reason=="none": # or reason<>""):
+		sqlcmd = "update status set reason=null where name='%s'" % ( name )
+		csr.execute(sqlcmd)
+	elif reason<>"none":
+		sqlcmd = "update status set reason='%s' where name='%s'" % ( reason, name )
+		csr.execute(sqlcmd)
+	print sqlcmd
+	db.commit()
+	#print "OK reason"
+	return
+
+
+def f_building(name, building):
+	"""call this if no dbid is given..."""
+	global error
+	#print form
+	#try: 
+	#	name = form['update'].value
+	#except: 
+	#	name = form['name'].value
+	#passwd = form['p'].value
+	#try:
+	#	building = form['building'].value
+	#except:
+	#	building = "none"
+	#sqlcmd = "select name from buser where name='%s' and clear='%s'" % (name, passwd)
+	#csr.execute(sqlcmd)
+	#sqlresult = csr.fetchone()
+	#dbname = sqlresult[0]
+	#if dbname<>name: 
+	#	print "NAK"
+	#	return
+
+	if (building=="" or building==" "):
+		sqlcmd = "update status set building=null where name='%s'" % ( name )
+		csr.execute(sqlcmd)
+	elif building<>"none":
+		sqlcmd = "update status set building='%s' where name='%s'" % ( building, name )
+		csr.execute(sqlcmd)
+	print sqlcmd
+	db.commit()
+	#print "OK building"
+	return
+
+def update(name):
+	"""call this if no dbid is given..."""
+	global error
+	#print form
+	#try: 
+	#	name = form['update'].value
+	#except: 
+	#	name = form['name'].value
+	#passwd = form['p'].value
+	#sqlcmd = "select name from buser where name='%s' and clear='%s'" % (name, passwd)
+	#csr.execute(sqlcmd)
+	#sqlresult = csr.fetchone()
+	#dbname = sqlresult[0]
+	#if dbname<>name: 
+	#	print "NAK"
+	#	return
+	sqlcmd = "select status, interval from status where name='%s'" % (name)
+	csr.execute(sqlcmd)
+	sqlresult = csr.fetchone()
+	print sqlresult
+	old_status = sqlresult[0]
+	print old_status
+	if (old_status>=10 and old_status<20):
+		offset=10
+	elif (old_status>=20 and old_status<99990):
+		offset=20
+	elif old_status==99999:
+		offset=0
+	else:
+		offset=0
+	interval=sqlresult[1]
+	try:
+		if not len(interval):
+			interval="0:00:00"
+	except:
+		interval="0:00:00"
+	sqlcmd = "update status set status='%i', lastseen='now', interval=('%s'+('now'-(select lastseen from status where name='%s')))/2 where name='%s'" % ( offset+2, interval, name, name )
+	csr.execute(sqlcmd)
+	db.commit()
+	#if form.has_key('reason'):
+	#	f_reason()
+	#print "OK"
+	return
+	
+
+
+
+#
+# Main()
+#
+
+print "Content-type: text/html"
+print """
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" 
+content="text/html; charset=iso-8859-1">
+<title>www.buildd.net status update</title>
+</head>
+<body bgcolor="white" text="black">
+<p><font color="#000000" face="Verdana"><p>
+
+"""
+
+form = cgi.FieldStorage()
+#if form.has_key('reason'):
+#	f_reason()
+#if form.has_key('update'):
+#	update()
+#elif form.has_key('name'):
+#	f_reason()
+#else: 
+init()
+
+#if (task == "init" or task == "done"):
+#	init()
+#elif (task == "reason" and not 
+
+print "</font></body></html>"
+
+db.close()
+sys.exit(0)
+
+	

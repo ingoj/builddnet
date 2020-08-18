@@ -1,0 +1,66 @@
+<p><table border=0 cellspacing=2 cellpadding=2>
+
+	<tr bgcolor="#c0c0c0">
+		<td><b>H B</b></td>
+		<td><b>Name:</b></td>
+		<!--td><b>Host:</b></td-->
+		<td><b>Model:</b></td>
+		<td><b>CPU:</b></td>
+		<td><b>RAM:</b></td>
+		<td><b>Disk:</b></td>
+		<td><b>p/d:</b></td>
+		<td><b>Admin:</b></td>
+		<td><b>Building | <font color="#FF0000">Reason:</font></b></td>
+		<td><b>hh:mm:ss:</b></td>
+	</tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=armeb&searchtype=bob">bob</a></td>
+       <td>Linksys NSLU2</td>
+       <td>IXP420 266MHz</td>
+       <td align="right">32M</td>
+       <td align="right">10G</td>
+       <td align="right">18.06</td>
+       <td><a href="mailto:wouter@grep.be">Wouter Verhelst</a></td>
+       <td>
+      <a href="http://buildd.net/cgi/ptracker.cgi?unstable_pkg=monotone_0.30-1&searchtype=armeb">monotone_0.30-1</a>
+
+       </td>
+       <td>475d11:41:51</td>
+    </tr>
+    <tr bgcolor=#e0e0f0>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=armeb&searchtype=velnas">velnas</a></td>
+       <td>PC</td>
+       <td>IXP420 266MHz</td>
+       <td align="right">32M</td>
+       <td align="right">250G</td>
+       <td align="right">13.08</td>
+       <td><a href="mailto:wouter@debian.org">Wouter Verhelst</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=armeb&searchtype=wendy">wendy</a></td>
+       <td>Linksys NSLU2</td>
+       <td>IXP420 266MHz</td>
+       <td align="right">32M</td>
+       <td align="right">10G</td>
+       <td align="right">16.35</td>
+       <td><a href="mailto:wouter@grep.be">Wouter Verhelst</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+</table>
+<center>the colors of the LEDs are explained in the <a href="http://www.buildd.net/docs/faq.html">FAQ</a></center>

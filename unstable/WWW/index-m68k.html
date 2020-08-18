@@ -1,0 +1,609 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+  <link rel="stylesheet" href="http://buildd.net/builddnet.css" type="text/css" />
+  <TITLE>buildd.net</TITLE>
+<META HTTP-EQUIV="Refresh" CONTENT="1800">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</HEAD>
+<BODY text="#000000" bgcolor="#FFFFFF" link="#0000FF" vlink="#800080" alink="#FF0000">
+<table border="0" width="100%">
+  <tr>
+    <td align="left" width="20%">
+      [<a href="http://www.buildd.net/">home</a>] [<a href="http://www.buildd.net/cgi/feedback.phtml">feedback</a>]<br>
+	  [<a href="http://blog.windfluechter.net">ij's blog</a>] <font color="#ff0000"></font>
+    </td>
+    <td align="center" width="60%">
+	  
+	  [<a href="http://backports.buildd.net/index-m68k.html">backports</a>]
+	  [<a href="http://etch-secure.buildd.net/index-m68k.html">etch-secure</a>]
+	  [<a href="http://experimental.buildd.net/index-m68k.html">experimental</a>]
+	  [<a href="http://non-free.buildd.net/index-m68k.html">non-free</a>]
+	  [<a href="http://volatile.buildd.net/index-m68k.html">etch-volatile</a>]
+	  [skolelinux]
+	  [<a href="http://unstable.buildd.net/index-m68k.html">unstable</a>]
+    </td>
+    <td align="right" width="20%">
+      [<a href="http://www.buildd.net/cgi/badmin.phtml">buildd admin login</a>]<br>
+	  [<a href="http://www.buildd.net/cgi/devel-systems.phtml">devel systems</a>] 
+    </td>
+  </tr>
+</table>
+<p><p><p>
+<!--center><h2>important notes here!</h2></center>
+<p>
+<br>
+<p><hr-->
+<table bgcolor="#f0f0f0" width=100%>
+	<th>
+		<center><font size=+3>m68k/unstable</font></center>
+	</th>
+</table>
+
+<p>
+<center>
+[<a href=http://unstable.buildd.net/index-alpha.html>alpha</a>]
+[<a href=http://unstable.buildd.net/index-amd64.html>amd64</a>]
+[<a href=http://unstable.buildd.net/index-arm.html>arm</a>]
+[<a href=http://unstable.buildd.net/index-armel.html>armel</a>]
+[<a href=http://unstable.buildd.net/index-hppa.html>hppa</a>]
+[<a href=http://unstable.buildd.net/index-hurd-i386.html>hurd-i386</a>]
+[<a href=http://unstable.buildd.net/index-i386.html>i386</a>]
+[<a href=http://unstable.buildd.net/index-ia64.html>ia64</a>]
+[<a href=http://unstable.buildd.net/index-kfreebsd-amd64.html>kfreebsd-amd64</a>]
+[<a href=http://unstable.buildd.net/index-kfreebsd-i386.html>kfreebsd-i386</a>]
+[<a href=http://unstable.buildd.net/index-m32r.html>m32r</a>]
+[<a href=http://unstable.buildd.net/index-m68k.html>m68k</a>]
+[<a href=http://unstable.buildd.net/index-mips.html>mips</a>]
+[<a href=http://unstable.buildd.net/index-mipsel.html>mipsel</a>]
+[<a href=http://unstable.buildd.net/index-powerpc.html>powerpc</a>]
+[<a href=http://unstable.buildd.net/index-s390.html>s390</a>]
+[<a href=http://unstable.buildd.net/index-sparc.html>sparc</a>]
+</center>
+
+<!-- (was after [m68k]; can't nest) <input type="submit" name="searchtype" value="[all]"> -->
+
+<!-- add important notes here: -->
+<p><hr><p>
+<!--font color="#FF0000"-->
+<center>
+<p><b>Buildd.Net is looking for help. If you're interested and have
+some spare time to spent, <a
+href="http://www.buildd.net/cgi/feedback.phtml">contact us</a>!</b></p>
+<font color="#FF0000">
+<b>Some news for buildd.net:</b>
+<table><td>
+  <li> <a href="http://www.buildd.net/cgi/devel-systems.phtml">developer systems</a> added.</li>
+  <li> <a href="http://www.buildd.net/cgi/nowbuilding.cgi">lots of</a> <a href="http://buildd.net/cgi/ptracker.cgi?unstable_pkg=binutils&searchtype=m68k">statistics</a> <a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=aahz">available</a></li>
+</td><td>
+&nbsp;
+</td><td>
+  <li> <a href="http://www.buildd.net/cgi/archvote.phtml">ArchVote page</a> added</li>
+  <li> <font color="#ff0000">new v0.96 </font><a href="http://buildd.net/files/update-buildd.net">status update script</a></li>
+</td>
+</table>
+<!--buildd.net is under (re)construction - things may break - please stay tuned
+-->
+</font>
+</center>
+<!-- end of comment -->
+<p>
+<hr>
+<p>
+<center>
+<form action="http://www.buildd.net/cgi/package_status" method=get>
+  Package status
+  <input type="text" name="unstable_pkg" size=30>
+  <input type="submit" name="searchtype" value="m68k">
+  <input type="submit" name="searchtype" value="all">
+  <input type="hidden" name="arch" value="m68k">
+</form>
+</center>
+<p>
+<hr>
+<p>
+<table cellpadding=20>
+  <tr valign="top">
+    <td align="left">
+	  <table width="200" valign="top">
+Current m68k status:
+<p>
+<ul>
+<li> <nobr><a href="http://unstable.buildd.net/buildd/m68k_Needs-Build_stringsorted.html">Needs-Build</a>
+&nbsp;(<a href="http://unstable.buildd.net/buildd/m68k_Needs-Build_queueorder.html">queue&nbsp;order</a>)</nobr>
+<li> <a href="http://unstable.buildd.net/buildd/m68k_Building.html">Building</a>
+<li> <a href="http://unstable.buildd.net/buildd/m68k_Uploaded.html">Uploaded</a>
+</ul>
+<p>
+<ul>
+<li> <a href="http://unstable.buildd.net/buildd/m68k_Dep-Wait.html">Dep-Wait</a>
+<li> <a href="http://unstable.buildd.net/buildd/m68k_Failed.html">Failed</a>
+<li> <a href="http://unstable.buildd.net/buildd/m68k_Not-For-Us.html">Not-For-Us</a>
+</ul>
+<p>
+<ul>
+<li> <a href="http://unstable.buildd.net/buildd/m68k_Dep-Wait-Removed.html">Dep-Wait-Removed</a>
+<li> <a href="http://unstable.buildd.net/buildd/m68k_Failed-Removed.html">Failed-Removed</a>
+</ul>
+<p>
+<ul>
+<li> <a href="http://unstable.buildd.net/buildd/m68k_Installed.html">Installed</a>
+</ul>
+<a href="http://unstable.buildd.net/buildd/m68k_stats">summary</a> (<a href="http://unstable.buildd.net/buildd/m68k_stats.html">HTML</a>)
+ | <a href="http://buildd.debian.org/stats/graph-week-big.png">graph</a>
+ | <a href="http://unstable.buildd.net/buildd/m68k-all.txt">raw data</a>
+<br>Needs-Build queue ETA:<br> 
+      </table>
+	</td>
+	<td align="center">
+check:<br><p><p>
+<!--a href="buildd/Needs-Build_stats.png">graph</a--><br>
+<a href="http://www.buildd.net/cgi/check_overdue.phtml?flavour=unstable&arch=m68k&mode=package">check</a><br>
+<a href="http://www.buildd.net/cgi/check_uploaded.phtml?flavour=unstable&arch=m68k&mode=package">check</a--><br>
+<p>
+<a href="http://www.buildd.net/cgi/check_depwait.phtml?flavour=unstable&arch=m68k&mode=package">check</a><br>
+<a href="http://www.buildd.net/cgi/check_failed.phtml?flavour=unstable&arch=m68k&mode=package">check</a><br>
+<!--a href="buildd/Not-For-Us_stats.png">graph</a--><br>
+<p>
+<!--a href="buildd/Dep-Wait-Removed_stats.png">graph</a--><br>
+<!--a href="buildd/Failed-Removed_stats.png">graph</a--><br>
+<p>
+<a href="http://www.buildd.net/cgi/check_installed.phtml?flavour=unstable&arch=m68k&mode=package">check</a--><br>
+	</td>
+
+	<td align="center">
+all archs:<br><p><p>
+<a href="buildd/Needs-Build_stats.png">graph</a><br>
+<a href="buildd/Building_stats.png">graph</a><br>
+<a href="buildd/Uploaded_stats.png">graph</a><br>
+<p>
+<a href="buildd/Dep-Wait_stats.png">graph</a><br>
+<a href="buildd/Failed_stats.png">graph</a><br>
+<a href="buildd/Not-For-Us_stats.png">graph</a><br>
+<p>
+<a href="buildd/Dep-Wait-Removed_stats.png">graph</a><br>
+<a href="buildd/Failed-Removed_stats.png">graph</a><br>
+<p>
+<a href="buildd/Installed_stats.png">graph</a><br>
+	</td>
+	<td align="left">
+	  <table valign="top">
+
+
+Needs doing
+
+<p>
+<ul>
+<li><a href="http://unstable.buildd.net/buildd/update_excuses.html">update excuses</a>
+  |   <a href="http://unstable.buildd.net/buildd/m68k-update_excuses.html">m68k update excuses</a>
+<li><a href="http://unstable.buildd.net/buildd/all.html">Release Critical Bugs</a>
+<!--
+ | <a href="http://unstable.buildd.net/buildd/m68k_rc.html">m68k RC Bugs</a>
+<p>
+<a href="http://auric.debian.org/~pb/shame/m68k.html">another, nice looking m68k update excuses</a>
+-->
+<li><a href="http://incoming.debian.org/">Incoming</a>
+  |   <a href="http://unstable.buildd.net/buildd/incoming.txt">new source</a>
+  |   <a href="http://unstable.buildd.net/buildd/tobuild.html">accepted</a>
+
+<li>Quinn diff output for
+<a href="http://buildd.debian.org/quinn-diff/output/stable/by_priority_split-m68k.txt">stable</a> and
+<a href="http://buildd.debian.org/quinn-diff/output/unstable/by_priority_split-m68k.txt">unstable</a>
+<li><a href="http://unstable.buildd.net/buildd/Packages-arch-specific">Packages-arch-specific</a>
+</ul>
+<ul> 
+   <li>Check packages that are overdue (sorted by):<br><a href="http://www.buildd.net/cgi/check_overdue.phtml?flavour=unstable&arch=m68k&mode=buildd">buildd</a> | <a href="http://www.buildd.net/cgi/check_overdue.phtml?flavour=unstable&arch=m68k&mode=package">package</a> | <a href="http://www.buildd.net/cgi/check_overdue.phtml?flavour=unstable&arch=m68k&mode=date">date</a></li>
+   <!--li>Dep-Wait check (sorted by):<br><a href="http://www.buildd.net/cgi/check_depwait.phtml?flavour=unstable&arch=m68k&mode=buildd">buildd</a> | <a href="http://www.buildd.net/cgi/check_depwait.phtml?flavour=unstable&arch=m68k&mode=package">package</a> | <a href="http://www.buildd.net/cgi/check_depwait.phtml?flavour=unstable&arch=m68k&mode=wait">depwait</a></li-->
+   <li><a href="http://buildd.debian.org/stats/graph2-week-big.png">Keeping-Up graph</a> | <a href="http://buildd.debian-ports.org/stats/graph2-week-big.png">debian-ports</a></li>
+   <li><a href="buildd/m68k_stats.png">combined graphs</a> for this arch</li>
+</ul>
+<p>
+Based on wanna-build dump from buildd.debian.org,<br> generated at: Fri Oct  2 19:42:11 UTC 2009      </table>
+	</td>
+  </tr>
+</table>
+<p>
+<hr>
+<p>
+
+<p><table border=0 cellspacing=2 cellpadding=2>
+
+	<tr bgcolor="#c0c0c0">
+		<td><b>H B</b></td>
+		<td><b>Name:</b></td>
+		<!--td><b>Host:</b></td-->
+		<td><b>Model:</b></td>
+		<td><b>CPU:</b></td>
+		<td><b>RAM:</b></td>
+		<td><b>Disk:</b></td>
+		<td><b>p/d:</b></td>
+		<td><b>Admin:</b></td>
+		<td><b>Building | <font color="#FF0000">Reason:</font></b></td>
+		<td><b>hh:mm:ss:</b></td>
+	</tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/green.png" alt="up">
+         <img src="http://www.buildd.net/pix/grey.png" alt="idle">        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=zlin1">zlin1</a></td>
+       <td>Aranym</td>
+       <td>i386</td>
+       <td align="right">64M</td>
+       <td align="right">1G</td>
+       <td align="right">6.29</td>
+       <td><a href="mailto:smarenka@debian.org">Stephen Marenka</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#e0e0f0>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/green.png" alt="up">
+         <img src="http://www.buildd.net/pix/yellow.png" alt="NO-DAEMON-PLEASE">        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=zlin2">zlin2</a></td>
+       <td>Aranym</td>
+       <td>i386</td>
+       <td align="right">64M</td>
+       <td align="right">1G</td>
+       <td align="right">5.73</td>
+       <td><a href="mailto:smarenka@debian.org">Stephen Marenka</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/green.png" alt="up">
+         <img src="http://www.buildd.net/pix/grey.png" alt="idle">        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=zlin3">zlin3</a></td>
+       <td>Aranym</td>
+       <td>i386</td>
+       <td align="right">64M</td>
+       <td align="right">1G</td>
+       <td align="right">7.68</td>
+       <td><a href="mailto:smarenka@debian.org">Stephen Marenka</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#e0e0f0>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=theia">theia</a></td>
+       <td>Aranym</td>
+       <td>Dual 1.8 GHz</td>
+       <td align="right">750M</td>
+       <td align="right">12G</td>
+       <td align="right">9.58</td>
+       <td><a href="mailto:smarenka@debian.org">Stephen Marenka</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=garkin">garkin</a></td>
+       <td>Atari Falcon CT60</td>
+       <td>68060/95</td>
+       <td align="right">512M</td>
+       <td align="right">40G</td>
+       <td align="right">4.82</td>
+       <td><a href="mailto:cts@debian.org">Christian T. Steigies</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#e0e0f0>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/grey.png" alt="not participating">
+         &nbsp;        </td>
+       <td>hobbes</td>
+       <td>Atari Falcon CT60</td>
+       <td>68060/95</td>
+       <td align="right">512M</td>
+       <td align="right">4G</td>
+       <td align="right">0.00</td>
+       <td><a href="mailto:schmitz@debian.org">Michael Schmitz</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=vault13">vault13</a></td>
+       <td>Amiga 1200</td>
+       <td>68060/50</td>
+       <td align="right">256M</td>
+       <td align="right">40G</td>
+       <td align="right">4.01</td>
+       <td><a href="mailto:smarenka@debian.org">Stephen Marenka</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#e0e0f0>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=aahz">aahz</a></td>
+       <td>Amiga 2000</td>
+       <td>68060/50</td>
+       <td align="right">128M</td>
+       <td align="right">24G</td>
+       <td align="right">6.43</td>
+       <td><a href="mailto:cts@debian.org">Christian T. Steigies</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=akire">akire</a></td>
+       <td>Amiga 2000</td>
+       <td>68060/50</td>
+       <td align="right">128M</td>
+       <td align="right">4G</td>
+       <td align="right">5.10</td>
+       <td><a href="mailto:smurf@debian.org">Matthias Urlichs</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#e0e0f0>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/green.png" alt="up">
+         <img src="http://www.buildd.net/pix/grey.png" alt="idle">        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=arrakis">arrakis</a></td>
+       <td>Amiga 3000</td>
+       <td>68060/50</td>
+       <td align="right">128M</td>
+       <td align="right">10G</td>
+       <td align="right">5.86</td>
+       <td><a href="mailto:wouter@debian.org">Wouter Verhelst</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/green.png" alt="up">
+         <img src="http://www.buildd.net/pix/grey.png" alt="idle">        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=crest">crest</a></td>
+       <td>Amiga 4000</td>
+       <td>68060/50</td>
+       <td align="right">128M</td>
+       <td align="right">48G</td>
+       <td align="right">3.48</td>
+       <td><a href="mailto:luk@debian.org">Luk Claes</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#e0e0f0>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=elgar">elgar</a></td>
+       <td>Amiga 4000</td>
+       <td>68060/50</td>
+       <td align="right">128M</td>
+       <td align="right">23G</td>
+       <td align="right">5.08</td>
+       <td><a href="mailto:smarenka@debian.org">Stephen Marenka</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/green.png" alt="up">
+         <img src="http://www.buildd.net/pix/grey.png" alt="idle">        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=kullervo">kullervo</a></td>
+       <td>Amiga 3000UX</td>
+       <td>68060/50</td>
+       <td align="right">128M</td>
+       <td align="right">18G</td>
+       <td align="right">3.23</td>
+       <td><a href="mailto:roman@debian.org">Roman Hodek</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#e0e0f0>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/green.png" alt="up">
+         <img src="http://www.buildd.net/pix/grey.png" alt="idle">        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=vivaldi">vivaldi</a></td>
+       <td>Amiga 4000T</td>
+       <td>68060/50</td>
+       <td align="right">128M</td>
+       <td align="right">14G</td>
+       <td align="right">5.42</td>
+       <td><a href="mailto:smarenka@debian.org">Stephen Marenka</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/green.png" alt="up">
+         <img src="http://www.buildd.net/pix/grey.png" alt="idle">        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=kiivi">kiivi</a></td>
+       <td>Mac Quadra 840AV</td>
+       <td>68040/40</td>
+       <td align="right">128M</td>
+       <td align="right">9G</td>
+       <td align="right">3.94</td>
+       <td><a href="mailto:wouter@debian.org">Wouter Verhelst</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#e0e0f0>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=tanda">tanda</a></td>
+       <td>Mac Quadra 840AV</td>
+       <td>68040/40</td>
+       <td align="right">128M</td>
+       <td align="right">9G</td>
+       <td align="right">5.28</td>
+       <td><a href="mailto:cts@debian.org">Christian T. Steigies</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/green.png" alt="up">
+         <img src="http://www.buildd.net/pix/grey.png" alt="idle">        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=spice">spice</a></td>
+       <td>Amiga 3000</td>
+       <td>68040/40</td>
+       <td align="right">64M</td>
+       <td align="right">14G</td>
+       <td align="right">6.94</td>
+       <td><a href="mailto:smarenka@debian.org">Stephen Marenka</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#e0e0f0>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=poseidon">poseidon</a></td>
+       <td>Mac Quadra 950</td>
+       <td>68040/33</td>
+       <td align="right">144M</td>
+       <td align="right">9G</td>
+       <td align="right">4.87</td>
+       <td><a href="mailto:smarenka@debian.org">Stephen Marenka</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=zeus">zeus</a></td>
+       <td>Mac Quadra 950</td>
+       <td>68040/33</td>
+       <td align="right">80M</td>
+       <td align="right">9G</td>
+       <td align="right">4.92</td>
+       <td><a href="mailto:smarenka@debian.org">Stephen Marenka</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#e0e0f0>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td>q650</td>
+       <td>Mac Quadra 650</td>
+       <td>68040/33</td>
+       <td align="right">64M</td>
+       <td align="right">1G</td>
+       <td align="right">0.00</td>
+       <td><a href="mailto:schmitz@debian.org">Michael Schmitz</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=thing2">thing2</a></td>
+       <td>Mac Centris</td>
+       <td>68040/25</td>
+       <td align="right">136M</td>
+       <td align="right">1G</td>
+       <td align="right">12.64</td>
+       <td><a href="mailto:smarenka@debian.org">Stephen Marenka</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+</table>
+<center>the colors of the LEDs are explained in the <a href="http://www.buildd.net/faq/">FAQ</a></center>
+<p>
+<hr>
+<p>Other useful information:<br>
+<li><a href="http://wiki.debian.org/DebianM68kPorting">http://wiki.debian.org/DebianM68kPorting</a> - this page tracks current issues with the m68k port.</li>
+<li><a href="http://wiki.debian.org/DebianInstallerM68kTodo">http://wiki.debian.org/DebianInstallerM68kTodo</a> - this page tracks DebianInstaller development for the m68k port.</li>
+<li>You can find some porters either on #debian-68k or on #debian-devel on irc.debian.org as well.</li>
+<p>
+<li>crest has the full range of chroots available to Debian Developers, kullervo only on request.<br>
+The login message explains how to access them.  Write the <a href="mailto:debian-68k@lists.debian.org" title="[buildd] ">m68k-build list</a> to have things installed/removed.</li>
+<br>
+Note: it can take several minutes to connect with SSH2 to a 68060 equipped machine.
+<p>
+Donation-/Sponsor-Notes:
+<ul>
+  <li>Crest, as a public machine, was donated to the Debian Project by Anton Emmerfors. It is named for Klaus 'crest' Burkert. <a href="./dedication.html">(more..)</a></li>
+  <li>Crest, Kullervo and Elgar are hosted by <a href="http://www.nmmn.de/">NMMN Hamburg</a>.
+  <!--li>A4000t was donated by Robert Hardy.</li-->
+  <li>Akire was donated for usage by Matthias Kr&ouml;niger (<a href="http://www.sichtwerk-optik.de/">Sichtwerk Augenoptik</a>,  N&uuml;rnberg) and is hosted by <a href="http://www.noris.net">noris network AG</a>, N&uuml;rnberg.</li>
+  <li>Arrakis, Elgar, Spice and Vivaldi are donated for usage by <a href="http://www.windfluechter.net/">Ingo J&uuml;rgensmann</a>.</li>
+  <li>Vault13 was donated by Tuomas Vainikka.</li>
+  <!--li>Washi was donated by Mark Duckworth (atari-source.com).</li-->
+  <li>Kiivi was donated by Meelis Roos and is hosted by <a href="http://www.cyber.ee/">Cybernetica AS</a> in Tartu, Estonia.</li>
+  <li>Cronos, Diablos, Hades, and Promethus are donated for usage by Michael Casadevall</li>
+</ul>
+<p>
+<p>
+<hr>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="3265244">
+<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="">
+<img alt="" border="0" src="https://www.paypal.com/de_DE/i/scr/pixel.gif" width="1" height="1">
+</form>
+<hr><p>
+<script type="text/javascript"><!--
+google_ad_client = "pub-9455891676587920";
+/* Buildd-Net 3: 728x15, created 3/24/09 */
+google_ad_slot = "5510610734";
+google_ad_width = 728;
+google_ad_height = 15;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</p>
+<a href="http://www.blogoscoop.net/blog/4555"><img src="http://stats.blogoscoop.net/4555/4.gif" alt="blogoscoop" border="0" width="1" height="1" /></a>
+<p>Last modified: Fri Oct 2 20:00:08 CEST 2009</BODY></HTML>

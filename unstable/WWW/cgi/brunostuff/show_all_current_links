@@ -1,0 +1,269 @@
+#!/usr/bin/regina
+/*
+ vim:ts=4:noet:wrap:sts=4:sw=4:
+ $Id: show_all_current_links,v 1.5 2001/10/13 19:17:39 root Exp root $
+ * Rick Younie <younie@home.com>
+-+-
+show urls for m68k, last 14 days that match pattern
+-*-
+ *
+QUERY_STRING="pkg=kdebase&searchtype=[all]" ./show_all_current_links
+  - command line test
+ *
+ */
+	TRACE OFF
+	SIGNAL ON HALT
+	SIGNAL OFF ERROR
+	SIGNAL ON FAILURE
+	SIGNAL ON NOVALUE
+	SIGNAL ON SYNTAX
+
+/* -------------------------------------------------------------------
+ *	  constants
+ */
+	lf		= '0a'x
+	cr		= '0d'x
+	globals = 'lf cr opt.'
+	timeout	= 30
+	logdir	= '/var/www/logs/'
+	bd_list	= '/var/www/logs/build_daemons.txt'
+
+/* -------------------------------------------------------------------
+ * typical query string:
+    pkg=fred&searchtype=[m68k]
+	pkg=fred&searchtype=[all] -- new boa encodes
+ *
+ * 
+ */
+MAIN:
+
+	if chdir(logdir) <> 0 then call EX 1,'..could not chdir to' logdir
+
+	/* set path to the external function directory */
+	call value 'REGINA_MACROS', '/usr/lib/searchscripts','SYSTEM'
+
+	querystring = getenv('QUERY_STRING')
+	parse var querystring 'pkg=' pkg_vers '&'
+
+	/* boa has started encoding - arm/cyberhqz need a clean vers for match */
+	pkg_vers = changestr('%2B',pkg_vers,'+')
+	pkg_vers = changestr('%3A',pkg_vers,':')
+
+	parse var pkg_vers pkg '_' vers
+	targ = pkg
+	if vers <> '' then do
+		parse var vers vers '_'
+		parse var vers vers '.dsc'
+		targ = targ'_'vers
+	end
+	title = targ
+
+	/* escape for egrep */
+	targ = changestr('+',targ,'\+')
+	targ = changestr('.',targ,'\.')
+
+	parse var querystring '&searchtype=' searchtype '&'
+	if searchtype = '[all]' | searchtype = '%5Ball%5D' then filepat = ''
+	else filepat = 'M'	/* default (i.e. just <ret> rather than mouseclick */
+
+	say 'Content-type: text/html'cr
+	say cr
+
+	say '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">'
+	say '<html><head><title>' title '</title></head>'
+	say '<BODY text="#000000" bgcolor="#FFFFFF" link="#0000FF" vlink="#800080" alink="#FF0000">'
+
+	if targ = '' then call OKX '..need a package'
+
+	/* get the site and path that goes with the machine name */
+	call READURLS
+
+	/* look for "pkg_ or "./pkg_ because if epoch, then: <a href="./kdebase_ */
+	'egrep ''"'targ'_|"./'targ'_''' filepat'* >FIFO'
+
+	mach.0 = queued()
+	do i = 1 to mach.0
+		parse pull mach.i ':' . '<a href="' link.i '">' . '/a>' . . size.i .
+
+		/* going to sort on date||time of logfile */
+		parse var link.i name '_' version '_' date.i '<'
+		/* if pos(':',version) <> 0 then parse var version ':' version */
+		showlink.i = version
+
+		date.i = changestr('<',date.i,'')
+	end
+
+	do i = 1 to mach.0
+		mach = mach.i
+
+		/* m68k pages have a starting M so egrep finds them easier */
+		if abbrev(mach,'M') then showmach = 'm68k ['substr(mach,2)']'
+		else showmach = mach
+
+		push date.i '<li><a href="http://'site.mach||path.mach||link.i'">'showlink.i'</a>' '('showmach')' right(size.i,5)
+	end
+
+	/* add bug URL */
+	say '<h3>'title
+	/* put d.o bug link on the top of the page */
+	say '<a href="http://bugs.debian.org/'pkg'">[bug page]</a>'
+/*
+	/* and source URL */
+	call popen 'ppack -P unstable -sn' pkg,'s.'
+	if s.0 > 0 then say '  <a href="'s.1'">[source]</a>'
+ */
+	say '</h3>'
+
+	if filepat = '' then say '<h3><i>m68k/ppc/sparc/hppa/ia64</i></h3>'
+	else say '<h3><i>m68k</i></h3>'
+
+	q = queued()
+	if q = 0 then say '..no hits'
+	else do
+		say '<ul>'
+		do i = 1 to queued()
+
+			'LIFO> sort -rn >FIFO'
+			do queued()
+				parse pull . link
+				say link
+			end
+		end
+		say '</ul>'
+	end
+
+	/* don't add arm/cyber link if m68k */
+	if filepat = '' then do
+		call DOCYBERHQZ pkg vers
+		call DOARM pkg vers
+	end
+
+
+	exit 0
+
+
+READURLS: PROCEDURE EXPOSE (globals) displayname. site. path. bd_list
+
+	site. = ''; path. = ''
+	do while lines(bd_list) > 0
+		line = linein(bd_list)
+		if line = '' | abbrev(line,'#') then iterate
+		parse var line mach site path .
+		site.mach = site
+		path.mach = path
+	end
+
+	return
+
+DOARM: PROCEDURE EXPOSE (globals) timeout
+
+	parse arg pkg vers
+
+	ret = GETPAGE('buildd.armlinux.org','/~buildd/build.php?pkg='pkg'&arch=arm',timeout)
+	parse var sockbuff '<ul>' sockbuff '</ul>'
+	i = 0
+	do while sockbuff <> ''
+		parse var sockbuff '<li>' line '<li>' +0 sockbuff
+		/* <a href="http://...">4:2.2.0-final-3</a> */
+		if vers <> '' then if pos('>'vers'<',line) = 0 then iterate
+		i = i + 1
+		line = changestr('href="',line,'href="http://buildd.armlinux.org/~buildd/')
+		l.i = changestr(' build at ',line,', ')
+	end
+	l.0 = i
+	if l.0 > 0 then do
+		say '<h3><i>arm</i></h3>'
+		say '<ul>'
+		do i = l.0 to max(1,l.0-4) by -1
+			say '<li>'l.i
+		end
+		say '</ul>'
+	end
+
+	return
+
+DOCYBERHQZ: PROCEDURE EXPOSE (globals) timeout
+
+	parse arg pkg vers
+
+	ret = GETPAGE('www.cyberhqz.com','/~rmurray/buildd/build.php?arch=&pkg='pkg,timeout)
+
+	parse var sockbuff '<ul>' sockbuff '</ul>'
+	i = 0
+	do while sockbuff <> ''
+		parse var sockbuff '<li>' line '<li>' +0 sockbuff
+		/* <a href="http://www.cyberhqz...=log">4:2.2.0-final-3 (mips)</a> */
+		if vers <> '' then if pos('>'vers' ',line) = 0 then iterate
+		i = i + 1
+		line = changestr('href="',line,'href="http://www.cyberhqz.com/~rmurray/buildd/')
+		l.i = changestr(' build at ',line,', ')
+	end
+	l.0 = i
+	if l.0 > 0 then do
+		say '<h3><i>alpha/mips/mipsel</i></h3>'
+		say '<ul>'
+		do i = l.0 to max(1,l.0-8) by -1
+			say '<li>'l.i
+		end
+		say '</ul>'
+	end
+
+	return
+
+/* will need this for arm */
+GETPAGE: PROCEDURE EXPOSE (globals) sockbuff
+
+	SIGNAL ON HALT NAME CTRL_3
+
+	parse arg site,url,timeout,header,dots
+
+	/* pull a page of hits */
+	return = PULLPAGE(site, url, timeout, header, dots)
+	parse var return errnum ',' sockbuff
+
+	if errnum = -3 then msg = '  ..no rxsock function library'
+	else if errnum = -2 then msg = '  ..timeout'
+	else if errnum = -1 then msg = '  ..CTRL-C'
+	else if errnum > 0 then msg = '  ..socket error:' errnum
+	else msg = errnum
+
+	return msg
+CTRL_3:
+	return '^C'
+
+/* -------------------------------------------------------------------
+ * if the usage line starts with '!' it is interpreted
+ *	to allow variable substitution
+ */
+USAGE:
+	do i = 3 to 10
+		line = sourceline(i)
+		if left(line,3) <> '-+-' then iterate i
+		do j = i + 1 for 50
+			line = sourceline(j)
+			if left(line,3) = '-*-' then leave i
+			if left(line,1) <> '!' then say line
+			else interpret substr(line,2)
+		end j
+	end i
+QUIT:
+	exit 0
+
+NOVALUE:
+FAILURE:
+SYNTAX:
+ERROR:
+HALT:
+	call lineout 'stderr',,
+		 condition('C') 'error, line' SIGL': "'condition('D')'"'
+	exit 1
+EX:
+	parse arg ret,err
+	call lineout 'stderr', err
+	exit ret
+OKX:
+	parse arg err
+	say err
+CLEANUP:
+	say '</body>'
+	exit 0

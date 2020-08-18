@@ -1,0 +1,34 @@
+#!/bin/sh -e
+#
+# look up a package's status in the m68k-all.txt file
+
+PKG=$(echo $QUERY_STRING |sed -e 's/.*pkg=\([^&]*\).*/\1/')
+PKG=${PKG%%_*}
+
+cat << .
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+Content-type: text/html
+<head>
+<title>$PKG</title>
+</head>
+
+
+<body bgcolor="#ffffff" text="#000000">
+<pre>
+
+.
+
+if [ -z $PKG ];then
+	echo " ..need a pkg[_vers]"
+else
+	HIT=$(sed -n "/\/${PKG}_/,/^[/a-z0-9A-Z]/p" ~buildd/listdir/m68k-all.txt |sed '$d')
+	if [ -z "$HIT" ]; then
+		echo " $PKG not registered"
+	else
+		echo "$HIT"
+	fi
+fi
+
+echo '</pre></body>'
+
+exit 0

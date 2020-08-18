@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>input/powerpc-all.txt Failed -- 2009-10-02 19:43:55</title>
+  <link rel="stylesheet" href="http://buildd.net/builddnet.css" type="text/css" />
+ </head>
+ <body>
+  <h1>Failed -- 49 -- 2009-10-02 19:43:55 input/powerpc-all.txt</h1>
+   <hr />
+   <ul>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=adolc&amp;ver=1.10.2-3">adolc_1.10.2-3</a>  [buildd_powerpc-voltaire]<span>
+    &gt; dpkg-gensymbols: warning: some new symbols appeared in the symbols file: see diff output below
+    &gt; dpkg-gensymbols: warning: debian/tmp/DEBIAN/symbols doesn't match completely debian/libadolc0.symbols
+    &gt; --- dpkg-gensymbolsOWGkkI	2009-01-12 17:51:35.000000000 +0000
+    &gt; +++ dpkg-gensymbols0vArM4	2009-01-12 17:51:35.000000000 +0000
+    &gt; @@ -203,8 +203,12 @@
+    &gt;   _ZNK8badouble5valueEv@Base 1.10.1
+    &gt;   _ZNK9badoublevixERK5along@Base 1.10.1
+    [...]
+  Previous state was Build-Attempted until 2009 Jan 13 13:21:51
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=asterisk-addons&amp;ver=1.4.7-1">asterisk-addons_1.4.7-1</a>  [buildd_powerpc-voltaire]<span>
+    &gt; gcc -o menuselect menuselect.o strcompat.o menuselect_stub.o mxml/libmxml.a mxml/libmxml.a
+    &gt; make[3]: Leaving directory `/build/buildd/asterisk-addons-1.4.7/menuselect'
+    &gt; make[2]: Leaving directory `/build/buildd/asterisk-addons-1.4.7/menuselect'
+    &gt; Generating input for menuselect ...
+    &gt; menuselect/menuselect --check-deps   menuselect.makeopts
+    &gt; Generating embedded module rules ...
+    &gt;    [CC] chan_ooh323.c -&gt; chan_ooh323.o
+    &gt; chan_ooh323.c:89: warning: initialization from incompatible pointer type
+    &gt; chan_ooh323.c: In function 'ooh323_new':
+    &gt; chan_ooh323.c:261: error: 'struct ast_channel' has no member named 'lock'
+    [...]
+  Previous state was Build-Attempted until 2009 Aug 22 06:49:40
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=barnowl&amp;ver=1.3-1">barnowl_1.3-1</a>  [buildd_powerpc-malo]<span>
+    fails test suite
+  Previous state was Building until 2009 Aug 23 10:58:18
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=beast&amp;ver=0.7.1-5.1">beast_0.7.1-5.1</a>  [buildd_powerpc-voltaire]<span>
+    &gt;  g++ -DBIRNET_LOG_DOMAIN=\"BIRNET\" -I. -I. -I.. -I.. -I.. -I. -I. -pthread -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -D_BIRNET_SOURCE_EXTENSIONS -Wall -g -O3 -g -DG_ENABLE_DEBUG -Wdeprecated -Wno-cast-qual -pipe -ftracer -finline-functions -fno-keep-static-consts -MT birnetthreadimpl.lo -MD -MP -MF .deps/birnetthreadimpl.Tpo -c birnetthreadimpl.cc  -fPIC -DPIC -o .libs/birnetthreadimpl.o
+    &gt; birnetthreadimpl.cc: In function 'void* Birnet::g_atomic_pointer_get(volatile void**)':
+    &gt; birnetthreadimpl.cc:1496: error: invalid conversion from 'void* volatile*' to 'volatile void**'
+    &gt; birnetthreadimpl.cc:1496: error:   initializing argument 1 of 'void* Birnet::g_atomic_pointer_get(volatile void**)'
+    &gt; make[4]: *** [birnetthreadimpl.lo] Error 1
+  Previous state was Build-Attempted until 2009 Sep 02 08:00:27
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=calibre&amp;ver=0.5.14%2Bdfsg-1">calibre_0.5.14+dfsg-1</a>  [buildd_powerpc-voltaire]<span>
+    &gt; running gui
+    &gt; Traceback (most recent call last):
+    &gt;   File "setup.py", line 193, in &lt;module&gt;
+    &gt;     'publish' : upload,
+    &gt;   File "/usr/lib/python2.5/distutils/core.py", line 151, in setup
+    &gt;     dist.run_commands()
+    &gt;   File "/usr/lib/python2.5/distutils/dist.py", line 974, in run_commands
+    &gt;     self.run_command(cmd)
+    &gt;   File "/usr/lib/python2.5/distutils/dist.py", line 994, in run_command
+    &gt;     cmd_obj.run()
+    &gt;   File "/usr/lib/python2.5/distutils/command/build.py", line 113, in run
+    &gt;     self.run_command(cmd_name)
+    &gt;   File "/usr/lib/python2.5/distutils/cmd.py", line 333, in run_command
+    &gt;     self.distribution.run_command(command)
+    &gt;   File "/usr/lib/python2.5/distutils/dist.py", line 994, in run_command
+    &gt;     cmd_obj.run()
+    &gt;   File "/build/buildd/calibre-0.5.14+dfsg/upload.py", line 269, in run
+    &gt;     self.build_forms()
+    &gt;   File "/build/buildd/calibre-0.5.14+dfsg/upload.py", line 302, in build_forms
+    &gt;     from PyQt4.uic import compileUi
+    &gt;   File "/usr/lib/pymodules/python2.5/PyQt4/uic/__init__.py", line 5, in &lt;module&gt;
+    &gt;     from PyQt4.QtCore import PYQT_VERSION_STR
+    &gt; RuntimeError: the sip module implements API v5.0 but the PyQt4.QtCore module requires API v4.0
+    &gt; /bin/sh: line 1: 30634 Segmentation fault      python$buildver setup.py build --build-base="/build/buildd/calibre-0.5.14+dfsg/./build"
+    &gt; make: *** [debian/python-module-stampdir/calibre-bin] Error 139
+  Previous state was Build-Attempted until 2009 Jun 22 11:58:20
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=caret&amp;ver=5.6.1%7Edfsg.1-4">caret_5.6.1~dfsg.1-4</a>  [buildd_powerpc-malo]<span>
+    <a href="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=520867">#520867</a>
+  Previous state was Building until 2009 May 06 20:59:11
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=dolfin&amp;ver=0.9.2-1">dolfin_0.9.2-1</a>  [buildd_powerpc-malo]<span>
+    &gt; scons: done reading SConscript files.
+    &gt; scons: *** No targets specified and no Default() targets found.  Stop.
+  Previous state was Building until 2009 Sep 02 08:05:59
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=ecasound2.2&amp;ver=2.6.0-1">ecasound2.2_2.6.0-1</a>  [buildd_powerpc-malo]<span>
+    &gt; libtool: link: cannot find the library `/usr/lib/libogg.la' or unhandled argument `/usr/lib/libogg.la'
+    &gt; make[4]: *** [libecasound.la] Error 1
+  Previous state was Building until 2009 Aug 22 06:52:39
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=eclipse&amp;ver=3.4.1-1">eclipse_3.4.1-1</a>  [buildd_powerpc-malo]<span>
+  Previous state was Building until 2009 Sep 25 02:00:23
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=eclipse-pydev&amp;ver=1.2.5-4">eclipse-pydev_1.2.5-4</a>  [buildd_powerpc-malo]<span>
+    <a href="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=480693">#480693</a>: FTBFS: tries to write in $HOME
+  Previous state was Build-Attempted until 2009 Jan 13 21:07:36
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=emoslib&amp;ver=000370%2Bdfsg-5">emoslib_000370+dfsg-5</a>  [buildd_powerpc-malo]<span>
+    &gt; gfortran -O2   -fdefault-real-8 -fcray-pointer -fno-second-underscore -Dlinux  -DREAL_8 -DREAL_BIGGER_THAN_INTEGER -Dgfortran  -DTABLE_PATH=\"/usr/share/emos\" -I.. -c buens4.F
+    &gt; buens4.F:142.32:
+    &gt;
+    &gt;       R8=1.7976931348623157D+308
+    &gt;                                 1
+    &gt; Error: Real constant overflows its kind at (1)
+    &gt; make[2]: *** [buens4.o] Error 1
+  Previous state was Building until 2009 Sep 02 08:01:34
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=eprover&amp;ver=1.0.004-1">eprover_1.0.004-1</a>  [buildd_powerpc-malo]<span>
+    <a href="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=521918">#521918</a>
+  Previous state was Building until 2009 Apr 08 22:28:09
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=fenix-plugins&amp;ver=0.0.20070803-3">fenix-plugins_0.0.20070803-3</a>  [pkern]<span>
+    Was Not-For-Us previously
+    Does not state powerpc, albeit it is a 32bit architecture.
+  Previous state was Not-For-Us until 2008 Dec 25 00:54:09
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=gksu-polkit&amp;ver=0.0.1-1">gksu-polkit_0.0.1-1</a>  [buildd_powerpc-voltaire]<span>
+    &gt;  gcc -DPACKAGE_NAME=\"gksu-polkit\" -DPACKAGE_TARNAME=\"gksu-polkit\" -DPACKAGE_VERSION=\"0.0.1\" "-DPACKAGE_STRING=\"gksu-polkit 0.0.1\"" -DPACKAGE_BUGREPORT=\"gns@gnome.org\" -DPACKAGE=\"gksu-polkit\" -DVERSION=\"0.0.1\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DGETTEXT_PACKAGE=\"gksu-polkit\" -DHAVE_LOCALE_H=1 -DHAVE_LC_MESSAGES=1 -DHAVE_BIND_TEXTDOMAIN_CODESET=1 -DHAVE_GETTEXT=1 -DHAVE_DCGETTEXT=1 -DENABLE_NLS=1 -I. -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/gee-1.0 -g -O2 -Wall -g -O2 -c gksu-environment.c  -fPIC -DPIC -o .libs/gksu-environment.o
+    &gt; gksu-environment.c:21:25: error: gee/hashmap.h: No such file or directory
+    &gt; gksu-environment.c:22:21: error: gee/map.h: No such file or directory
+    &gt; gksu-environment.c:23:21: error: gee/set.h: No such file or directory
+    &gt; gksu-environment.c:58: error: expected specifier-qualifier-list before 'GeeHashMap'
+    [...]
+    &gt; make[3]: *** [gksu-environment.lo] Error 1
+  Previous state was Build-Attempted until 2009 Sep 02 07:59:29
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=glpk-java&amp;ver=1.0.1-1">glpk-java_1.0.1-1</a>  [buildd_powerpc-malo]<span>
+    &gt; swig -I/usr/include -java -package org.gnu.glpk -o src/java/glpk_wrap.c -outdir java/org/gnu/glpk glpk.i
+    &gt; make[2]: swig: Command not found
+    &gt; make[2]: *** [all] Error 127
+  Previous state was Building until 2009 Sep 02 08:01:51
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=gnuradio&amp;ver=3.0.4-2">gnuradio_3.0.4-2</a>  [buildd_powerpc-malo]<span>
+    <a href="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=457402">#457402</a>
+    <a href="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=524387">#524387</a>
+  Previous state was Building until 2009 Apr 17 21:33:49
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=guppy&amp;ver=0.1.9-1">guppy_0.1.9-1</a>  [buildd_powerpc-malo]<span>
+    fails test suite
+  Previous state was Building until 2009 Aug 22 06:30:51
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=haskell-curl&amp;ver=1.3.5-2">haskell-curl_1.3.5-2</a>  [buildd_powerpc-malo]<span>
+    &gt; Building curl-1.3.5...
+    &gt; [1 of 8] Compiling Network.Curl.Debug ( Network/Curl/Debug.hs, dist/build/Network/Curl/Debug.o )
+    &gt; Prologue junk?: 	.globl __stginit_curlzm1zi3zi5_NetworkziCurlziDebug
+    &gt; 	.type	__stginit_curlzm1zi3zi5_NetworkziCurlziDebug, @function
+    &gt; __stginit_curlzm1zi3zi5_NetworkziCurlziDebug:
+    &gt;  # 62 "/tmp/ghc13105_0/ghc13105_0.hc" 1
+    &gt;
+    &gt; make: *** [build-ghc6-stamp] Error 255
+  Previous state was Building until 2009 Jul 16 22:56:36
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=haskell-pcre-light&amp;ver=0.3.1-5">haskell-pcre-light_0.3.1-5</a>  [buildd_powerpc-malo]<span>
+    &gt; [1 of 3] Compiling Text.Regex.PCRE.Light.Base ( dist/build/Text/Regex/PCRE/Light/Base.hs, dist/build/Text/Regex/PCRE/Light/Base.o )
+    &gt; Prologue junk?: 	.type	s2tn_ret, @function
+    &gt; s2tn_ret:
+    &gt;  # 15 "/tmp/ghc16098_0/ghc16098_0.hc" 1
+    &gt;
+    &gt; dh_haskell_build: ./setup returned exit code 255
+    &gt; make: *** [install] Error 1
+  Previous state was Building until 2009 Jul 12 08:57:09
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=hat&amp;ver=2.05%2Brerolled-7">hat_2.05+rerolled-7</a>  [buildd_powerpc-malo]<span>
+    &gt; hmake -hc=ghc6  -package lang -package base   -O0 -fno-warn-deprecations -optl -Wl,--as-needed -d /build/buildd-hat_2.05+rerolled-7-powerpc-1AwGv8/hat-2.05+rerolled/targets/ppc-Linux/obj/hattrans -I. -I../compiler98 HatTrans
+    &gt; MkProg: hmake: the compiler 'ghc6' is not known.
+    &gt;
+    &gt; Stop - hmake dependency error.
+    &gt; make[2]: *** [/build/buildd-hat_2.05+rerolled-7-powerpc-1AwGv8/hat-2.05+rerolled/lib/ppc-Linux/hat-trans] Error 1
+  Previous state was Building until 2009 Aug 23 10:58:34
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=htcheck&amp;ver=1%3A1.2.4%7Erc1-1">htcheck_1:1.2.4~rc1-1</a>  [buildd_powerpc-malo]<span>
+    &gt;  g++ -DHAVE_CONFIG_H -I. -I. -I../include -DDEFAULT_CONFIG_FILE=\"/etc/htcheck/htcheck.conf\" -I../include -I../htlib -I../htcommon -I../htmysql -I../htnet -I../htparsing -I../htcheck -Wall -I/usr/include/mysql -g -O2 -g -Wall -O2 -Wall -fno-rtti -fno-exceptions -c HtmysqlDB.cc -o HtmysqlDB.o
+    &gt; HtmysqlDB.cc: In member function 'void HtmysqlDB::LoadDefaults(const String&amp;, char*, int*, char***)':
+    &gt; HtmysqlDB.cc:102: error: 'load_defaults' was not declared in this scope
+    &gt; make[2]: *** [HtmysqlDB.lo] Error 1
+  Previous state was Building until 2009 Aug 22 06:53:13
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=iaxclient&amp;ver=2.0.2-3">iaxclient_2.0.2-3</a>  [buildd_powerpc-voltaire]<span>
+    &gt; creating libiaxclient.la
+    &gt; /bin/sed: can't read /usr/lib/libjack.la: No such file or directory
+    &gt; libtool: link: `/usr/lib/libjack.la' is not a valid libtool archive
+    &gt; make[3]: *** [libiaxclient.la] Error 1
+  Previous state was Build-Attempted until 2009 Aug 22 06:50:36
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=inteltool&amp;ver=0.0%2Br4091-1">inteltool_0.0+r4091-1</a>  [buildd_powerpc-malo]<span>
+    &gt; gcc -g -O2 -g -Wall -O2   -c -o inteltool.o inteltool.c
+    &gt; In file included from inteltool.c:26:
+    &gt; inteltool.h:22:20: error: sys/io.h: No such file or directory
+    &gt; inteltool.c: In function 'map_physical':
+    &gt; inteltool.c:60: warning: format '%08x' expects type 'unsigned int', but argument 2 has type 'long unsigned int'
+    &gt; inteltool.c: In function 'main':
+    &gt; inteltool.c:186: warning: implicit declaration of function 'iopl'
+    &gt; make[1]: *** [inteltool.o] Error 1
+    &gt; make[1]: Leaving directory `/build/buildd-inteltool_0.0+r4091-1-powerpc-kmmR1s/inteltool-0.0+r4091'
+    &gt; make: *** [debian/stamp-makefile-build] Error 2
+  Previous state was Building until 2009 Sep 02 08:03:29
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=kde-style-qtcurve&amp;ver=0.67.5-3">kde-style-qtcurve_0.67.5-3</a>  [buildd_powerpc-voltaire]<span>
+    &gt; lude/qt4/QtDBus -I/usr/include/qt4/QtTest -I/usr/include/qt4/QtUiTools -I/usr/include/qt4/QtScript -I/usr/include/qt4/QtSvg -I/usr/include/qt4/QtXml -I/usr/include/qt4/QtSql -I/usr/include/qt4/QtNetwork -I/usr/include/qt4/QtDesigner -I/usr/include/qt4/Qt3Support -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtCore -I/usr/include/qt4/Qt -I/usr/share/qt4/mkspecs/default   -D_GNU_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -o CMakeFiles/kstyle_qtcurve_config.dir/qtcurveconfig.o -c /build/buildd/kde-style-qtcurve-0.67.5/config/qtcurveconfig.cpp
+    &gt; In file included from /build/buildd/kde-style-qtcurve-0.67.5/common/common.h:30,
+    &gt;                  from /build/buildd/kde-style-qtcurve-0.67.5/config/qtcurveconfig.h:30,
+    &gt;                  from /build/buildd/kde-style-qtcurve-0.67.5/config/qtcurveconfig.cpp:21:
+    &gt; /build/buildd/kde-style-qtcurve-0.67.5/obj-powerpc-linux-gnu/config.h:7:20: warning: missing terminating " character
+    &gt; /build/buildd/kde-style-qtcurve-0.67.5/obj-powerpc-linux-gnu/config.h:8:5: warning: missing terminating " character
+    &gt; In file included from /build/buildd/kde-style-qtcurve-0.67.5/common/common.h:30,
+    &gt;                  from /build/buildd/kde-style-qtcurve-0.67.5/config/qtcurveconfig.h:30,
+    &gt;                  from /build/buildd/kde-style-qtcurve-0.67.5/config/qtcurveconfig.cpp:21:
+    &gt; /build/buildd/kde-style-qtcurve-0.67.5/obj-powerpc-linux-gnu/config.h:8: error: missing terminating " character
+    [...]
+  Previous state was Build-Attempted until 2009 Sep 02 08:12:49
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=kflickr&amp;ver=0.9.1-2.1">kflickr_0.9.1-2.1</a>  [buildd_powerpc-malo]<span>
+    &gt; make[2]: Entering directory `/build/buildd-kflickr_0.9.1-2.1-powerpc-cfoYck/kflickr-0.9.1'
+    &gt; *** YOU'RE USING automake (GNU automake) 1.11.
+    &gt; *** KDE requires automake 1.6.1 or newer
+    &gt; make[2]: *** [cvs] Error 1
+  Previous state was Building until 2009 Aug 23 11:01:10
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=ldap-haskell&amp;ver=0.6.5-1">ldap-haskell_0.6.5-1</a>  [buildd_powerpc-malo]<span>
+    <a href="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=522993">#522993</a>
+  Previous state was Building until 2009 Apr 08 20:44:04
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=libb-size-perl&amp;ver=0.09-1">libb-size-perl_0.09-1</a>  [buildd_powerpc-malo]<span>
+    <a href="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=466738">#466738</a>: FTBFS with Perl 5.10
+  Previous state was Build-Attempted until 2009 Jan 13 21:02:11
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=libdc1394&amp;ver=1.1.0-5">libdc1394_1.1.0-5</a>  [buildd_powerpc-voltaire]<span>
+    &gt; gcc -g -O2 -Wall -Wunused -o .libs/dc1394_vloopback dc1394_vloopback.o affine.o  -lm ../libdc1394/.libs/libdc1394_control.so /usr/lib/libraw1394.so
+    &gt; .../libdc1394/.libs/libdc1394_control.so: undefined reference to `raw1394_set_iso_handler'
+    &gt; .../libdc1394/.libs/libdc1394_control.so: undefined reference to `raw1394_stop_iso_rcv'
+    &gt; .../libdc1394/.libs/libdc1394_control.so: undefined reference to `raw1394_start_iso_rcv'
+    &gt; collect2: ld returned 1 exit status
+    &gt; make[3]: *** [dc1394_vloopback] Error 1
+  Previous state was Build-Attempted until 2009 Aug 22 06:35:02
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=libkarma&amp;ver=0.0.6-4.1">libkarma_0.0.6-4.1</a>  [buildd_powerpc-malo]<span>
+    <a href="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=520862">#520862</a>
+  Previous state was Building until 2009 Apr 08 22:16:11
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=llvm-gcc-4.2&amp;ver=2.5-1">llvm-gcc-4.2_2.5-1</a>  [buildd_powerpc-voltaire]<span>
+    &gt; 	  ../llvm-gcc-4.2-2.5/configure --host=powerpc-linux-gnu --build=powerpc-linux-gnu --prefix=/usr/lib/llvm/gcc-4.2 --enable-languages=c,c++ --program-prefix=llvm- --enable-llvm=/usr/lib/llvm --enable-threads --disable-nls --disable-shared --disable-multilib
+    [...]
+    &gt; checking whether the C compiler works... configure: error: cannot run C compiled programs.
+    &gt; If you meant to cross compile, use `--host'.
+    &gt; See `config.log' for more details.
+  Previous state was Build-Attempted until 2009 Jun 22 11:57:52
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=ltrace&amp;ver=0.5.3-2">ltrace_0.5.3-2</a>  [buildd_powerpc-voltaire]<span>
+    &gt; gcc -Wall -g -O2 -iquote /build/buildd/ltrace-0.5.3 -iquote /build/buildd/ltrace-0.5.3/sysdeps/linux-gnu -DSYSCONFDIR=\"/etc\"  -I /usr/include/libelf -I/build/buildd/ltrace-0.5.3/sysdeps/linux-gnu/ppc  -c -o plt.o plt.c
+    &gt; plt.c: In function 'sym2addr':
+    &gt; plt.c:44: warning: implicit declaration of function 'ptrace'
+    &gt; plt.c:44: error: 'PTRACE_PEEKTEXT' undeclared (first use in this function)
+    &gt; plt.c:44: error: (Each undeclared identifier is reported only once
+    &gt; plt.c:44: error: for each function it appears in.)
+    &gt; plt.c:48: warning: right shift count &gt;= width of type
+    &gt; make[3]: *** [plt.o] Error 1
+  Previous state was Build-Attempted until 2009 Aug 06 07:49:06
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=luxrender&amp;ver=0.5-1">luxrender_0.5-1</a>  [buildd_powerpc-malo]<span>
+    <a href="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=494786">#494786</a>
+  Previous state was Build-Attempted until 2009 Mar 31 16:54:59
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=mysql-gui-tools&amp;ver=5.0r12-1">mysql-gui-tools_5.0r12-1</a>  [buildd_powerpc-malo]<span>
+    &gt; In file included from /usr/include/libpng12/png.h:493,
+    &gt;                  from ../../library/generic-canvas/include/myx_gc_utilities.h:26,
+    &gt;                  from ../../library/generic-canvas/include/myx_gc_base.h:29,
+    &gt;                  from ../../library/generic-canvas/include/myx_gc_view.h:26,
+    &gt;                  from ../../library/generic-canvas/include/myx_gc_canvas.h:26,
+    &gt;                  from canvas/MGCanvas.h:30,
+    &gt;                  from canvas/MGCanvas.cc:17:
+    &gt; /usr/include/libpng12/pngconf.h:338: error: expected constructor, destructor, or type conversion before '.' token
+    &gt; /usr/include/libpng12/pngconf.h:339: error: '__dont__' does not name a type
+    &gt; make[4]: *** [MGCanvas.o] Error 1
+  Previous state was Building until 2009 Aug 22 06:48:17
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=navit&amp;ver=0.1.1.0%2Bdfsg.1-1">navit_0.1.1.0+dfsg.1-1</a>  [buildd_powerpc-malo]<span>
+    &gt; dh_gencontrol -a
+    &gt; dpkg-gencontrol: error: current host architecture 'powerpc' does not appear in package's architecture list (alpha amd64 armel i386 ia64 mipsel)
+    &gt; dh_gencontrol: dpkg-gencontrol returned exit code 255
+    &gt; make: *** [binary-arch] Error 1
+  Previous state was Building until 2009 Jun 23 22:20:38
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=necpp&amp;ver=1.3.0%2Bcvs20090101-1">necpp_1.3.0+cvs20090101-1</a>  [buildd_powerpc-voltaire]<span>
+    &gt; checking for powerpc-linux-gnu-gcc option to accept ISO C89... none needed
+    &gt; checking for clapack_zgetrf in -llapack... no
+    &gt; configure: error: lapack library test failed (--without-lapack to disable)
+    &gt; See `config.log' for more details.
+    &gt; make: *** [config.status] Error 1
+  Previous state was Build-Attempted until 2009 Jan 11 11:49:15
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=nipy&amp;ver=0.1.2%2B1741-2">nipy_0.1.2+1741-2</a>  [buildd_powerpc-voltaire]<span>
+    &gt; sphinx-build -b html -d build/doctrees   . build/html
+    &gt; Running Sphinx v0.6.2
+    &gt;
+    &gt; Exception occurred:
+    &gt;   File "/usr/lib/pymodules/python2.5/matplotlib/__init__.py", line 439, in _get_configdir
+    &gt;     raise RuntimeError("Failed to create %s/.matplotlib; consider setting MPLCONFIGDIR to a writable directory for matplotlib configuration data"%h)
+    &gt; RuntimeError: Failed to create /nonexistent/.matplotlib; consider setting MPLCONFIGDIR to a writable directory for matplotlib configuration data
+    &gt; The full traceback has been saved in /tmp/sphinx-err-0hIalt.log, if you want to report the issue to the author.
+    &gt; Please also report this if it was a user error, so that a better error message can be provided next time.
+    &gt; Send reports to sphinx-dev@googlegroups.com. Thanks!
+    &gt; make[1]: *** [htmlonly] Error 1
+  Previous state was Build-Attempted until 2009 Jul 25 09:22:00
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=openvrml&amp;ver=0.17.5-5">openvrml_0.17.5-5</a>  [buildd_powerpc-malo]<span>
+    <a href="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=490334">#490334</a>
+  Previous state was Dep-Wait until 2009 Apr 26 12:09:46
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=pacemaker&amp;ver=0.6.5-1">pacemaker_0.6.5-1</a>  [buildd_powerpc-voltaire]<span>
+    failure when linking
+  Previous state was Build-Attempted until 2009 Jul 23 09:09:37
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=papaya&amp;ver=0.97.20031122-5.4">papaya_0.97.20031122-5.4</a>  [buildd_powerpc-malo]<span>
+    <a href="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=377627">#377627</a>: FTBFS on powerpc: expected identifier before numeric constant
+  Previous state was Build-Attempted until 2009 Jan 13 20:59:02
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=paraview&amp;ver=3.4.0-4">paraview_3.4.0-4</a>  [buildd_powerpc-malo]<span>
+    &gt; [ 47%] Building CXX object Utilities/Xdmf2/libsrc/CMakeFiles/Xdmf.dir/XdmfArray.o
+    &gt; In file included from /build/buildd-paraview_3.4.0-4-powerpc-QP9AP5/paraview-3.4.0/Utilities/Xdmf2/libsrc/XdmfArray.h:28,
+    &gt;                  from /build/buildd-paraview_3.4.0-4-powerpc-QP9AP5/paraview-3.4.0/Utilities/Xdmf2/libsrc/XdmfArray.cxx:25:
+    &gt; /build/buildd-paraview_3.4.0-4-powerpc-QP9AP5/paraview-3.4.0/Utilities/Xdmf2/libsrc/XdmfDataDesc.h: In member function 'XdmfInt32 XdmfDataDesc::SetHeavyDataSetName(const char*)':
+    &gt; /build/buildd-paraview_3.4.0-4-powerpc-QP9AP5/paraview-3.4.0/Utilities/Xdmf2/libsrc/XdmfDataDesc.h:198: error: 'strcmp' was not declared in this scope
+    [...]
+  Previous state was Building until 2009 Aug 22 06:46:44
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=protobuf-c&amp;ver=0.11-1">protobuf-c_0.11-1</a>  [buildd_powerpc-malo]<span>
+    times out during self-test
+  Previous state was Building until 2009 Sep 03 09:17:15
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=qprof&amp;ver=0.5.2-5">qprof_0.5.2-5</a>  [buildd_powerpc-voltaire]<span>
+    &gt;  powerpc-linux-gnu-gcc -DHAVE_CONFIG_H -I. -I. -I. -Wall -g -DHW_EVENT_SUPPORT -O2 -MT prof_utils_libpfm3.lo -MD -MP -MF .deps/prof_utils_libpfm3.Tpo -c prof_utils_libpfm3.c  -fPIC -DPIC -o .libs/prof_utils_libpfm3.o
+    &gt; prof_utils_libpfm3.c: In function 'QPROF_format_pc':
+    &gt; prof_utils_libpfm3.c:485: warning: passing argument 1 of 'AO_fetch_and_add_acquire' from incompatible pointer type
+    &gt; prof_utils_libpfm3.c:634: warning: passing argument 1 of 'AO_fetch_and_add_release' from incompatible pointer type
+    &gt; prof_utils_libpfm3.c: In function 'QPROF_pc_sample_list_handler':
+    &gt; prof_utils_libpfm3.c:733: error: 'struct sigcontext' has no member named 'sc_pc'
+    &gt; prof_utils_libpfm3.c: In function 'QPROF_pc_sample_list_write_q_profile':
+    &gt; prof_utils_libpfm3.c:1096: warning: format '%lx' expects type 'long unsigned int', but argument 3 has type 'size_t'
+    &gt; make[3]: *** [prof_utils_libpfm3.lo] Error 1
+  Previous state was Build-Attempted until 2009 Jan 04 14:44:45
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=read-edid&amp;ver=2.0.0-3">read-edid_2.0.0-3</a>  [buildd_powerpc-voltaire]<span>
+    &gt; aclocal-1.10
+    &gt; make: aclocal-1.10: Command not found
+    &gt; make: *** [configure-stamp] Error 127
+  Previous state was Build-Attempted until 2009 Aug 23 10:58:43
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=ski&amp;ver=1.3.2-4">ski_1.3.2-4</a>  [buildd_powerpc-malo]<span>
+    <a href="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=495889">#495889</a>: FTBFS, linux/syscall-linux.c:2253: error: 'TIOCGHAYESESP' undeclared (first use in this function)
+  Previous state was Build-Attempted until 2009 Jan 13 20:49:39
+</span>
+</li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=subversion&amp;ver=1.6.5dfsg-1">subversion_1.6.5dfsg-1</a>  [buildd_powerpc-malo]<span>
+    fails test suite
+  Previous state was Building until 2009 Aug 23 10:59:09
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=ultrastar-ng&amp;ver=0.2.1-1">ultrastar-ng_0.2.1-1</a>  [buildd_powerpc-malo]<span>
+    &gt; libtool: compile:  powerpc-linux-gnu-g++ -DHAVE_CONFIG_H -I. -I../../audio -I.. -I../../ -I/usr/include/alsa -pthread -pthread -I/usr/include/gstreamer-0.10 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/libxml2 -Wall -g -O2 -I/build/buildd-ultrastar-ng_0.2.1-1-powerpc-Dvs1W0/ultrastar-ng-0.2.1/include -W -Wall -g -O2 -MT audio_dev_tone.lo -MD -MP -MF .deps/audio_dev_tone.Tpo -c ../../audio/audio_dev_tone.cpp  -fPIC -DPIC -o .libs/audio_dev_tone.o
+    &gt; In file included from ../../audio/audio_dev_tone.cpp:5:
+    &gt; /usr/include/boost/spirit/core.hpp:18:4: warning: #warning "This header is deprecated. Please use: boost/spirit/include/classic_core.hpp"
+    &gt; .../../audio/audio_dev_tone.cpp: In member function 'void&lt;unnamed&gt;::tonegen::add(const std::string&amp;)':
+    &gt; .../../audio/audio_dev_tone.cpp:59: error: no match for 'operator/' in '&lt;unnamed&gt;::_1 / 2.0e+1'
+    &gt; make[3]: *** [audio_dev_tone.lo] Error 1
+  Previous state was Building until 2009 Sep 02 08:00:52
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=vala-terminal&amp;ver=1.1.1%2B20090529-2">vala-terminal_1.1.1+20090529-2</a>  [buildd_powerpc-voltaire]<span>
+    &gt; /usr/bin/valac -c --pkg vte --save-temps --basedir . src/terminal.vala src/mainwindow.vala
+    &gt; src/terminal.vala:162.39-162.52: error: Argument 2: Cannot convert from `size_t' to `long'
+    &gt;         terminal.feed_child( command, command.size() );
+    &gt;                                       ^^^^^^^^^^^^^^
+    &gt; src/mainwindow.vala:53.5-53.27: warning: ValaTerminal2.MainWindow.fullscreen hides inherited field `Gtk.Window.fullscreen'. Use the `new' keyword if hiding was intentional
+    &gt;     private bool fullscreen; /* true, if terminal is shown fullscreen */
+    &gt;     ^^^^^^^^^^^^^^^^^^^^^^^
+    &gt; src/mainwindow.vala:151.38-151.41: warning: Argument 1: Cannot pass null to non-null parameter type
+    &gt;         tab_counter = new ToolButton(null, "");
+    &gt;                                      ^^^^
+    &gt; Compilation failed: 1 error(s), 2 warning(s)
+    &gt; make[1]: *** [src/vala-terminal.vala.stamp] Error 1
+  Previous state was Build-Attempted until 2009 Sep 02 08:05:05
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=wine&amp;ver=1.0.1-2">wine_1.0.1-2</a>  [buildd_powerpc-voltaire]<span>
+    &gt; make[3]: Entering directory `/build/buildd/wine-1.0.1/build32/dlls/mshtml.tlb'
+    &gt; ../../tools/widl/widl -I../../../dlls/mshtml.tlb -I. -I../../../include -I../../include  -D__WINESRC__   -t -T mshtml_tlb.tlb ../../../dlls/mshtml.tlb/mshtml_tlb.idl
+    &gt; error: get_type_vt: unknown type: 0x2b
+    &gt; make[3]: *** [mshtml_tlb.tlb] Error 2
+  Previous state was Build-Attempted until 2009 Aug 22 06:43:29
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=powerpc&amp;pkg=xpmumon&amp;ver=1.3.0">xpmumon_1.3.0</a>  [buildd_powerpc-praetorius]<span>
+    <a href="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=526457">#526457</a>
+  Previous state was Building until 2009 May 06 20:17:30
+</span>
+</li>
+
+   </ul>
+ </body>
+</html>

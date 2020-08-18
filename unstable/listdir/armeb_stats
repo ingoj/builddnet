@@ -1,0 +1,24 @@
+  wanna-build statistics - Sun Mar  9 14:51:59 CET 2008
+  -----------------------------------------------------
+
+Distribution unstable:
+---------------------
+Installed       :  1727 (bob: 928, unknown: 35, velnas: 113, wendy: 651)
+Needs-Build     :  3334
+Building        :   908 (bob: 449, velnas: 5, wendy: 454)
+Uploaded        :    17 (bob: 6, velnas: 2, wendy: 9)
+Failed          :    68 (bob: 33, velnas: 11, wendy: 24)
+Dep-Wait        :  1059 (bob: 551, unknown: 213, velnas: 47, wendy: 248)
+Reupload-Wait   :     0
+Install-Wait    :     0
+Failed-Removed  :     0
+Dep-Wait-Removed:     2 (bob: 1, unknown: 1)
+Not-For-Us      :    44
+total           :  7159
+
+ 24.12% (1727) up-to-date,  24.36% (1744) including uploaded
+ 46.57% (3334) need building
+ 12.68% (908) currently building
+ 15.74% (1127) failed/dep-wait
+  0.03% (  2) old failed/dep-wait
+  0.61% ( 44) need porting or cause the buildd serious grief

@@ -1,0 +1,28 @@
+  wanna-build statistics - Fri Oct  2 19:52:36 CEST 2009
+  -----------------------------------------------------
+
+Distribution unstable:
+---------------------
+Installed       :  7895 (buildd_mips-ball: 4146, buildd_mips-hawking: 11,
+                         buildd_mips-mayr: 3453, buildd_mips-r5k: 29,
+                         rmurray-casals: 8, rmurray-reconfig: 4,
+                         rmurray-resume: 31, rmurray-sgi: 1, unknown: 212)
+Needs-Build     :     0
+Building        :    36 (buildd_mips-ball: 24, buildd_mips-mayr: 12)
+Uploaded        :     0
+Failed          :    19 (buildd_mips-ball: 10, buildd_mips-mayr: 9)
+Dep-Wait        :    54 (buildd_mips-ball: 17, buildd_mips-mayr: 10,
+                         kroeckx: 3, pkern: 1, unknown: 23)
+Reupload-Wait   :     0
+Install-Wait    :     0
+Failed-Removed  :     1 (buildd_mips-mayr: 1)
+Dep-Wait-Removed:     0
+Not-For-Us      :    10
+total           :  8286
+
+ 95.28% (7895) up-to-date,  95.28% (7895) including uploaded
+  0.00% (  0) need building
+  0.43% ( 36) currently building
+  0.88% ( 73) failed/dep-wait
+  0.01% (  1) old failed/dep-wait
+  0.12% ( 10) need porting or cause the buildd serious grief

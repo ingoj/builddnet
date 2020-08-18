@@ -1,0 +1,284 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+  <link rel="stylesheet" href="http://buildd.net/builddnet.css" type="text/css" />
+  <TITLE>buildd.net</TITLE>
+<META HTTP-EQUIV="Refresh" CONTENT="1800">
+</HEAD>
+<BODY text="#000000" bgcolor="#FFFFFF" link="#0000FF" vlink="#800080" alink="#FF0000">
+<table border="0" width="100%">
+  <tr>
+    <td align="left" width="20%">
+      [<a href="http://www.buildd.net/">home</a>] [<a href="http://www.buildd.net/cgi/feedback.phtml">feedback</a>]<br>
+	  [<a href="http://blog.windfluechter.net">ij's blog</a>] <font color="#ff0000"></font>
+    </td>
+    <td align="center" width="60%">
+	  
+	  [backports]
+	  [etch-secure]
+	  [experimental]
+	  [non-free]
+	  [sarge-volatile]
+	  [skolelinux]
+	  [<a href="http://unstable.buildd.net/index-armeb.html">unstable</a>]
+    </td>
+    <td align="right" width="20%">
+      [<a href="http://www.buildd.net/cgi/badmin.phtml">buildd admin login</a>]<br>
+	  [<a href="http://www.buildd.net/cgi/devel-systems.phtml">devel systems</a>] 
+    </td>
+  </tr>
+</table>
+<p><p><p>
+<!--center><h2>important notes here!</h2></center>
+<p>
+<br>
+<p><hr-->
+<table bgcolor="#f0f0f0" width=100%>
+	<th>
+		<center><font size=+3>armeb/unstable</font></center>
+	</th>
+</table>
+
+<p>
+<center>
+[<a href=http://unstable.buildd.net/index-alpha.html>alpha</a>]
+[<a href=http://unstable.buildd.net/index-amd64.html>amd64</a>]
+[<a href=http://unstable.buildd.net/index-arm.html>arm</a>]
+[<a href=http://unstable.buildd.net/index-armeb.html>armeb</a>]
+[<a href=http://unstable.buildd.net/index-armel.html>armel</a>]
+[<a href=http://unstable.buildd.net/index-hppa.html>hppa</a>]
+[<a href=http://unstable.buildd.net/index-hurd-i386.html>hurd-i386</a>]
+[<a href=http://unstable.buildd.net/index-i386.html>i386</a>]
+[<a href=http://unstable.buildd.net/index-ia64.html>ia64</a>]
+[<a href=http://unstable.buildd.net/index-kfreebsd-amd64.html>kfreebsd-amd64</a>]
+[<a href=http://unstable.buildd.net/index-kfreebsd-i386.html>kfreebsd-i386</a>]
+[<a href=http://unstable.buildd.net/index-m32r.html>m32r</a>]
+[<a href=http://unstable.buildd.net/index-m68k.html>m68k</a>]
+[<a href=http://unstable.buildd.net/index-mips.html>mips</a>]
+[<a href=http://unstable.buildd.net/index-mipsel.html>mipsel</a>]
+[<a href=http://unstable.buildd.net/index-powerpc.html>powerpc</a>]
+[<a href=http://unstable.buildd.net/index-s390.html>s390</a>]
+[<a href=http://unstable.buildd.net/index-sparc.html>sparc</a>]
+</center>
+
+<!-- (was after [armeb]; can't nest) <input type="submit" name="searchtype" value="[all]"> -->
+
+<!-- add important notes here: -->
+<p><hr><p>
+<!--font color="#FF0000"-->
+<center>
+<p><b>Buildd.Net is looking for help. If you're interested and have
+some spare time to spent, <a
+href="http://www.buildd.net/cgi/feedback.phtml">contact us</a>!</b></p>
+<font color="#FF0000">
+<b>Some news for buildd.net:</b>
+<table><td>
+  <li> <a href="http://www.buildd.net/cgi/devel-systems.phtml">developer systems</a> added.</li>
+  <li> <a href="http://www.buildd.net/cgi/nowbuilding.cgi">lots of</a> <a href="http://buildd.net/cgi/ptracker.cgi?unstable_pkg=binutils&searchtype=m68k">statistics</a> <a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=aahz">available</a></li>
+</td><td>
+&nbsp;
+</td><td>
+  <li> <a href="http://www.buildd.net/cgi/archvote.phtml">ArchVote page</a> added</li>
+  <li> <font color="#ff0000">new v0.96 </font><a href="http://buildd.net/files/update-buildd.net">status update script</a></li>
+</td>
+</table>
+<!--buildd.net is under (re)construction - things may break - please stay tuned
+-->
+</font>
+</center>
+<!-- end of comment -->
+<p>
+<hr>
+<p>
+<center>
+<form action="http://www.buildd.net/cgi/package_status" method=get>
+  Package status
+  <input type="text" name="unstable_pkg" size=30>
+  <input type="submit" name="searchtype" value="armeb">
+  <input type="submit" name="searchtype" value="all">
+  <input type="hidden" name="arch" value="armeb">
+</form>
+</center>
+<p>
+<hr>
+<p>
+<table cellpadding=20>
+  <tr valign="top">
+    <td align="left">
+	  <table width="200" valign="top">
+Current armeb status:
+<p>
+<ul>
+<li> <nobr><a href="http://unstable.buildd.net/buildd/armeb_Needs-Build_stringsorted.html">Needs-Build</a>
+&nbsp;(<a href="http://unstable.buildd.net/buildd/armeb_Needs-Build_queueorder.html">queue&nbsp;order</a>)</nobr>
+<li> <a href="http://unstable.buildd.net/buildd/armeb_Building.html">Building</a>
+<li> <a href="http://unstable.buildd.net/buildd/armeb_Uploaded.html">Uploaded</a>
+</ul>
+<p>
+<ul>
+<li> <a href="http://unstable.buildd.net/buildd/armeb_Dep-Wait.html">Dep-Wait</a>
+<li> <a href="http://unstable.buildd.net/buildd/armeb_Failed.html">Failed</a>
+<li> <a href="http://unstable.buildd.net/buildd/armeb_Not-For-Us.html">Not-For-Us</a>
+</ul>
+<p>
+<ul>
+<li> <a href="http://unstable.buildd.net/buildd/armeb_Dep-Wait-Removed.html">Dep-Wait-Removed</a>
+<li> <a href="http://unstable.buildd.net/buildd/armeb_Failed-Removed.html">Failed-Removed</a>
+</ul>
+<p>
+<ul>
+<li> <a href="http://unstable.buildd.net/buildd/armeb_Installed.html">Installed</a>
+</ul>
+<a href="http://unstable.buildd.net/buildd/armeb_stats">summary</a> (<a href="http://unstable.buildd.net/buildd/armeb_stats.html">HTML</a>)
+ | <a href="http://buildd.debian.org/stats/graph-week-big.png">graph</a>
+ | <a href="http://unstable.buildd.net/buildd/armeb-all.txt">raw data</a>
+<br>Needs-Build queue ETA:<br> 94 days 22:53:06
+      </table>
+	</td>
+	<td align="center">
+check:<br><p><p>
+<!--a href="buildd/Needs-Build_stats.png">graph</a--><br>
+<a href="http://www.buildd.net/cgi/check_overdue.phtml?flavour=unstable&arch=armeb&mode=package">check</a><br>
+<a href="http://www.buildd.net/cgi/check_uploaded.phtml?flavour=unstable&arch=armeb&mode=package">check</a--><br>
+<p>
+<a href="http://www.buildd.net/cgi/check_depwait.phtml?flavour=unstable&arch=armeb&mode=package">check</a><br>
+<a href="http://www.buildd.net/cgi/check_failed.phtml?flavour=unstable&arch=armeb&mode=package">check</a><br>
+<!--a href="buildd/Not-For-Us_stats.png">graph</a--><br>
+<p>
+<!--a href="buildd/Dep-Wait-Removed_stats.png">graph</a--><br>
+<!--a href="buildd/Failed-Removed_stats.png">graph</a--><br>
+<p>
+<a href="http://www.buildd.net/cgi/check_installed.phtml?flavour=unstable&arch=armeb&mode=package">check</a--><br>
+	</td>
+
+	<td align="center">
+all archs:<br><p><p>
+<a href="buildd/Needs-Build_stats.png">graph</a><br>
+<a href="buildd/Building_stats.png">graph</a><br>
+<a href="buildd/Uploaded_stats.png">graph</a><br>
+<p>
+<a href="buildd/Dep-Wait_stats.png">graph</a><br>
+<a href="buildd/Failed_stats.png">graph</a><br>
+<a href="buildd/Not-For-Us_stats.png">graph</a><br>
+<p>
+<a href="buildd/Dep-Wait-Removed_stats.png">graph</a><br>
+<a href="buildd/Failed-Removed_stats.png">graph</a><br>
+<p>
+<a href="buildd/Installed_stats.png">graph</a><br>
+	</td>
+	<td align="left">
+	  <table valign="top">
+
+
+Needs doing
+
+<p>
+<ul>
+<li><a href="http://unstable.buildd.net/buildd/update_excuses.html">update excuses</a>
+  |   <a href="http://unstable.buildd.net/buildd/armeb-update_excuses.html">armeb update excuses</a>
+<li><a href="http://unstable.buildd.net/buildd/all.html">Release Critical Bugs</a>
+<!--
+ | <a href="http://unstable.buildd.net/buildd/armeb_rc.html">armeb RC Bugs</a>
+<p>
+<a href="http://auric.debian.org/~pb/shame/armeb.html">another, nice looking armeb update excuses</a>
+-->
+<li><a href="http://incoming.debian.org/">Incoming</a>
+  |   <a href="http://unstable.buildd.net/buildd/incoming.txt">new source</a>
+  |   <a href="http://unstable.buildd.net/buildd/tobuild.html">accepted</a>
+
+<li>Quinn diff output for
+<a href="http://buildd.debian.org/quinn-diff/output/stable/by_priority_split-armeb.txt">stable</a> and
+<a href="http://buildd.debian.org/quinn-diff/output/unstable/by_priority_split-armeb.txt">unstable</a>
+<li><a href="http://unstable.buildd.net/buildd/Packages-arch-specific">Packages-arch-specific</a>
+</ul>
+<ul> 
+   <li>Check packages that are overdue (sorted by):<br><a href="http://www.buildd.net/cgi/check_overdue.phtml?flavour=unstable&arch=armeb&mode=buildd">buildd</a> | <a href="http://www.buildd.net/cgi/check_overdue.phtml?flavour=unstable&arch=armeb&mode=package">package</a> | <a href="http://www.buildd.net/cgi/check_overdue.phtml?flavour=unstable&arch=armeb&mode=date">date</a></li>
+   <!--li>Dep-Wait check (sorted by):<br><a href="http://www.buildd.net/cgi/check_depwait.phtml?flavour=unstable&arch=armeb&mode=buildd">buildd</a> | <a href="http://www.buildd.net/cgi/check_depwait.phtml?flavour=unstable&arch=armeb&mode=package">package</a> | <a href="http://www.buildd.net/cgi/check_depwait.phtml?flavour=unstable&arch=armeb&mode=wait">depwait</a></li-->
+   <li><a href="http://buildd.debian.org/stats/graph2-week-big.png">Keeping-Up graph</a></li>
+   <li><a href="buildd/armeb_stats.png">combined graphs</a> for this arch</li>
+</ul>
+<p>
+Based on wanna-build dump from buildd.debian.org,<br> generated at: Sun Apr 15 06:35:52 UTC 2007      </table>
+	</td>
+  </tr>
+</table>
+<p>
+<hr>
+<p>
+
+<p><table border=0 cellspacing=2 cellpadding=2>
+
+	<tr bgcolor="#c0c0c0">
+		<td><b>H B</b></td>
+		<td><b>Name:</b></td>
+		<!--td><b>Host:</b></td-->
+		<td><b>Model:</b></td>
+		<td><b>CPU:</b></td>
+		<td><b>RAM:</b></td>
+		<td><b>Disk:</b></td>
+		<td><b>p/d:</b></td>
+		<td><b>Admin:</b></td>
+		<td><b>Building | <font color="#FF0000">Reason:</font></b></td>
+		<td><b>hh:mm:ss:</b></td>
+	</tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=armeb&searchtype=bob">bob</a></td>
+       <td>Linksys NSLU2</td>
+       <td>IXP420 266MHz</td>
+       <td align="right">32M</td>
+       <td align="right">10G</td>
+       <td align="right">18.06</td>
+       <td><a href="mailto:wouter@grep.be">Wouter Verhelst</a></td>
+       <td>
+      <a href="http://buildd.net/cgi/ptracker.cgi?unstable_pkg=monotone_0.30-1&searchtype=armeb">monotone_0.30-1</a>
+
+       </td>
+       <td>475d11:41:51</td>
+    </tr>
+    <tr bgcolor=#e0e0f0>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=armeb&searchtype=velnas">velnas</a></td>
+       <td>PC</td>
+       <td>IXP420 266MHz</td>
+       <td align="right">32M</td>
+       <td align="right">250G</td>
+       <td align="right">13.08</td>
+       <td><a href="mailto:wouter@debian.org">Wouter Verhelst</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=armeb&searchtype=wendy">wendy</a></td>
+       <td>Linksys NSLU2</td>
+       <td>IXP420 266MHz</td>
+       <td align="right">32M</td>
+       <td align="right">10G</td>
+       <td align="right">16.35</td>
+       <td><a href="mailto:wouter@grep.be">Wouter Verhelst</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+</table>
+<center>the colors of the LEDs are explained in the <a href="http://www.buildd.net/docs/faq.html">FAQ</a></center>
+<p>
+<hr>
+<p>
+Write the <a href="mailto:debian-arm@lists.debian.org">arm list</a> if you have any questions or requests.<br>
+For more information about the armeb port visit <a href="http://www.debonaras.org/">the Debonaras site</a>.
+<ul>
+  <li> bob and wendy were donated by the NSLU2-Linux community.</li>
+</ul>
+<p>
+<p><hr><p>Last modified: Sun Mar 9 14:55:01 CET 2008</BODY></HTML>

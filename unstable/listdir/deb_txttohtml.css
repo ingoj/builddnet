@@ -1,0 +1,12 @@
+LI[class="empty"] {
+   list-style-type:none;
+}
+
+LI[class="packageinfo"],span {
+   white-space:pre;
+}
+
+LI[class="packageinfo"],LI[class="buildhost"],span {
+   font-family:monospace;
+}
+

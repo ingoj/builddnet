@@ -1,0 +1,27 @@
+  wanna-build statistics - Fri Oct  2 19:52:24 CEST 2009
+  -----------------------------------------------------
+
+Distribution unstable:
+---------------------
+Installed       :  8502 (buildd_i386-murphy: 1246, buildd_i386-ninsei: 1011,
+                         buildd_i386-puccini: 1641, buildd_i386-saens: 37,
+                         rmurray-cyberhq: 18, unknown: 4549)
+Needs-Build     :     0
+Building        :     7 (buildd_i386-murphy: 2, buildd_i386-puccini: 5)
+Uploaded        :     0
+Failed          :    24 (buildd_i386-murphy: 12, buildd_i386-ninsei: 2,
+                         buildd_i386-puccini: 10)
+Dep-Wait        :     1 (he: 1)
+Reupload-Wait   :     0
+Install-Wait    :     0
+Failed-Removed  :     0
+Dep-Wait-Removed:     0
+Not-For-Us      :     1
+total           :  8541
+
+ 99.54% (8502) up-to-date,  99.54% (8502) including uploaded
+  0.00% (  0) need building
+  0.08% (  7) currently building
+  0.29% ( 25) failed/dep-wait
+  0.00% (  0) old failed/dep-wait
+  0.01% (  1) need porting or cause the buildd serious grief

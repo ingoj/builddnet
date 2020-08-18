@@ -1,0 +1,222 @@
+#!/usr/bin/python
+
+import psycopg
+from os import linesep
+from string import *
+from time import sleep
+import cgi, sys
+import popen2
+
+homedir="/home/builddnet"
+f = open(homedir+"/conf.d/database.conf")
+while 1:
+	line = f.readline()
+	if len(line)==0: break
+	if line.count("host"):
+		host = split(line,"=")[1]
+	elif line.count("port"):
+		port = split(line,"=")[1]
+	elif line.count("username"):
+		username = split(line,"=")[1]
+	elif line.count("password"):
+		password = split(line,"=")[1]
+	elif line.count("database"):
+		database = split(line,"=")[1]
+
+
+#dsn = "dbname=vote"
+dsn = "dbname=%s host=%s user=%s password=%s" % ( database, host, username, password )
+db = psycopg.connect(dsn)
+csr = db.cursor()
+
+error=0
+
+	
+a = [0, 0 ,0]
+b = [0, 0 ,0]
+c = [0, 0 ,0]
+d = [0, 0 ,0]
+e = [0, 0 ,0]
+f = [0, 0 ,0]
+
+q1 = 0
+q2 = 0 
+q3 = 0 
+q4 = 0
+q5 = 0
+q6 = 0
+
+
+def init():
+	z=0
+	sqlcmd = "select q1, q2, q3, q4, q5, q6 from debian"
+	csr.execute(sqlcmd)
+	sqlresult = csr.fetchall()
+	db.commit()
+	#print sqlresult
+	for i in range(0,len(sqlresult)):
+		#print i, len(sqlresult)
+		#print sqlresult[i]
+		
+		z = z +1
+		
+		q1 = sqlresult[i][0]	
+		q2 = sqlresult[i][1]	
+		q3 = sqlresult[i][2]	
+		q4 = sqlresult[i][3]	
+		q5 = sqlresult[i][4]
+		q6 = sqlresult[i][5]
+		
+		if q1 == 1: a[0] = a[0] +1
+		if q1 == 2: a[1] = a[1] +1
+		if q1 == 3: a[2] = a[2] +1
+
+		if q2 == 1: b[0] = b[0] +1
+		if q2 == 2: b[1] = b[1] +1
+		if q2 == 3: b[2] = b[2] +1
+		
+		if q3 == 1: c[0] = c[0] +1
+		if q3 == 2: c[1] = c[1] +1
+		if q3 == 3: c[2] = c[2] +1
+
+		if q4 == 1: d[0] = d[0] +1
+		if q4 == 2: d[1] = d[1] +1
+		if q4 == 3: d[2] = d[2] +1
+
+		if q5 == 1: e[0] = e[0] +1
+		if q5 == 2: e[1] = e[1] +1
+		if q5 == 3: e[2] = e[2] +1
+
+		if q6 == 1: f[0] = f[0] +1
+		if q6 == 2: f[1] = f[1] +1
+		if q6 == 3: f[2] = f[2] +1
+
+	# 1. buildd.net a) is helpful, b) don't know c) sucks
+	# 2. missing archs are a) missed, b) don't know, c) don't miss them
+	# 3. etch should be released a) soon without amd64, b) soon with amd64, c) postponed 
+	# 4. Debian has a) no problems, b) some problems, c) serious problems
+	# 5. DAM should a) be removed/replaced, b) not be removed/replaced, c) don't care
+	
+	print '<center>'
+	print '<b>Please vote only once. Your mail address wont be published. It is only used so that you can change your vote later on.</b><p>'
+	print '<form action="vote.phtml" method=post>'
+	print '    <table border="1" colspan="5">'   # bgcolor="#fbd05b">'
+	print '     <tr>'
+	print '      <td align="left">buildd.net ...<br></td>'
+	#print '      <td align="left"><input type="radio" name="q1" value="1"> is helpful<br><input type="radio" name="q1" value="2"> I dont know<br><input type="radio" name="q1" value="3"> sucks</td>'
+	print '      <td align="left"><input type="radio" name="q1" value="1"> was helpful<br><input type="radio" name="q1" value="2"> I dont know<br></td>'
+	print '      <td align="right">%0.2f%%<br>%0.2f%%<br></td>' % (float(a[0])/float(z)*100, float(a[1])/float(z)*100)
+	#, float(a[2])/float(z)*100)
+	print '     </tr>'
+	print '     <tr>'
+	print '      <td align="left">Should buildd.net...<br></td>'
+	print '      <td align="left"><input type="radio" name="q2" value="1"> continue and get improved/grow<br><input type="radio" name="q2" value="2"> continue<br><input type="radio" name="q2" value="3"> stay shutdowned</td>'
+	print '      <td align="right">%0.2f%%<br>%0.2f%%<br>%0.2f%%<br></td>' % (float(b[0])/float(z)*100, float(b[1])/float(z)*100, float(b[2])/float(z)*100)
+	print '     </tr>'
+	#print '     <tr>'
+	#print '      <td align="left">Sarge should be released...<br></td>'
+	#print '      <td align="left"><input type="radio" name="q3" value="1"> soon without amd64<br><input type="radio" name="q3" value="2"> soon with amd64 or amd64 in sid<br><input type="radio" name="q3" value="3"> should be postponed</td>'
+	#print '      <td align="right">%0.2f%%<br>%0.2f%%<br>%0.2f%%<br></td>' % (float(c[0])/float(z)*100, float(c[1])/float(z)*100, float(c[2])/float(z)*100)
+	#print '     </tr>'
+	#print '     <tr>'
+	#print '      <td align="left">Debian has...<br></td>'
+	#print '      <td align="left"><input type="radio" name="q4" value="1"> no problems<br><input type="radio" name="q4" value="2"> some problems<br><input type="radio" name="q4" value="3"> serious problems</td>'
+	#print '      <td align="right">%0.2f%%<br>%0.2f%%<br>%0.2f%%<br></td>' % (float(d[0])/float(z)*100, float(d[1])/float(z)*100, float(d[2])/float(z)*100)
+	#print '     </tr>'
+	#print '     <tr>'
+	#print '      <td align="left">DAM & co should...<br></td>'
+	#print '      <td align="left"><input type="radio" name="q5" value="1"> be removed/replaced<br><input type="radio" name="q5" value="2"> not be removed/replaced<br><input type="radio" name="q5" value="3"> dont care</td>'
+	#print '      <td align="right">%0.2f%%<br>%0.2f%%<br>%0.2f%%<br></td>' % (float(e[0])/float(z)*100, float(e[1])/float(z)*100, float(e[2])/float(z)*100)
+	#print '     </tr>'
+	#print '     <tr>'
+	#print '      <td align="left">Personally I ...<br></td>'
+	#print '      <td align="left"><input type="radio" name="q6" value="1"> think of forking<br><input type="radio" name="q6" value="2"> prefer solving problems instead to fork<br><input type="radio" name="q6" value="3"> dont care at all about Debian</td>'
+	#print '      <td align="right">%0.2f%%<br>%0.2f%%<br>%0.2f%%<br></td>' % (float(f[0])/float(z)*100, float(f[1])/float(z)*100, float(f[2])/float(z)*100)
+	#print '     </tr>'
+	print '    </table><p><p>'
+	print '    Your mail address is needed to vote: <input type="text" size="30" name="mail"><p>'
+	print '    <input type="submit" name="vote" value="Vote!">'
+	print '</form>'
+	print '<p>There have been %s votes.' % z
+	print '</center>'
+	return
+
+def vote():
+	print '<center>'
+	#print form
+	if form.has_key('mail'):
+		email = form['mail'].value
+		if form.has_key('q1'):
+			q1 = int(form['q1'].value)
+		if form.has_key('q2'):
+			q2 = int(form['q2'].value)
+		if form.has_key('q3'):
+			q3 = int(form['q3'].value)
+		if form.has_key('q4'):
+			q4 = int(form['q4'].value)
+		if form.has_key('q5'):
+			q5 = int(form['q5'].value)
+		if form.has_key('q6'):
+			q6 = int(form['q6'].value)
+		try:
+			sqlcmd = "select id from debian where email='%s'" % email
+			csr.execute(sqlcmd)
+			id = csr.fetchone()
+			if not id>0: raise
+			#sqlcmd = "update debian set q1='%s', q2='%s', q3='%s', q4='%s', q5='%s', q6='%s' where email='%s'" % ( q1, q2, q3, q4, q5, q6, email )
+			#print sqlcmd
+			sqlcmd = "update debian set q1='%s', q2='%s' where email='%s'" % ( q1, q2, email )
+			csr.execute(sqlcmd)
+			db.commit()
+		except:
+			#sqlcmd = "insert into debian (email, q1, q2, q3, q4, q5, q6) values ( '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % ( email, int(q1), int(q2), int(q3), int(q4), int(q5), int(q6) )
+			sqlcmd = "insert into debian (email, q1, q2) values ( '%s', '%s', '%s')" % ( email, int(q1), int(q2) )
+			#sqlcmd = "insert into debian ( email ) values ( '%s' )" % email
+			#print sqlcmd
+			csr.execute(sqlcmd)
+			#sqlcmd = "update debian set q1='%s', q2='%s', q3='%s', q4='%s', q5='%s', q6='%s' where email='%s'" % ( q1, q2, q3, q4, q5, q6, email )
+			#csr.execute(sqlcmd)
+			db.commit()
+		print 'Your vote has been counted.'
+	
+	else:
+		print 'Sorry, your vote hasnt been counted because you havent supplied a mail address.<br>'
+	
+	print '<form action="vote.phtml" method=post>'
+	print '    <input type="submit" name="done" value="Back">'
+	print '</form>'
+	print '</center>'
+	
+
+
+#
+# Main()
+#
+
+print "Content-type: text/html"
+print """
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" 
+content="text/html; charset=iso-8859-1">
+<title>www.buildd.net vote</title>
+</head>
+<body bgcolor="white" text="black">
+<p><font color="#000000" face="Verdana"><p>
+
+"""
+
+form = cgi.FieldStorage()
+if form.has_key('vote'):
+	vote()
+else:
+	init()
+
+print "</font></body></html>"
+
+db.close()
+sys.exit(0)
+
+	

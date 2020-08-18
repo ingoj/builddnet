@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>input/m68k-all.txt Failed-Removed -- 2009-10-02 19:42:11</title>
+  <link rel="stylesheet" href="http://buildd.net/builddnet.css" type="text/css" />
+ </head>
+ <body>
+  <h1>Failed-Removed -- 3 -- 2009-10-02 19:42:11 input/m68k-all.txt</h1>
+   <hr />
+   <ul>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=m68k&amp;pkg=libsmbios&amp;ver=2.0.3.dfsg-1">libsmbios_2.0.3.dfsg-1</a>  [buildd_m68k-kiivi]<span>
+  Reasons for BD-Uninstallable:
+    librest (= 0.6-1) build-depends on debhelper (&gt;= 7) {debhelper (= 7.4.3)}
+  Previous state was Needs-Build until 2009 Aug 18 08:10:27
+  Reasons for failing:
+    [Category: none]
+  Previous state was Failed until 2009 Jul 26 11:10:22
+  Previous failing reasons:
+    -------------------- 2.0.3.dfsg-1 --------------------
+    Needs porting:
+    &gt;  g++ -DPACKAGE_NAME=3D\"libsmbios\" -DPACKAGE_TARNAME=3D\"libsmbios\" -DP=
+    ACKAGE_BUGREPORT=3D\"\" -DPACKAGE=3D\"libsmbios\" -DSTDC_HEADERS=3D1 -DHAVE=
+    _SYS_TYPES_H=3D1 -DHAVE_SYS_STAT_H=3D1 -DHAVE_STDLIB_H=3D1 -DHAVE_STRING_H=
+    =3D1 -DHAVE_MEMORY_H=3D1 -DHAVE_STRINGS_H=3D1 -DHAVE_INTTYPES_H=3D1 -DHAVE_=
+    STDINT_H=3D1 -DHAVE_UNISTD_H=3D1 -DHAVE_DLFCN_H=3D1 -DSTDC_HEADERS=3D1 -DHA=
+    VE_LIBINTL_H=3D1 -DHAVE_LIMITS_H=3D1 -DHAVE_STDLIB_H=3D1 -DHAVE_STRING_H=3D=
+    1 -DHAVE_SYS_FILE_H=3D1 -DHAVE_UNISTD_H=3D1 -DHAVE__BOOL=3D1 -DHAVE_STDBOOL=
+    _H=3D1 -DHAVE_PTRDIFF_T=3D1 -DHAVE_STDLIB_H=3D1 -DHAVE_MALLOC=3D1 -DHAVE_ST=
+    DLIB_H=3D1 -DHAVE_UNISTD_H=3D1 -DHAVE_GETPAGESIZE=3D1 -DHAVE_MMAP=3D1 -DHAV=
+    E_GETPAGESIZE=3D1 -DHAVE_MEMMOVE=3D1 -DHAVE_MEMSET=3D1 -DHAVE_MUNMAP=3D1 -D=
+    HAVE_STRERROR=3D1 -DHAVE_STRNDUP=3D1 -DHAVE_STRTOL=3D1 -DHAVE_STRTOUL=3D1 -=
+    DVERSION=3D\"2.0.3\" -DPACKAGE_VERSION=3D\"2.0.3\" "-DPACKAGE_STRING=3D\"li=
+    bsmbios 2.0.3\"" -I. -I./include -I./include -I./libraries/common -I./libra=
+    ries/common -g -O2 -MT libraries/cmos/libraries_libsmbios_la-CmosRW_LinuxIO=
+    =2Elo -MD -MP -MF libraries/c
+    &gt;  mos/.deps/libraries_libsmbios_la-CmosRW_LinuxIO.Tpo -c libraries/cmos/Cm=
+    osRW_LinuxIO.cpp  -fPIC -DPIC -o libraries/cmos/.libs/libraries_libsmbios_l=
+    a-CmosRW_LinuxIO.o
+    &gt; libraries/cmos/CmosRW_LinuxIO.cpp:23:20: error: sys/io.h: No such file or=
+     directory
+    &gt; libraries/cmos/CmosRW_LinuxIO.cpp: In member function 'virtual u8 cmos::C=
+    mosRWIo::readByte(u32, u32, u32) const':
+    &gt; libraries/cmos/CmosRW_LinuxIO.cpp:56: error: 'iopl' was not declared in t=
+    his scope
+    &gt; libraries/cmos/CmosRW_LinuxIO.cpp:58: error: 'outb_p' was not declared in=
+     this scope
+    &gt; libraries/cmos/CmosRW_LinuxIO.cpp:59: error: 'inb_p' was not declared in =
+    this scope
+    &gt; libraries/cmos/CmosRW_LinuxIO.cpp: In member function 'virtual void cmos:=
+    :CmosRWIo::writeByte(u32, u32, u32, u8) const':
+    &gt; libraries/cmos/CmosRW_LinuxIO.cpp:66: error: 'iopl' was not declared in t=
+    his scope
+    &gt; libraries/cmos/CmosRW_LinuxIO.cpp:68: error: 'outb_p' was not declared in=
+     this scope
+    &gt; make[2]: *** [libraries/cmos/libraries_libsmbios_la-CmosRW_LinuxIO.lo] Er=
+    ror 1
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=m68k&amp;pkg=msrtool&amp;ver=0.0%2Br4091-1">msrtool_0.0+r4091-1</a>  [buildd_m68k-zlin3]<span>
+  Reasons for BD-Uninstallable:
+    mdm (= 0.1.3-2) build-depends on libncurses5-dev {libncurses5-dev (= 5.7+20090803-1)}
+    libncurses5-dev (= 5.7+20090803-1) depends on libc-dev {NOT AVAILABLE}
+  Previous state was Needs-Build until 2009 Sep 26 18:00:32
+  Reasons for failing:
+    [Category: none]
+  Previous state was Failed until 2009 Jul 26 11:10:22
+  Previous failing reasons:
+    -------------------- 0.0+r4091-1 --------------------
+    | sys.c: In function 'cpuid':
+    | sys.c:28: error: unknown register name '%edx' in 'asm'
+    | sys.c:28: error: unknown register name '%ecx' in 'asm'
+    | sys.c:28: error: unknown register name '%ebx' in 'asm'
+    needs porting
+</span>
+</li>
+<li class="empty"><br /></li>
+<li class="packageinfo"><a href="http://buildd.debian.org/build.php?arch=m68k&amp;pkg=nictools-pci&amp;ver=1.3.8-1">nictools-pci_1.3.8-1</a>  [None]<span>
+  Previous state was Failed until 2007 Jul 09 20:44:34
+  Previous failing reasons:
+    -------------------- 1.3.8-1 --------------------
+    Was Not-For-Us previously
+    -------------------- 1.3.8-1 --------------------
+    Was Not-For-Us previously
+    -------------------- 1.3.8-1 --------------------
+    Was Not-For-Us previously
+</span>
+</li>
+
+   </ul>
+ </body>
+</html>

@@ -1,0 +1,17 @@
+<p><table border=0 cellspacing=2 cellpadding=2>
+
+	<tr bgcolor="#c0c0c0">
+		<td><b>H B</b></td>
+		<td><b>Name:</b></td>
+		<!--td><b>Host:</b></td-->
+		<td><b>Model:</b></td>
+		<td><b>CPU:</b></td>
+		<td><b>RAM:</b></td>
+		<td><b>Disk:</b></td>
+		<td><b>p/d:</b></td>
+		<td><b>Admin:</b></td>
+		<td><b>Building | <font color="#FF0000">Reason:</font></b></td>
+		<td><b>hh:mm:ss:</b></td>
+	</tr>
+</table>
+<center>the colors of the LEDs are explained in the <a href="http://www.buildd.net/faq/">FAQ</a></center>

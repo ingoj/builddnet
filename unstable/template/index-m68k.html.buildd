@@ -1,0 +1,353 @@
+<p><table border=0 cellspacing=2 cellpadding=2>
+
+	<tr bgcolor="#c0c0c0">
+		<td><b>H B</b></td>
+		<td><b>Name:</b></td>
+		<!--td><b>Host:</b></td-->
+		<td><b>Model:</b></td>
+		<td><b>CPU:</b></td>
+		<td><b>RAM:</b></td>
+		<td><b>Disk:</b></td>
+		<td><b>p/d:</b></td>
+		<td><b>Admin:</b></td>
+		<td><b>Building | <font color="#FF0000">Reason:</font></b></td>
+		<td><b>hh:mm:ss:</b></td>
+	</tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/green.png" alt="up">
+         <img src="http://www.buildd.net/pix/grey.png" alt="idle">        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=zlin1">zlin1</a></td>
+       <td>Aranym</td>
+       <td>i386</td>
+       <td align="right">64M</td>
+       <td align="right">1G</td>
+       <td align="right">6.29</td>
+       <td><a href="mailto:smarenka@debian.org">Stephen Marenka</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#e0e0f0>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/green.png" alt="up">
+         <img src="http://www.buildd.net/pix/yellow.png" alt="NO-DAEMON-PLEASE">        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=zlin2">zlin2</a></td>
+       <td>Aranym</td>
+       <td>i386</td>
+       <td align="right">64M</td>
+       <td align="right">1G</td>
+       <td align="right">5.73</td>
+       <td><a href="mailto:smarenka@debian.org">Stephen Marenka</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/green.png" alt="up">
+         <img src="http://www.buildd.net/pix/grey.png" alt="idle">        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=zlin3">zlin3</a></td>
+       <td>Aranym</td>
+       <td>i386</td>
+       <td align="right">64M</td>
+       <td align="right">1G</td>
+       <td align="right">7.68</td>
+       <td><a href="mailto:smarenka@debian.org">Stephen Marenka</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#e0e0f0>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=theia">theia</a></td>
+       <td>Aranym</td>
+       <td>Dual 1.8 GHz</td>
+       <td align="right">750M</td>
+       <td align="right">12G</td>
+       <td align="right">9.58</td>
+       <td><a href="mailto:smarenka@debian.org">Stephen Marenka</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=garkin">garkin</a></td>
+       <td>Atari Falcon CT60</td>
+       <td>68060/95</td>
+       <td align="right">512M</td>
+       <td align="right">40G</td>
+       <td align="right">4.82</td>
+       <td><a href="mailto:cts@debian.org">Christian T. Steigies</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#e0e0f0>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/grey.png" alt="not participating">
+         &nbsp;        </td>
+       <td>hobbes</td>
+       <td>Atari Falcon CT60</td>
+       <td>68060/95</td>
+       <td align="right">512M</td>
+       <td align="right">4G</td>
+       <td align="right">0.00</td>
+       <td><a href="mailto:schmitz@debian.org">Michael Schmitz</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=vault13">vault13</a></td>
+       <td>Amiga 1200</td>
+       <td>68060/50</td>
+       <td align="right">256M</td>
+       <td align="right">40G</td>
+       <td align="right">4.01</td>
+       <td><a href="mailto:smarenka@debian.org">Stephen Marenka</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#e0e0f0>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=aahz">aahz</a></td>
+       <td>Amiga 2000</td>
+       <td>68060/50</td>
+       <td align="right">128M</td>
+       <td align="right">24G</td>
+       <td align="right">6.43</td>
+       <td><a href="mailto:cts@debian.org">Christian T. Steigies</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=akire">akire</a></td>
+       <td>Amiga 2000</td>
+       <td>68060/50</td>
+       <td align="right">128M</td>
+       <td align="right">4G</td>
+       <td align="right">5.10</td>
+       <td><a href="mailto:smurf@debian.org">Matthias Urlichs</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#e0e0f0>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/green.png" alt="up">
+         <img src="http://www.buildd.net/pix/grey.png" alt="idle">        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=arrakis">arrakis</a></td>
+       <td>Amiga 3000</td>
+       <td>68060/50</td>
+       <td align="right">128M</td>
+       <td align="right">10G</td>
+       <td align="right">5.86</td>
+       <td><a href="mailto:wouter@debian.org">Wouter Verhelst</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/green.png" alt="up">
+         <img src="http://www.buildd.net/pix/grey.png" alt="idle">        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=crest">crest</a></td>
+       <td>Amiga 4000</td>
+       <td>68060/50</td>
+       <td align="right">128M</td>
+       <td align="right">48G</td>
+       <td align="right">3.48</td>
+       <td><a href="mailto:luk@debian.org">Luk Claes</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#e0e0f0>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=elgar">elgar</a></td>
+       <td>Amiga 4000</td>
+       <td>68060/50</td>
+       <td align="right">128M</td>
+       <td align="right">23G</td>
+       <td align="right">5.08</td>
+       <td><a href="mailto:smarenka@debian.org">Stephen Marenka</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/green.png" alt="up">
+         <img src="http://www.buildd.net/pix/grey.png" alt="idle">        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=kullervo">kullervo</a></td>
+       <td>Amiga 3000UX</td>
+       <td>68060/50</td>
+       <td align="right">128M</td>
+       <td align="right">18G</td>
+       <td align="right">3.23</td>
+       <td><a href="mailto:roman@debian.org">Roman Hodek</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#e0e0f0>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/green.png" alt="up">
+         <img src="http://www.buildd.net/pix/grey.png" alt="idle">        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=vivaldi">vivaldi</a></td>
+       <td>Amiga 4000T</td>
+       <td>68060/50</td>
+       <td align="right">128M</td>
+       <td align="right">14G</td>
+       <td align="right">5.42</td>
+       <td><a href="mailto:smarenka@debian.org">Stephen Marenka</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/green.png" alt="up">
+         <img src="http://www.buildd.net/pix/grey.png" alt="idle">        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=kiivi">kiivi</a></td>
+       <td>Mac Quadra 840AV</td>
+       <td>68040/40</td>
+       <td align="right">128M</td>
+       <td align="right">9G</td>
+       <td align="right">3.94</td>
+       <td><a href="mailto:wouter@debian.org">Wouter Verhelst</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#e0e0f0>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=tanda">tanda</a></td>
+       <td>Mac Quadra 840AV</td>
+       <td>68040/40</td>
+       <td align="right">128M</td>
+       <td align="right">9G</td>
+       <td align="right">5.28</td>
+       <td><a href="mailto:cts@debian.org">Christian T. Steigies</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/green.png" alt="up">
+         <img src="http://www.buildd.net/pix/grey.png" alt="idle">        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=spice">spice</a></td>
+       <td>Amiga 3000</td>
+       <td>68040/40</td>
+       <td align="right">64M</td>
+       <td align="right">14G</td>
+       <td align="right">6.94</td>
+       <td><a href="mailto:smarenka@debian.org">Stephen Marenka</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#e0e0f0>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=poseidon">poseidon</a></td>
+       <td>Mac Quadra 950</td>
+       <td>68040/33</td>
+       <td align="right">144M</td>
+       <td align="right">9G</td>
+       <td align="right">4.87</td>
+       <td><a href="mailto:smarenka@debian.org">Stephen Marenka</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=zeus">zeus</a></td>
+       <td>Mac Quadra 950</td>
+       <td>68040/33</td>
+       <td align="right">80M</td>
+       <td align="right">9G</td>
+       <td align="right">4.92</td>
+       <td><a href="mailto:smarenka@debian.org">Stephen Marenka</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#e0e0f0>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td>q650</td>
+       <td>Mac Quadra 650</td>
+       <td>68040/33</td>
+       <td align="right">64M</td>
+       <td align="right">1G</td>
+       <td align="right">0.00</td>
+       <td><a href="mailto:schmitz@debian.org">Michael Schmitz</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+    <tr bgcolor=#f8f8ff>
+       <td align="left">
+         <img src="http://www.buildd.net/pix/red.png" alt="down">
+         &nbsp;        </td>
+       <td><a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=thing2">thing2</a></td>
+       <td>Mac Centris</td>
+       <td>68040/25</td>
+       <td align="right">136M</td>
+       <td align="right">1G</td>
+       <td align="right">12.64</td>
+       <td><a href="mailto:smarenka@debian.org">Stephen Marenka</a></td>
+       <td>
+
+       </td>
+       <td></td>
+    </tr>
+</table>
+<center>the colors of the LEDs are explained in the <a href="http://www.buildd.net/faq/">FAQ</a></center>

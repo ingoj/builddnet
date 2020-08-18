@@ -1,0 +1,26 @@
+  wanna-build statistics - Fri Oct  2 19:52:25 CEST 2009
+  -----------------------------------------------------
+
+Distribution unstable:
+---------------------
+Installed       :  7809 (buildd-caballero: 29, buildd_ia64-caballero: 4126,
+                         buildd_ia64-mundy: 3521, unknown: 133)
+Needs-Build     :     0
+Building        :     2 (buildd_ia64-mundy: 2)
+Uploaded        :     0
+Failed          :    22 (buildd_ia64-caballero: 10, buildd_ia64-mundy: 12)
+Dep-Wait        :     9 (buildd_ia64-caballero: 1, buildd_ia64-mundy: 2,
+                         luk: 6)
+Reupload-Wait   :     0
+Install-Wait    :     0
+Failed-Removed  :     0
+Dep-Wait-Removed:     0
+Not-For-Us      :     0
+total           :  8309
+
+ 93.98% (7809) up-to-date,  93.98% (7809) including uploaded
+  0.00% (  0) need building
+  0.02% (  2) currently building
+  0.37% ( 31) failed/dep-wait
+  0.00% (  0) old failed/dep-wait
+  0.00% (  0) need porting or cause the buildd serious grief

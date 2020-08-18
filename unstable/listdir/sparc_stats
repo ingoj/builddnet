@@ -1,0 +1,32 @@
+  wanna-build statistics - Fri Oct  2 19:52:41 CEST 2009
+  -----------------------------------------------------
+
+Distribution unstable:
+---------------------
+Installed       :  7837 (buildd_sparc-auric: 129, buildd_sparc-lebrun: 3250,
+                         buildd_sparc-mrpurply: 82,
+                         buildd_sparc-schroeder: 1606,
+                         buildd_sparc-spontini: 2217, buildd_sparc-vore: 2,
+                         unknown: 551)
+Needs-Build     :   197
+Building        :   102 (buildd_sparc-lebrun: 46, buildd_sparc-schroeder: 31,
+                         buildd_sparc-spontini: 25)
+Uploaded        :     2 (buildd_sparc-spontini: 2)
+Failed          :    59 (buildd_sparc-lebrun: 21, buildd_sparc-schroeder: 27,
+                         buildd_sparc-spontini: 11)
+Dep-Wait        :    23 (buildd_sparc-lebrun: 8, buildd_sparc-schroeder: 4,
+                         buildd_sparc-spontini: 7, he: 1, kroeckx: 1, luk: 1,
+                         unknown: 1)
+Reupload-Wait   :     0
+Install-Wait    :     0
+Failed-Removed  :     0
+Dep-Wait-Removed:     0
+Not-For-Us      :    26
+total           :  8303
+
+ 94.39% (7837) up-to-date,  94.41% (7839) including uploaded
+  2.37% (197) need building
+  1.23% (102) currently building
+  0.99% ( 82) failed/dep-wait
+  0.00% (  0) old failed/dep-wait
+  0.31% ( 26) need porting or cause the buildd serious grief

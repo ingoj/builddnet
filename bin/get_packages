@@ -1,0 +1,129 @@
+#!/bin/bash
+
+FLAVOUR=$1
+
+if [ -z "${FLAVOUR}" ]; then 
+	echo "No flavour given. Aborting..."
+	exit 1
+fi
+
+cd /home/builddnet/${FLAVOUR}/packages
+
+case "${FLAVOUR}" in
+	unstable)
+		# get the needed files
+		# first the sources
+		wget -q -O main_Sources.bz2 ftp://ftp.debian.org/debian/dists/sid/main/source/Sources.bz2
+		wget -q -O contrib_Sources.bz2 ftp://ftp.debian.org/debian/dists/sid/contrib/source/Sources.bz2
+		wget -q -O non-free_Sources.bz2 ftp://ftp.debian.org/debian/dists/sid/non-free/source/Sources.bz2
+
+		# then the packages
+		#archs="alpha amd64 arm armeb hppa hurd-i386 i386 ia64 kfreebsd-i386 m32r m68k mips mipsel powerpc s390 sparc"
+		archs="alpha amd64 arm hppa hurd-i386 i386 ia64 m68k mips mipsel powerpc s390 sparc"
+		#echo $archs
+		targets="main contrib non-free"
+		for target in $targets ; do
+			for arch in $archs; do
+				echo -n "${arch}: "
+				echo -n "$target " ; wget -q -O ${arch}_${target}_Packages.bz2 http://ftp.at.debian.org/debian/dists/sid/${target}/binary-${arch}/Packages.bz2
+				#echo -n "$target " ; wget -q -O ${arch}_${target}_Packages.bz2 http://ftp.us.debian.org/debian/dists/sid/${target}/binary-${arch}/Packages.bz2
+				#echo -n "contrib " ; wget -q -O ${arch}_contrib_Packages.bz2 ftp://ftp.debian.org/debian/dists/sid/contrib/binary-${arch}/Packages.bz2
+				#echo -n "non-free " ; wget -q -O ${arch}_non-free_Packages.bz2 ftp://ftp.debian.org/debian/dists/sid/non-free/binary-${arch}/Packages.bz2
+				echo "done."
+			done
+			#echo -n "$target " ; wget -q -O amd64_${target}_Packages.bz2 http://amd64.debian.net/debian/dists/sid/${target}/binary-amd64/Packages.bz2
+			#echo -n "$target " ; wget -q -O armeb_main_Packages.bz2 ftp.de.debian.org/debian-armeb//dists/sid/${target}/binary-armeb/Packages.bz2
+			#echo -n "$target " ; wget -q -O hurd-i386_main_Packages.bz2 http://amd64.debian.net/debian/dists/sid/${target}/binary-amd64/Packages.bz2
+			#echo -n "$target " ; wget -q -O kfreebsd-i386_main_Packages.bz2 http://ftp.gnuab.org/debian/dists/unstable/main/binary-kfreebsd-i386/Packages.bz2
+			echo "done."	
+		done
+		echo -n "kfreebsd-amd64: main " ; wget -q -O kfreebsd-amd64_main_Packages.bz2 http://ftp.gnuab.org/debian/dists/unstable/main/binary-kfreebsd-amd64/Packages.bz2
+		echo -n "kfreebsd-i386: main " ; wget -q -O kfreebsd-i386_main_Packages.bz2 http://ftp.gnuab.org/debian/dists/unstable/main/binary-kfreebsd-i386/Packages.bz2
+		echo -n "armeb: main " ; wget -q -O armeb_main_Packages.bz2 ftp.de.debian.org/debian-armeb/dists/sid/main/binary-armeb/Packages.bz2
+		echo -n "contrib " ; wget -q -O armeb_contrib_Packages.bz2 ftp.de.debian.org/debian-armeb/dists/sid/contrib/binary-armeb/Packages.bz2
+		echo "done."
+		echo -n "m32r: main " ; wget -q -O m32r_main_Packages.bz2 http://linux-m32r.org/dists/sid/main/binary-m32r/Packages.bz2
+		echo "done."
+		;;
+	etch-bpo)
+		archs=`cat /home/builddnet/bin/archs_${flavour}`
+		targets="main contrib non-free"
+		for target in $targets ; do
+			cp /home/mirror/backports.org/dists/etch-backports/${target}/source/Sources.bz2 ${target}_Sources.bz2
+			for arch in $archs; do
+				echo -n "${FLAVOUR} ${arch}: "
+				echo -n "$target " ; cp /home/mirror/backports.org/dists/etch-backports/${target}/binary-${arch}/Packages.bz2 ${arch}_${target}_Packages.bz2
+				echo "done."
+			done
+			echo "done."	
+		done
+		;;
+	etch-volatile)
+		FLAVOUR="volatile"
+		archs=`cat /home/builddnet/bin/archs_{$flavour}`
+		echo $archs
+		targets="main contrib non-free"
+		for target in $targets ; do
+			wget -q -O ${target}_Sources.bz2 http://debian.inode.at/debian-volatile/dists/etch/volatile/${target}/source/Sources.bz2
+			for arch in $archs; do
+				echo -n "${FLAVOUR} ${arch}: "
+				echo -n "$target " ; wget -q -O ${arch}_${target}_Packages.bz2 http://debian.inode.at/debian-volatile/dists/etch/volatile/${target}/binary-${arch}/Packages.bz2
+				echo "done."
+			done
+			echo "done."	
+		done
+		;;
+	_etchbpo)
+		wget -q -O main_Sources.bz2 ftp://ftp.debian.org/debian/dists/experimental/main/source/Sources.bz2
+		wget -q -O contrib_Sources.bz2 ftp://ftp.debian.org/debian/dists/experimental/contrib/source/Sources.bz2
+		wget -q -O non-free_Sources.bz2 ftp://ftp.debian.org/debian/dists/experimental/non-free/source/Sources.bz2
+		archs="alpha amd64 arm hppa hurd-i386 i386 ia64 m68k mips mipsel powerpc s390 sparc"
+		#echo $archs
+		targets="main contrib non-free"
+		for target in $targets ; do
+			for arch in $archs; do
+				echo -n "${arch}: "
+				echo -n "$target " ; wget -q -O ${arch}_${target}_Packages.bz2 http://ftp.at.debian.org/debian/dists/sid/${target}/binary-${arch}/Packages.bz2
+				#echo -n "$target " ; wget -q -O ${arch}_${target}_Packages.bz2 http://ftp.us.debian.org/debian/dists/sid/${target}/binary-${arch}/Packages.bz2
+				#echo -n "contrib " ; wget -q -O ${arch}_contrib_Packages.bz2 ftp://ftp.debian.org/debian/dists/sid/contrib/binary-${arch}/Packages.bz2
+				#echo -n "non-free " ; wget -q -O ${arch}_non-free_Packages.bz2 ftp://ftp.debian.org/debian/dists/sid/non-free/binary-${arch}/Packages.bz2
+				echo "done."
+			done
+			#echo -n "$target " ; wget -q -O amd64_${target}_Packages.bz2 http://amd64.debian.net/debian/dists/sid/${target}/binary-amd64/Packages.bz2
+			#echo -n "$target " ; wget -q -O armeb_main_Packages.bz2 ftp.de.debian.org/debian-armeb//dists/sid/${target}/binary-armeb/Packages.bz2
+			#echo -n "$target " ; wget -q -O hurd-i386_main_Packages.bz2 http://amd64.debian.net/debian/dists/sid/${target}/binary-amd64/Packages.bz2
+			#echo -n "$target " ; wget -q -O kfreebsd-i386_main_Packages.bz2 http://ftp.gnuab.org/debian/dists/unstable/main/binary-kfreebsd-i386/Packages.bz2
+			echo "done."	
+		done
+		echo -n "kfreebsd-amd64: main " ; wget -q -O kfreebsd-amd64_main_Packages.bz2 http://ftp.gnuab.org/debian/dists/unstable/main/binary-kfreebsd-amd64/Packages.bz2
+		echo -n "kfreebsd-i386: main " ; wget -q -O kfreebsd-i386_main_Packages.bz2 http://ftp.gnuab.org/debian/dists/unstable/main/binary-kfreebsd-i386/Packages.bz2
+		echo -n "armeb: main " ; wget -q -O armeb_main_Packages.bz2 ftp.de.debian.org/debian-armeb/dists/sid/main/binary-armeb/Packages.bz2
+		echo -n "contrib " ; wget -q -O armeb_contrib_Packages.bz2 ftp.de.debian.org/debian-armeb/dists/sid/contrib/binary-armeb/Packages.bz2
+		echo "done."
+		echo -n "m32r: main " ; wget -q -O m32r_main_Packages.bz2 http://linux-m32r.org/dists/sid/main/binary-m32r/Packages.bz2
+		echo "done."
+		;;
+esac
+
+
+# uncompress them
+for name in `ls *.bz2`; do
+	echo -n "Uncompressing $name..."
+	bzip2 -f -d $name
+	echo "done."
+done
+
+#17:01 < aurel32> ij: actually for kfreebsd-i386 there is two Packages.bz2
+#17:01 < aurel32> ij: http://ftp.gnuab.org/debian/dists/unstable/main/binary-kfreebsd-i386/
+#17:01 < aurel32> ij: http://ftp.gnuab.org/debian/dists/unreleased/main/binary-kfreebsd-i386/
+#17:03 < aurel32> ij: for hurd-i386:
+#17:03 < aurel32> ij: http://ftp.debian.org/debian/dists/unstable/main/binary-i386/
+#17:03 < aurel32> http://ftp.gnuab.org/debian/dists/unreleased/main/binary-hurd-i386/
+
+
+
+
+
+
+
+

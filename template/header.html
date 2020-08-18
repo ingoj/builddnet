@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+  <TITLE>%ARCH% (Index)</TITLE>
+<META HTTP-EQUIV="Refresh" CONTENT="900">
+</HEAD>
+<BODY text="#000000" bgcolor="#FFFFFF" link="#0000FF" vlink="#800080" alink="#FF0000">
+<table border="0" width="100%">
+  <tr>
+    <td align="left" width="33%">
+      [<a href="http://www.buildd.net/">home</a>]
+    </td>
+    <td align="center" width="33%">
+	  [<a href="http://backports.buildd.net/">backports</a>]
+	  [<a href="http://experimental.buildd.net/">experimental</a>]
+	  [<a href="http://non-free.buildd.net/">non-free</a>]
+    </td>
+    <td align="right" width="33%">
+      [<a href="cgi/badmin.phtml">buildd admin login</a>]
+    </td>
+  </tr>
+</table>
+<H1 ALIGN=CENTER>%ARCH%</H1>
+
+<p>
+<center>
+[<a href="http://www.buildd.net/index-alpha.html">alpha</a>] 
+[<a href="http://www.buildd.net/index-amd64.html">amd64</a>] 
+[<a href="http://www.buildd.net/index-arm.html">arm</a>]
+[<a href="http://www.buildd.net/index-hppa.html">hppa</a>] 
+[<a href="http://www.buildd.net/index-i386.html">i386</a>]
+[<a href="http://www.buildd.net/index-ia64.html">ia64</a>] 
+[<a href="http://www.buildd.net/index-m68k.html">m68k</a>] 
+[<a href="http://www.buildd.net/index-mips.html">mips</a>] 
+[<a href="http://www.buildd.net/index-mipsel.html">mipsel</a>]
+[<a href="http://www.buildd.net/index-powerpc.html">powerpc</a>]
+[<a href="http://www.buildd.net/index-s390.html">s390</a>] 
+[<a href="http://www.buildd.net/index-sparc.html">sparc</a>]
+</center>
+
+<!-- (was after [%ARCH%]; can't nest) <input type="submit" name="searchtype" value="[all]"> -->
+
+<!-- add important notes here: -->
+<p><hr><p>
+<font color="#FF0000">
+<center>
+<img src="http://www.amayita.com/branden/branden_4_DPL_05.png">
+</font>
+</center>
+<!-- end of comment -->
+<p>
+<hr>
+<p>
+<center>
+<form action="http://www.buildd.net/cgi/package_status" method=get>
+Package status
+<input type="text" name="%ARCH%_pkg" size=30>
+<input type="submit" name="searchtype" value="go">
+</form>
+</center>
+<p>
+<hr>
+<p>
+<table cellpadding=20>
+  <tr valign="top">
+    <td align="left">
+	  <table width="200" valign="top">
+Current %ARCH% status:
+<p>
+<ul>
+<li> <a href="http://www.buildd.net/buildd/%ARCH%_Needs-Build.html">Needs-Build</a>
+ (<a href="http://www.buildd.net/buildd/%ARCH%_needs-build.txt">queue order</a>)
+<li> <a href="http://www.buildd.net/buildd/%ARCH%_Building.html">Building</a>
+<li> <a href="http://www.buildd.net/buildd/%ARCH%_Uploaded.html">Uploaded</a>
+</ul>
+<p>
+<ul>
+<li> <a href="http://www.buildd.net/buildd/%ARCH%_Dep-Wait.html">Dep-Wait</a>
+<li> <a href="http://www.buildd.net/buildd/%ARCH%_Failed.html">Failed</a>
+<li> <a href="http://www.buildd.net/buildd/%ARCH%_Not-For-Us.html">Not-For-Us</a>
+</ul>
+<p>
+<ul>
+<li> <a href="http://www.buildd.net/buildd/%ARCH%_Dep-Wait-Removed.html">Dep-Wait-Removed</a>
+<li> <a href="http://www.buildd.net/buildd/%ARCH%_Failed-Removed.html">Failed-Removed</a>
+</ul>
+<p>
+<ul>
+<li> <a href="http://www.buildd.net/buildd/%ARCH%_Installed.html">Installed</a>
+</ul>
+<a href="http://www.buildd.net/buildd/%ARCH%_stats">summary</a>
+ | <a href="http://buildd.debian.org/stats/graph-week-big.png">graph</a>
+ | <a href="http://www.buildd.net/buildd/%ARCH%-all.txt">raw data</a>
+      </table>
+	</td>
+	<td align="center">
+all archs:<br><p><p>
+<a href="buildd/Needs-Build_stats.png">graph</a><br>
+<a href="buildd/Building_stats.png">graph</a><br>
+<a href="buildd/Uploaded_stats.png">graph</a><br>
+<p>
+<a href="buildd/Dep-Wait_stats.png">graph</a><br>
+<a href="buildd/Failed_stats.png">graph</a><br>
+<a href="buildd/Not-For-Us_stats.png">graph</a><br>
+<p>
+<a href="buildd/Dep-Wait-Removed_stats.png">graph</a><br>
+<a href="buildd/Failed-Removed_stats.png">graph</a><br>
+<p>
+<a href="buildd/Installed_stats.png">graph</a><br>
+	</td>
+	<td align="left">
+	  <table valign="top">
+
+
+Needs doing
+
+<p>
+<ul>
+<li><a href="http://www.buildd.net/buildd/update_excuses.html">update excuses</a>
+  |   <a href="http://www.buildd.net/buildd/%ARCH%-update_excuses.html">%ARCH% update excuses</a>
+<li><a href="http://www.buildd.net/buildd/all.html">Release Critical Bugs</a>
+<!--
+ | <a href="http://www.buildd.net/buildd/%ARCH%_rc.html">%ARCH% RC Bugs</a>
+<p>
+<a href="http://auric.debian.org/~pb/shame/%ARCH%.html">another, nice looking %ARCH% update excuses</a>
+-->
+<li><a href="http://incoming.debian.org/">Incoming</a>
+  |   <a href="http://www.buildd.net/buildd/incoming.txt">new source</a>
+  |   <a href="http://www.buildd.net/buildd/tobuild.html">accepted</a>
+
+<li>Quinn diff output for
+<a href="http://buildd.debian.org/quinn-diff/output/stable/by_priority_split-%ARCH%.txt">stable</a> and
+<a href="http://buildd.debian.org/quinn-diff/output/unstable/by_priority_split-%ARCH%.txt">unstable</a>
+<li><a href="http://www.buildd.net/buildd/Packages-arch-specific">Packages-arch-specific</a>
+</ul>
+   <ul> 
+<!--   <li> Graph Needs-Build <a href="buildd/all_stats.png">for all archs</a>
+-->
+   <li> <a href="buildd/%ARCH%_stats.png">combined graphs</a> for this arch
+  </ul>
+<br><p>
+Based on wanna-build dump from buildd.debian.org,<br> generated at: %MTIME% UTC+1      </table>
+	</td>
+  </tr>
+</table>
+<p>
+<hr>
+<p>
+

@@ -1,0 +1,367 @@
+#!/usr/bin/python
+
+import psycopg
+#from os import linesep
+from string import *
+from time import *
+import cgi, sys, os
+import popen2
+
+homedir="/home/builddnet"
+f = open(homedir+"/conf.d/database.conf")
+while 1:
+	line = f.readline()
+	if len(line)==0: break
+	#print line
+	if line.count("host"):
+		host = split(line,"=")[1]
+	elif line.count("port"):
+		port = split(line,"=")[1]
+	elif line.count("username"):
+		username = split(line,"=")[1]
+	elif line.count("password"):
+		password = split(line,"=")[1]
+	elif line.count("database"):
+		database = split(line,"=")[1]
+
+
+dsn = "dbname=%s host=%s user=%s password=%s" % ( database, host, username, password )
+db = psycopg.connect(dsn)
+csr = db.cursor()
+
+version 	= "0.97"
+
+error		= 0
+flavour 	= "unstable"
+sqlcmd_add	= ""
+rctext  	= ""
+path 		= "/home/builddnet/buildd-updates/"	
+
+def init():
+	"""call this if no dbid is given..."""
+	global error, flavour, sqlcmd_add, name
+	#print form
+	try:
+		if form.has_key('update'): 
+			name = form['update'].value
+		elif form.has_key('stats'):
+			name = form['stats'].value
+	except: 
+		name = form['name'].value
+	try: 
+		flavour = form['flavour'].value
+		flavour=replace(flavour, "-", "")
+		#print "flavour exception"
+	except: 
+		# update-buildd.net buggy: unstable instead of unspecified for now... 
+		flavour = "unstable"
+
+	passwd = form['p'].value
+
+	try:
+		if form.has_key('kernel'):
+			kernel = form['kernel'].value
+			sqlcmd_add = ", kernel='%s'" % kernel
+	except:
+		pass
+
+	try:
+		if form.has_key('buildd'):
+			builddstatus = form['buildd'].value
+			#print builddstatus
+			if builddstatus=='-1':
+				#print  "buildd is down"
+				sqlcmd_add = ", builddstatus='-1' "
+			elif builddstatus=='0':
+				#print  "buildd is idle"
+				sqlcmd_add = ", builddstatus='0' "
+			elif builddstatus=='1':
+				#print "buildd is running"
+				sqlcmd_add = ", builddstatus='1' "
+			elif builddstatus=='2':
+				#print "buildd is stopped, NO-DAEMON-PLEASE exists"
+				sqlcmd_add = ", builddstatus='2' "
+	except: 
+		sqlcmd_add = ""
+	dorc(sqlcmd_add)
+	try: 
+		if passwd<>"password":
+			#foo="%s, %s" % (name, passwd)
+			#dorc(foo)
+			sqlcmd = "select name from buser where name='%s' and clear='%s'" % (name, passwd)
+			#dorc(sqlcmd)
+			csr.execute(sqlcmd)
+			sqlresult = csr.fetchone()
+			#dorc(sqlresult[0])
+			dbname = sqlresult[0]
+			#dorc(dbname)
+		else:
+			dbname = "invalid"
+
+		if dbname<>name: 
+			dorc("NACK")
+			return
+		if form.has_key("update") or form.has_key("stats"): 
+			#dorc("in form.has_key(update)")
+			update(name)
+	except Exception, e: 
+		dorc("login failure")
+		dorc("Exception:")
+		dorc(e)
+		return
+
+	#db.commit()
+
+	try:
+		reason = form['reason'].value
+		reason = replace(reason, "'", "")	
+	except:
+		reason="none"
+	if form.has_key('reason'):
+		f_reason(name, reason)
+
+	try:
+		#print "in try building"
+		if form.has_key('building'):
+			building = replace(form['building'].value, "%20", "+")
+			f_building(name, building, flavour)
+	except:
+		#print "in except buildin"
+		building=""
+	foo="vers=%s" % version
+	dorc(foo)
+	dorc("OK")
+	#print flavour
+	return
+
+
+def dorc(text):
+	global rctext, f, form, name
+	#try:
+	#	if form.has_key('name'):
+	#		name = form['name'].value
+	#	elif form.has_key('stats'):
+	#		name = form['stats'].value
+	#except:
+	#	name = form['update'].value
+	print text
+	f.write(name+": "+str(text)+os.linesep)
+	#rctext=rctext + text
+
+
+def f_reason(name, reason):
+	"""call this if no dbid is given..."""
+	global error
+	if (name == "a4000t" and reason == "chicks dig m68k"): reason = " "
+	if (name == "kiivi" and reason.count("delicious")): reason = " "
+	if (reason=="none" or reason==" " or reason=="" ):
+		sqlcmd = "update status set reason=Null where name='%s'" % ( name )
+	elif reason<>"none":
+		sqlcmd = "update status set reason='%s' where name='%s'" % ( reason, name )
+	csr.execute(sqlcmd)
+	#print sqlcmd
+	db.commit()
+	#print "OK reason"
+	return
+
+
+def f_building(name, building, flavour):
+	"""call this if no dbid is given..."""
+	global error
+	#global flavour 
+	#dorc("in f_building")
+	sqlcmd = "select arch from status where name='%s'" % name
+	#dorc(sqlcmd)
+	csr.execute(sqlcmd)
+	arch = csr.fetchone()[0]
+	#print arch
+	if (building=="" or building==" "):
+		#pass
+		#dorc("in if 1")
+		# instead of unstable there should be unspecified, but due to a bug in update-buildd.net we're satisfied with unstable for now:
+		sqlcmd = "update status set building=null, buildingflavour='unstable' %s where name='%s'" % ( sqlcmd_add, name )
+		#dorc(sqlcmd)
+		csr.execute(sqlcmd)
+		sqlcmd = "update ptracker set endtime=now(), state='maybe-successful' where buildd='%s' and state='nowbuilding'" % (name)
+		csr.execute(sqlcmd)
+		db.commit()
+	else:
+		#dorc("in else")
+		try:
+			sqlcmd = "update status set building='%s', buildingflavour='%s' %s where name='%s'" % ( building, flavour, sqlcmd_add, name )
+			#dorc(sqlcmd)
+			csr.execute(sqlcmd)
+			db.commit()
+		except:
+			pass
+		packagename, version = split(replace(building, " ", "+"), "_", 1)
+		#print packagename, version,"<br>"
+		sqlcmd = "select id, buildd, state, dist, begin, endtime from ptracker where arch='%s' and packagename='%s' and version='%s' and state='nowbuilding'" % ( arch, packagename, version)
+		print sqlcmd
+		try:
+			dorc("in try 2")
+			csr.execute(sqlcmd)
+			sqlresult = csr.fetchone()
+			sqllen = len(str(sqlresult))
+			print len(sqlresult)
+		except Exception, e:
+			dorc("exception")
+			foo = "!!!Exception: %s" % e
+			dorc(foo)
+			sqllen=0
+		#print "pre-if 2"
+		#print "sqllen=", sqllen
+		if sqllen<>0:
+			dorc("in if sqllen")
+			# there's already a package name registered as building, so need to update entry
+			db_id 		= sqlresult[0]
+			db_buildd	= sqlresult[1]
+			db_state 	= sqlresult[2]
+			db_dist 	= sqlresult[3]
+			db_begin 	= sqlresult[4]
+			db_end  	= sqlresult[5]
+			if db_buildd <> name:
+				sqlcmd = "update ptracker set buildd='%s', begin=now() where id='%s'" % (name, db_id)
+				dorc(sqlcmd)
+				csr.execute(sqlcmd)
+			else:
+				print "this host has already registered this package/version"
+		else:
+			dorc("in else 2")
+			try:
+				sqlcmd = "update ptracker set endtime=now(), state='maybe-successful' where buildd='%s' and state='nowbuilding'" % (name)
+				dorc(sqlcmd)
+				csr.execute(sqlcmd)
+				db.commit()
+			except:
+				pass
+			sqlcmd = "insert into ptracker (packagename, version, dist, arch, begin, buildd, state) values ( '%s', '%s', '%s', '%s', now(), '%s', 'nowbuilding')" % ( packagename, version, flavour, arch, name)
+			dorc(sqlcmd)
+			csr.execute(sqlcmd)
+		
+	#print sqlcmd
+	db.commit()
+	#print "OK building"
+	return
+
+
+def update(name):
+	"""call this if no dbid is given..."""
+	global error, sqlcmd_add
+	sqlcmd = "update status set interval='86400' where interval>'86400'"
+	csr.execute(sqlcmd)
+	sqlcmd = "select status, interval from status where name='%s' for update" % (name)
+	csr.execute(sqlcmd)
+	sqlresult = csr.fetchone()
+	#print sqlresult
+	old_status = sqlresult[0]
+	#print old_status
+	if (old_status>=10 and old_status<20):
+		offset=10
+	elif (old_status>=20 and old_status<99990):
+		offset=20
+	elif old_status==99999:
+		offset=0
+	else:
+		offset=0
+	interval=sqlresult[1]
+	try:
+		if not len(interval):
+			interval="0:00:00"
+	except:
+		interval="0:00:00"
+	#dorc(sqlcmd_add)
+	sqlcmd_add = sqlcmd_add+str(hoststats())
+	#dorc(sqlcmd_add)
+	sqlcmd = "update status set status='%i', lastseen='now()', interval=('%s'+(now()-(select lastseen from status where name='%s')))/2 %s where name='%s'" % ( offset+2, interval, name, sqlcmd_add, name )
+	csr.execute(sqlcmd)
+	db.commit()
+	#print "OK"
+	return
+
+
+def hoststats():
+	"""
+	process the hoststats and return a sql string that can be used to update the entry
+	"""
+	global name
+	#uptime=57%20days%209:12&users=1&lavg=0.00%200.01%200.09&memtotal=253240&memfree=6576&swaptotal=425800&swapfree=403024
+	sqlstr = ""
+	if form.has_key('uptime'):
+		uptime = replace(form['uptime'].value, "'", "")
+		sqlstr = sqlstr+", uptime='%s'" % uptime
+	if form.has_key('users'):
+		users = replace(form['users'].value, "'", "")
+		sqlstr = sqlstr+", users='%s'" % users
+	if form.has_key('lavg'):
+		lavg = replace(form['lavg'].value, "'", "")
+		sqlstr = sqlstr+", lavg='%s'" % lavg
+	if form.has_key('memtotal'):
+		memtotal = replace(form['memtotal'].value, "'", "")
+		sqlstr = sqlstr+", memtotal='%s'" % memtotal
+	if form.has_key('memfree'):
+		memfree = replace(form['memfree'].value, "'", "")
+		sqlstr = sqlstr+", memfree='%s'" % memfree
+	if form.has_key('swaptotal'):
+		swaptotal = replace(form['swaptotal'].value, "'", "")
+		sqlstr = sqlstr+", swaptotal='%s'" % swaptotal
+	if form.has_key('swapfree'):
+		swapfree = replace(form['swapfree'].value, "'", "")
+		sqlstr = sqlstr+", swapfree='%s'" % swapfree
+	if form.has_key('uptime'):
+		sqlcmd = "insert into hoststats (buildd, uptime, users, lavg, memtotal, memfree, swaptotal, swapfree) values ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % (name, uptime, users, lavg, memtotal, memfree, swaptotal, swapfree)
+		csr.execute(sqlcmd)
+		db.commit()
+	return sqlstr	
+
+
+def output_header(name):
+	dorc("Content-type: text/html")
+	dorc('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">')
+	dorc('')
+	dorc('<html>')
+	dorc('<head>')
+	dorc('<meta http-equiv="Content-Type" ')
+	dorc('content="text/html; charset=iso-8859-1">')
+	foo='<title>www.buildd.net status update - version %s</title>' % version
+	dorc(foo) 
+	dorc('</head>')
+	dorc('<body bgcolor="white" text="black">')
+	dorc('<p><font color="#000000" face="Verdana"><p>')
+	
+def output_tail(name):
+	dorc("</font></body></html>")
+
+form = cgi.FieldStorage()
+
+try:
+	if form.has_key('update'): 
+		name = form['update'].value
+	elif form.has_key('stats'): 
+		name = form['stats'].value
+	else: 
+		name = form['name'].value
+except:
+	pass
+
+
+#
+# Main
+# 
+
+path=path+name
+f = open(path, 'w+')
+
+strform=str(form)
+f.write(strform+os.linesep)
+output_header(name)
+#f.flush()
+init()
+output_tail(name)
+
+f.flush()
+f.close
+db.close()
+sys.exit(0)
+
+	

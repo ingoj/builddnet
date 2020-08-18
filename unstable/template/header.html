@@ -1,0 +1,147 @@
+</center>
+
+<!-- (was after [%ARCH%]; can't nest) <input type="submit" name="searchtype" value="[all]"> -->
+
+<!-- add important notes here: -->
+<p><hr><p>
+<!--font color="#FF0000"-->
+<center>
+<p><b>Buildd.Net is looking for help. If you're interested and have
+some spare time to spent, <a
+href="http://www.buildd.net/cgi/feedback.phtml">contact us</a>!</b></p>
+<font color="#FF0000">
+<b>Some news for buildd.net:</b>
+<table><td>
+  <li> <a href="http://www.buildd.net/cgi/devel-systems.phtml">developer systems</a> added.</li>
+  <li> <a href="http://www.buildd.net/cgi/nowbuilding.cgi">lots of</a> <a href="http://buildd.net/cgi/ptracker.cgi?unstable_pkg=binutils&searchtype=m68k">statistics</a> <a href="http://buildd.net/cgi/hostpackages.cgi?unstable_arch=m68k&searchtype=aahz">available</a></li>
+</td><td>
+&nbsp;
+</td><td>
+  <li> <a href="http://www.buildd.net/cgi/archvote.phtml">ArchVote page</a> added</li>
+  <li> <font color="#ff0000">new v0.96 </font><a href="http://buildd.net/files/update-buildd.net">status update script</a></li>
+</td>
+</table>
+<!--buildd.net is under (re)construction - things may break - please stay tuned
+-->
+</font>
+</center>
+<!-- end of comment -->
+<p>
+<hr>
+<p>
+<center>
+<form action="http://www.buildd.net/cgi/package_status" method=get>
+  Package status
+  <input type="text" name="unstable_pkg" size=30>
+  <input type="submit" name="searchtype" value="%ARCH%">
+  <input type="submit" name="searchtype" value="all">
+  <input type="hidden" name="arch" value="%ARCH%">
+</form>
+</center>
+<p>
+<hr>
+<p>
+<table cellpadding=20>
+  <tr valign="top">
+    <td align="left">
+	  <table width="200" valign="top">
+Current %ARCH% status:
+<p>
+<ul>
+<li> <nobr><a href="http://unstable.buildd.net/buildd/%ARCH%_Needs-Build_stringsorted.html">Needs-Build</a>
+&nbsp;(<a href="http://unstable.buildd.net/buildd/%ARCH%_Needs-Build_queueorder.html">queue&nbsp;order</a>)</nobr>
+<li> <a href="http://unstable.buildd.net/buildd/%ARCH%_Building.html">Building</a>
+<li> <a href="http://unstable.buildd.net/buildd/%ARCH%_Uploaded.html">Uploaded</a>
+</ul>
+<p>
+<ul>
+<li> <a href="http://unstable.buildd.net/buildd/%ARCH%_Dep-Wait.html">Dep-Wait</a>
+<li> <a href="http://unstable.buildd.net/buildd/%ARCH%_Failed.html">Failed</a>
+<li> <a href="http://unstable.buildd.net/buildd/%ARCH%_Not-For-Us.html">Not-For-Us</a>
+</ul>
+<p>
+<ul>
+<li> <a href="http://unstable.buildd.net/buildd/%ARCH%_Dep-Wait-Removed.html">Dep-Wait-Removed</a>
+<li> <a href="http://unstable.buildd.net/buildd/%ARCH%_Failed-Removed.html">Failed-Removed</a>
+</ul>
+<p>
+<ul>
+<li> <a href="http://unstable.buildd.net/buildd/%ARCH%_Installed.html">Installed</a>
+</ul>
+<a href="http://unstable.buildd.net/buildd/%ARCH%_stats">summary</a> (<a href="http://unstable.buildd.net/buildd/%ARCH%_stats.html">HTML</a>)
+ | <a href="http://buildd.debian.org/stats/graph-week-big.png">graph</a>
+ | <a href="http://unstable.buildd.net/buildd/%ARCH%-all.txt">raw data</a>
+<br>Needs-Build queue ETA:<br> %ETA%
+      </table>
+	</td>
+	<td align="center">
+check:<br><p><p>
+<!--a href="buildd/Needs-Build_stats.png">graph</a--><br>
+<a href="http://www.buildd.net/cgi/check_overdue.phtml?flavour=%FLAVOUR%&arch=%ARCH%&mode=package">check</a><br>
+<a href="http://www.buildd.net/cgi/check_uploaded.phtml?flavour=%FLAVOUR%&arch=%ARCH%&mode=package">check</a--><br>
+<p>
+<a href="http://www.buildd.net/cgi/check_depwait.phtml?flavour=%FLAVOUR%&arch=%ARCH%&mode=package">check</a><br>
+<a href="http://www.buildd.net/cgi/check_failed.phtml?flavour=%FLAVOUR%&arch=%ARCH%&mode=package">check</a><br>
+<!--a href="buildd/Not-For-Us_stats.png">graph</a--><br>
+<p>
+<!--a href="buildd/Dep-Wait-Removed_stats.png">graph</a--><br>
+<!--a href="buildd/Failed-Removed_stats.png">graph</a--><br>
+<p>
+<a href="http://www.buildd.net/cgi/check_installed.phtml?flavour=%FLAVOUR%&arch=%ARCH%&mode=package">check</a--><br>
+	</td>
+
+	<td align="center">
+all archs:<br><p><p>
+<a href="buildd/Needs-Build_stats.png">graph</a><br>
+<a href="buildd/Building_stats.png">graph</a><br>
+<a href="buildd/Uploaded_stats.png">graph</a><br>
+<p>
+<a href="buildd/Dep-Wait_stats.png">graph</a><br>
+<a href="buildd/Failed_stats.png">graph</a><br>
+<a href="buildd/Not-For-Us_stats.png">graph</a><br>
+<p>
+<a href="buildd/Dep-Wait-Removed_stats.png">graph</a><br>
+<a href="buildd/Failed-Removed_stats.png">graph</a><br>
+<p>
+<a href="buildd/Installed_stats.png">graph</a><br>
+	</td>
+	<td align="left">
+	  <table valign="top">
+
+
+Needs doing
+
+<p>
+<ul>
+<li><a href="http://unstable.buildd.net/buildd/update_excuses.html">update excuses</a>
+  |   <a href="http://unstable.buildd.net/buildd/%ARCH%-update_excuses.html">%ARCH% update excuses</a>
+<li><a href="http://unstable.buildd.net/buildd/all.html">Release Critical Bugs</a>
+<!--
+ | <a href="http://unstable.buildd.net/buildd/%ARCH%_rc.html">%ARCH% RC Bugs</a>
+<p>
+<a href="http://auric.debian.org/~pb/shame/%ARCH%.html">another, nice looking %ARCH% update excuses</a>
+-->
+<li><a href="http://incoming.debian.org/">Incoming</a>
+  |   <a href="http://unstable.buildd.net/buildd/incoming.txt">new source</a>
+  |   <a href="http://unstable.buildd.net/buildd/tobuild.html">accepted</a>
+
+<li>Quinn diff output for
+<a href="http://buildd.debian.org/quinn-diff/output/stable/by_priority_split-%ARCH%.txt">stable</a> and
+<a href="http://buildd.debian.org/quinn-diff/output/unstable/by_priority_split-%ARCH%.txt">unstable</a>
+<li><a href="http://unstable.buildd.net/buildd/Packages-arch-specific">Packages-arch-specific</a>
+</ul>
+<ul> 
+   <li>Check packages that are overdue (sorted by):<br><a href="http://www.buildd.net/cgi/check_overdue.phtml?flavour=%FLAVOUR%&arch=%ARCH%&mode=buildd">buildd</a> | <a href="http://www.buildd.net/cgi/check_overdue.phtml?flavour=%FLAVOUR%&arch=%ARCH%&mode=package">package</a> | <a href="http://www.buildd.net/cgi/check_overdue.phtml?flavour=%FLAVOUR%&arch=%ARCH%&mode=date">date</a></li>
+   <!--li>Dep-Wait check (sorted by):<br><a href="http://www.buildd.net/cgi/check_depwait.phtml?flavour=%FLAVOUR%&arch=%ARCH%&mode=buildd">buildd</a> | <a href="http://www.buildd.net/cgi/check_depwait.phtml?flavour=%FLAVOUR%&arch=%ARCH%&mode=package">package</a> | <a href="http://www.buildd.net/cgi/check_depwait.phtml?flavour=%FLAVOUR%&arch=%ARCH%&mode=wait">depwait</a></li-->
+   <li><a href="http://buildd.debian.org/stats/graph2-week-big.png">Keeping-Up graph</a> | <a href="http://buildd.debian-ports.org/stats/graph2-week-big.png">debian-ports</a></li>
+   <li><a href="buildd/%ARCH%_stats.png">combined graphs</a> for this arch</li>
+</ul>
+<p>
+Based on wanna-build dump from buildd.debian.org,<br> generated at: %MTIME%      </table>
+	</td>
+  </tr>
+</table>
+<p>
+<hr>
+<p>
+

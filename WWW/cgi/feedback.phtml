@@ -1,0 +1,194 @@
+#!/usr/bin/python
+#
+# Copyright (c) 2006, Ingo Juergensmann <ij@buildd.net>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# feedback.phtml comes with ABSOLUTELY NO WARRANTY
+#
+
+import psycopg
+from string import *
+from time import *
+import cgi, sys, os
+import popen2
+import tempfile
+import smtplib
+
+homedir="/home/builddnet"
+f = open(homedir+"/conf.d/database.conf")
+while 1:
+	line = f.readline()
+	if len(line)==0: break
+	if line.count("host"):
+		host = split(line,"=")[1]
+	elif line.count("port"):
+		port = split(line,"=")[1]
+	elif line.count("username"):
+		username = split(line,"=")[1]
+	elif line.count("password"):
+		password = split(line,"=")[1]
+	elif line.count("database"):
+		database = split(line,"=")[1]
+
+
+# mailserver connection
+smtp = smtplib.SMTP('localhost')
+
+#dsn = "dbname=buildd"
+dsn = "dbname=%s host=%s user=%s password=%s" % ( database, host, username, password )
+db = psycopg.connect(dsn)
+csr = db.cursor()
+
+error=0
+selected = ""
+
+remote_ip=os.environ['REMOTE_ADDR']
+remote_addr=os.environ['REMOTE_HOST']
+user_agent=os.environ['HTTP_USER_AGENT']
+
+
+archs=["alpha","amd64","arm","armeb", "hppa", "hurd-i386", "i386","ia64","kfreebsd","netbsd-alpha", "netbsd-i386","m32r","m68k","mips","mipsel","sh", "powerpc","s390","sparc"]
+
+# default text..
+maildate = strftime("Date: %a, %d %b %Y %H:%M:%S +0000", gmtime())
+mailfrom = '"Buildd.net" <feedback@buildd.net>'
+footer   = "\n\nRegards,\nIngo Juergensmann"
+#footer   = footer + "\n\n-- \nMecklenburgischer Yachtclub Rostock e.V.\nhttp://www.mycr.de/ * versendet via check_odienst.py"
+#webpage  = "http://www.mycr.de"
+subject   = "User Feedback" # to prevent things like "MYCR - Ordnungsdienst am 07.04.2005 am 13.04.2005"
+body0	  = """Someone had entered the following lines at buildd.net as feedback:\nRemote IP: %s\nRemote Host: %s\n\n""" % (remote_ip, remote_addr)
+	
+def init():
+	#print remote_ip, remote_addr, user_agent, "<br>"
+	#print os.environ
+	print '<table border="0"><td valign="top">'
+	print '<form action="feedback.phtml" method="post">'
+	#print '<td valign="top">'
+	print '     <b>Your personal data:</b><p>'
+	print '  Name:<br><input name="name" type="text" size="50"><p>'
+	print '  eMail address:<br><input name="email" type="text" size="50"><p>'
+	print '  Subject:<br><input name="subject" type="text" size="50"><p>'
+	print '  Feedback:<br><textarea name="usage" cols="70" rows="10"></textarea><p>'
+	print '  <input name="addentry" type="submit" value="Send feedback">' 
+	#print '   </td>'
+	#print '  </table>'
+	print '</form>'
+	print '</table>'
+	return
+	
+def addentry():
+	
+	#print "<br> ADD ENTRY"
+	
+	if (form.has_key('name') and form.has_key('email')):
+		name 		= replace(replace(form['name'].value, "'", ""), "\\", "")
+		email 		= replace(replace(form['email'].value, "'", ""), "\\", "")
+		archstring  = ""
+		archvalue 	= ""
+		
+		if form.has_key('subject'):
+			subject	= "buildd.net feedback: "+form['subject'].value
+		else:
+			subject	= "buildd.net feedback"
+		if form.has_key('usage'):
+			usage 	= form['usage'].value
+		else:
+			usage	= "Null"			
+		
+		body = "%s\nFrom: %s\nReply-To: %s\nTo: buildd.net feedback <feedback@buildd.net>\nSubject: %s\n" % ( maildate, mailfrom, email, subject )
+		body = body + body0 + usage
+		#body = body + footer
+		#print mailfrom
+		#print email
+		#print subject
+		#print body
+		smtp.sendmail(mailfrom, 'ij@buildd.net', body)
+		#print rc
+	else: 
+		print "Please enter a valid name and a valid email address.<br>"
+		
+	return
+
+
+def httperror():
+	print """<font color="#ff0000" size=+4>You're not allowed here. Spam elsewhere. Go away!</font>"""
+	print "</font></body></html>"
+	db.close()
+	sys.exit(0)
+	
+	
+#
+# Main()
+#
+
+print "Content-type: text/html"
+print """
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" 
+content="text/html; charset=iso-8859-1">
+<title>www.buildd.net - feedback</title>
+</head>
+<body bgcolor="white" text="black">
+<p><font color="#000000" face="Verdana"><p>
+<center>
+<table bgcolor="#f0f0f0" width=100%>
+        <th>
+                <H1 ALIGN=CENTER>Buildd.net - Feedback</H1>
+        </th>
+</table>
+</center>
+<p><br>
+"""
+if len(user_agent)<10:
+	httperror()
+
+print """<b>Your feedback is welcome!</b><br>
+If you have ideas how to improve buildd.net, questions about some stuff on buildd.net or even some criticism what is not so good, please drop me a note! Enter the form below and click on the 'Send Feedback' button.<br>
+Please enter valid names and a valid email address, so I can answer to your feedback if necessary.<p>
+"""
+
+form = cgi.FieldStorage()
+#print form
+if form.has_key('change'):
+	change()
+elif form.has_key('addentry'):
+	addentry()
+	init()
+elif form.has_key('id'):
+	change()
+else:
+	init()
+print """
+<br><p>
+<!-- font color="#c08080">
+Note:<br></font>
+<font color="#808080">
+<Please don't abuse this survey! You will only damaging the Debian Ports with faked data.<br>
+Select the archs, you are using, enter your full name and a valid email address. A short info mail will be sent to that email address in order to enable you later to change your settings.
+Sadly, the Vancouver proposal is not very clear about what a &quot;user&quot; is, how often a machine is being used or if that machine is only used to act for some services (e.g. nameserver, dhcp or mail). So you have the possibility to shortly describe your usage of your used machines. This can be an important information especially for such archs like arm, m68k or mips(el), whereas it is not that important for i386 or amd64, as I think. The usage information may be anonymized and made public.<br>
+Furthermore you can give information about your used dists like sid, testing, stable.<p>
+Thank you for participating!--><br>Ingo Juergensmann, Sat Nov 12 11:41:21 CET 2005<br>
+<!--/font-->
+"""
+print "</font></body></html>"
+
+db.close()
+sys.exit(0)
+
+	

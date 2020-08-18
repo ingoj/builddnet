@@ -1,0 +1,24 @@
+  wanna-build statistics - Fri Oct  2 19:52:19 CEST 2009
+  -----------------------------------------------------
+
+Distribution unstable:
+---------------------
+Installed       :     0
+Needs-Build     :     0
+Building        :     0
+Uploaded        :     0
+Failed          :     0
+Dep-Wait        :     0
+Reupload-Wait   :     0
+Install-Wait    :     0
+Failed-Removed  :     0
+Dep-Wait-Removed:     0
+Not-For-Us      :     0
+total           :     0
+
+  0.00% up-to-date,   0.00% including uploaded
+  0.00% need building
+  0.00% currently building
+  0.00% failed/dep-wait
+  0.00% old failed/dep-wait
+  0.00% need porting or cause the buildd serious grief
